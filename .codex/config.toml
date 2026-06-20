@@ -1,0 +1,16 @@
+[mcp_servers.shadcn]
+command = "npx"
+args = ["shadcn@latest", "mcp"]
+
+[mcp_servers.vercel]
+url = "https://mcp.vercel.com"
+
+[mcp_servers.convex]
+command = "npx"
+args = ["-y", "convex@latest", "mcp", "start"]
+
+[mcp_servers.better-auth]
+url = "https://mcp.better-auth.com/mcp"
+
+[mcp_servers.stripe]
+url = "https://mcp.stripe.com"

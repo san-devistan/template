@@ -1,0 +1,70 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "endOfLine": "lf",
+  "semi": false,
+  "singleQuote": false,
+  "tabWidth": 2,
+  "trailingComma": "es5",
+  "printWidth": 80,
+  "sortImports": {
+    "internalPattern": ["@/**", "@workspace/**"],
+    "groups": [
+      ["type-builtin", "value-builtin", "type-external", "value-external"],
+      [
+        "type-internal",
+        "value-internal",
+        "type-parent",
+        "value-parent",
+        "type-sibling",
+        "value-sibling",
+        "type-index",
+        "value-index"
+      ],
+      "unknown"
+    ]
+  },
+  "sortTailwindcss": false,
+  "overrides": [
+    {
+      "files": [
+        "apps/web/**/*.ts",
+        "apps/web/**/*.tsx",
+        "packages/ui/**/*.ts",
+        "packages/ui/**/*.tsx"
+      ],
+      "options": {
+        "sortTailwindcss": {
+          "stylesheet": "packages/ui/src/styles/globals.css",
+          "functions": ["cn", "cva"]
+        }
+      }
+    },
+    {
+      "files": ["apps/mobile/**/*.ts", "apps/mobile/**/*.tsx"],
+      "options": {
+        "sortTailwindcss": {
+          "config": "apps/mobile/tailwind.config.js",
+          "functions": ["cn", "cva"]
+        }
+      }
+    }
+  ],
+  "ignorePatterns": [
+    ".agents/**",
+    ".codex/**",
+    ".expo/**",
+    ".git/**",
+    ".nitro/**",
+    ".output/**",
+    ".pnpm-store/**",
+    ".tanstack/**",
+    ".turbo/**",
+    ".vinxi/**",
+    "coverage/**",
+    "dist/**",
+    "node_modules/**",
+    "pnpm-lock.yaml",
+    "apps/web/src/routeTree.gen.*",
+    "packages/backend/convex/_generated/**"
+  ]
+}

@@ -1,0 +1,103 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": [
+    "eslint",
+    "typescript",
+    "unicorn",
+    "react",
+    "react-perf",
+    "jsx-a11y",
+    "import",
+    "promise",
+    "node"
+  ],
+  "options": {
+    "typeAware": true,
+    "typeCheck": false,
+    "reportUnusedDisableDirectives": "error"
+  },
+  "categories": {
+    "correctness": "error",
+    "suspicious": "warn",
+    "perf": "warn"
+  },
+  "env": {
+    "browser": true,
+    "es2022": true,
+    "node": true
+  },
+  "settings": {
+    "react": {
+      "version": "19.2.0"
+    }
+  },
+  "rules": {
+    "complexity": ["warn", { "max": 12 }],
+    "max-depth": ["warn", 4],
+    "max-lines": [
+      "warn",
+      {
+        "max": 300,
+        "skipBlankLines": true,
+        "skipComments": true
+      }
+    ],
+    "max-lines-per-function": [
+      "warn",
+      {
+        "max": 120,
+        "skipBlankLines": true,
+        "skipComments": true
+      }
+    ],
+    "max-params": ["warn", 4],
+    "no-empty": "error",
+    "no-duplicate-imports": "warn",
+    "prefer-const": "error",
+    "import/no-cycle": ["error", { "maxDepth": 3 }],
+    "import/no-relative-parent-imports": "error",
+    "jsx-a11y/alt-text": "error",
+    "jsx-a11y/anchor-has-content": "warn",
+    "jsx-a11y/aria-props": "error",
+    "jsx-a11y/aria-role": "error",
+    "jsx-a11y/click-events-have-key-events": "warn",
+    "jsx-a11y/interactive-supports-focus": "error",
+    "jsx-a11y/label-has-associated-control": "warn",
+    "jsx-a11y/no-autofocus": "warn",
+    "jsx-a11y/prefer-tag-over-role": "warn",
+    "react/button-has-type": "error",
+    "react/jsx-max-depth": ["warn", { "max": 5 }],
+    "react/jsx-no-constructed-context-values": "warn",
+    "react/no-array-index-key": "warn",
+    "react/react-in-jsx-scope": "off",
+    "react-perf/jsx-no-new-array-as-prop": "warn",
+    "react-perf/jsx-no-new-function-as-prop": "warn",
+    "react-perf/jsx-no-new-object-as-prop": "warn",
+    "typescript/consistent-type-imports": [
+      "error",
+      {
+        "prefer": "type-imports"
+      }
+    ],
+    "typescript/no-explicit-any": "warn",
+    "typescript/no-misused-promises": "error",
+    "typescript/restrict-template-expressions": "warn"
+  },
+  "ignorePatterns": [
+    ".agents/**",
+    "**/.agents/**",
+    ".codex/**",
+    ".expo/**",
+    ".nitro/**",
+    ".output/**",
+    ".pnpm-store/**",
+    ".tanstack/**",
+    ".turbo/**",
+    ".vinxi/**",
+    "coverage/**",
+    "dist/**",
+    "node_modules/**",
+    "apps/web/src/routeTree.gen.*",
+    "packages/backend/convex/_generated/**"
+  ]
+}

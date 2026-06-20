@@ -1,0 +1,85 @@
+/* Generated from packages/ui/src/styles/globals.css. Do not edit by hand. */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.939%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.939%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.939%;
+    --primary: 0 0% 9.053%;
+    --primary-foreground: 0 0% 98.026%;
+    --secondary: 0 0% 96.059%;
+    --secondary-foreground: 0 0% 9.053%;
+    --muted: 0 0% 96.059%;
+    --muted-foreground: 0 0% 45.152%;
+    --accent: 0 0% 96.059%;
+    --accent-foreground: 0 0% 9.053%;
+    --destructive: 357.206 100% 45.323%;
+    --destructive-foreground: 0 0% 98.026%;
+    --border: 0 0% 89.816%;
+    --input: 0 0% 89.816%;
+    --ring: 0 0% 63.016%;
+    --chart-1: 0 0% 83.144%;
+    --chart-2: 0 0% 45.152%;
+    --chart-3: 0 0% 32.199%;
+    --chart-4: 0 0% 25.047%;
+    --chart-5: 0 0% 14.938%;
+    --sidebar: 0 0% 98.026%;
+    --sidebar-foreground: 0 0% 3.939%;
+    --sidebar-primary: 0 0% 9.053%;
+    --sidebar-primary-foreground: 0 0% 98.026%;
+    --sidebar-accent: 0 0% 96.059%;
+    --sidebar-accent-foreground: 0 0% 9.053%;
+    --sidebar-border: 0 0% 89.816%;
+    --sidebar-ring: 0 0% 63.016%;
+    --radius: 0.625rem;
+    --radius-sm: calc(var(--radius) * 0.6);
+    --radius-md: calc(var(--radius) * 0.8);
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) * 1.4);
+    --radius-2xl: calc(var(--radius) * 1.8);
+    --radius-3xl: calc(var(--radius) * 2.2);
+    --radius-4xl: calc(var(--radius) * 2.6);
+  }
+
+  .dark {
+    --background: 0 0% 3.939%;
+    --foreground: 0 0% 98.026%;
+    --card: 0 0% 9.053%;
+    --card-foreground: 0 0% 98.026%;
+    --popover: 0 0% 9.053%;
+    --popover-foreground: 0 0% 98.026%;
+    --primary: 0 0% 89.816%;
+    --primary-foreground: 0 0% 9.053%;
+    --secondary: 0 0% 14.938%;
+    --secondary-foreground: 0 0% 98.026%;
+    --muted: 0 0% 14.938%;
+    --muted-foreground: 0 0% 63.016%;
+    --accent: 0 0% 14.938%;
+    --accent-foreground: 0 0% 98.026%;
+    --destructive: 358.748 100% 69.558%;
+    --destructive-foreground: 0 0% 9.053%;
+    --border: 0 0% 100% / 10%;
+    --input: 0 0% 100% / 15%;
+    --ring: 0 0% 45.152%;
+    --chart-1: 0 0% 83.144%;
+    --chart-2: 0 0% 45.152%;
+    --chart-3: 0 0% 32.199%;
+    --chart-4: 0 0% 25.047%;
+    --chart-5: 0 0% 14.938%;
+    --sidebar: 0 0% 9.053%;
+    --sidebar-foreground: 0 0% 98.026%;
+    --sidebar-primary: 225.345 84.095% 48.984%;
+    --sidebar-primary-foreground: 0 0% 98.026%;
+    --sidebar-accent: 0 0% 14.938%;
+    --sidebar-accent-foreground: 0 0% 98.026%;
+    --sidebar-border: 0 0% 100% / 10%;
+    --sidebar-ring: 0 0% 45.152%;
+  }
+}
