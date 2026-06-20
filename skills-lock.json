@@ -97,6 +97,12 @@
       "skillPath": "skills/tanstack-start/SKILL.md",
       "computedHash": "8b073187405a10f9997158f9139a9664cc801595d2fe63d542a0bac9bf2152f5"
     },
+    "turborepo": {
+      "source": "vercel/turborepo",
+      "sourceType": "github",
+      "skillPath": "skills/turborepo/SKILL.md",
+      "computedHash": "b7c3165ae67a2892d6195a5b2cba15c8d96341f5c64ddd0d3ce4225c94a2ae83"
+    },
     "upgrading-expo": {
       "source": "expo/skills",
       "sourceType": "github",
