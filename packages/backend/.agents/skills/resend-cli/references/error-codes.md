@@ -8,12 +8,12 @@ All errors exit with code `1` and output JSON to **stderr**:
 
 ## Authentication Errors
 
-| Code                 | Cause                                            | Resolution                                                                     |
-| -------------------- | ------------------------------------------------ | ------------------------------------------------------------------------------ |
-| `auth_error`         | No API key found from any source                 | Set `RESEND_API_KEY` env, pass `--api-key`, or run `resend login --key re_xxx` |
-| `missing_key`        | `login` called non-interactively without `--key` | Pass `--key re_xxx`                                                            |
-| `invalid_key_format` | API key does not start with `re_`                | Use a valid Resend API key starting with `re_`                                 |
-| `validation_failed`  | Resend API rejected the key during login         | Verify the key exists and is active at resend.com/api-keys                     |
+| Code                 | Cause                                            | Resolution                                                                |
+| -------------------- | ------------------------------------------------ | ------------------------------------------------------------------------- |
+| `auth_error`         | No API key found from any source                 | Set `RESEND_API_KEY` env, pass `--api-key`, or run `resend login`         |
+| `missing_key`        | `login` called non-interactively without `--key` | Pass `--key "$RESEND_API_KEY"` (from env/secret manager, never a literal) |
+| `invalid_key_format` | API key does not start with `re_`                | Use a valid Resend API key starting with `re_`                            |
+| `validation_failed`  | Resend API rejected the key during login         | Verify the key exists and is active at resend.com/api-keys                |
 
 ## Email Errors
 
