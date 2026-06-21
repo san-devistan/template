@@ -37,17 +37,7 @@ run pnpm exec oxfmt .
 run pnpm exec oxlint --fix --format stylish .
 run node scripts/oxc-check.mjs
 
-react_doctor_projects=()
-if [[ -d apps/mobile ]]; then
-  react_doctor_projects+=("mobile")
-fi
-if [[ -d apps/web ]]; then
-  react_doctor_projects+=("web")
-fi
-if (( ${#react_doctor_projects[@]} > 0 )); then
-  react_doctor_project_arg="$(IFS=,; printf "%s" "${react_doctor_projects[*]}")"
-  run pnpm dlx react-doctor@latest --yes --offline --verbose --no-dead-code --project "$react_doctor_project_arg" --blocking warning .
-fi
+run pnpm dlx react-doctor@latest --yes --offline --verbose --blocking warning .
 
 run_in packages/backend pnpm exec tsc --noEmit
 run_in packages/ui pnpm exec tsc --noEmit

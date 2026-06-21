@@ -1,9 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router"
+import { api } from "@workspace/backend/api"
 import { Button } from "@workspace/ui/components/button"
 import { Effect } from "effect"
+import { DatabaseZapIcon } from "lucide-react"
 import { useCallback, useState } from "react"
 
 export const Route = createFileRoute("/")({ component: App })
+
+const backendModuleCount = Object.keys(api).length
 
 function App() {
   const [count, setCount] = useState(0)
@@ -22,6 +26,10 @@ function App() {
           <Button className="mt-2" onClick={increment}>
             Effect count: {count}
           </Button>
+          <div className="mt-4 flex items-center gap-2 text-muted-foreground">
+            <DatabaseZapIcon className="size-4" aria-hidden="true" />
+            <span>Backend modules: {backendModuleCount}</span>
+          </div>
         </div>
       </div>
     </div>
