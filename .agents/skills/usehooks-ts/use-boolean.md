@@ -2,187 +2,27 @@
 Custom hook that handles boolean state with useful utility functions.
 ## Usage
 ```
-import
- 
-{
- useBoolean 
-}
- 
-from
- 
-'usehooks-ts'
+import { useBoolean } from 'usehooks-ts'
 
-export
- 
-default
- 
-function
- 
-Component
-(
-)
- 
-{
+export default function Component() {
+  const { value, setValue, setTrue, setFalse, toggle } = useBoolean(false)
 
-  
-const
- 
-{
- value
-,
- setValue
-,
- setTrue
-,
- setFalse
-,
- toggle 
-}
- 
-=
- 
-useBoolean
-(
-false
-)
+  // Just an example to use "setValue"
+  const customToggle = () => {
+    setValue((x: boolean) => !x)
+  }
 
-  
-// Just an example to use "setValue"
-
-  
-const
- 
-customToggle
- 
-=
- 
-(
-)
- 
-=>
- 
-{
-
-    
-setValue
-(
-(
-x
-:
- 
-boolean
-)
- 
-=>
- 
-!
-x
-)
-
-  
-}
-
-  
-return
- 
-(
-
-    
-<
->
-
-      
-<
-p
->
-
-        Value is 
-<
-code
->
-{
-value
-.
-toString
-(
-)
-}
-</
-code
->
-
-      
-</
-p
->
-
-      
-<
-button
- 
-onClick
-=
-{
-setTrue
-}
->
-set true
-</
-button
->
-
-      
-<
-button
- 
-onClick
-=
-{
-setFalse
-}
->
-set false
-</
-button
->
-
-      
-<
-button
- 
-onClick
-=
-{
-toggle
-}
->
-toggle
-</
-button
->
-
-      
-<
-button
- 
-onClick
-=
-{
-customToggle
-}
->
-custom toggle
-</
-button
->
-
-    
-</
->
-
-  
-)
-
+  return (
+    <>
+      <p>
+        Value is <code>{value.toString()}</code>
+      </p>
+      <button onClick={setTrue}>set true</button>
+      <button onClick={setFalse}>set false</button>
+      <button onClick={toggle}>toggle</button>
+      <button onClick={customToggle}>custom toggle</button>
+    </>
+  )
 }
 ```
 ## API
@@ -210,248 +50,36 @@ The useBoolean return type.
 | value | boolean | The current boolean state value. |
 ## Hook
 ```
-import
- 
-{
- useCallback
-,
- useState 
-}
- 
-from
- 
-'react'
+import { useCallback, useState } from 'react'
 
-import
- 
-type
- 
-{
- Dispatch
-,
- SetStateAction 
-}
- 
-from
- 
-'react'
+import type { Dispatch, SetStateAction } from 'react'
 
-type
- 
-UseBooleanReturn
- 
-=
- 
-{
-
-  value
-:
- 
-boolean
-
-  setValue
-:
- Dispatch
-<
-SetStateAction
-<
-boolean
->>
-
-  
-setTrue
-:
- 
-(
-)
- 
-=>
- 
-void
-
-  
-setFalse
-:
- 
-(
-)
- 
-=>
- 
-void
-
-  
-toggle
-:
- 
-(
-)
- 
-=>
- 
-void
-
+type UseBooleanReturn = {
+  value: boolean
+  setValue: Dispatch<SetStateAction<boolean>>
+  setTrue: () => void
+  setFalse: () => void
+  toggle: () => void
 }
 
-export
- 
-function
- 
-useBoolean
-(
-defaultValue 
-=
- 
-false
-)
-:
- UseBooleanReturn 
-{
+export function useBoolean(defaultValue = false): UseBooleanReturn {
+  if (typeof defaultValue !== 'boolean') {
+    throw new Error('defaultValue must be `true` or `false`')
+  }
+  const [value, setValue] = useState(defaultValue)
 
-  
-if
- 
-(
-typeof
- defaultValue 
-!==
- 
-'boolean'
-)
- 
-{
+  const setTrue = useCallback(() => {
+    setValue(true)
+  }, [])
 
-    
-throw
- 
-new
- 
-Error
-(
-'defaultValue must be `true` or `false`'
-)
+  const setFalse = useCallback(() => {
+    setValue(false)
+  }, [])
 
-  
-}
+  const toggle = useCallback(() => {
+    setValue(x => !x)
+  }, [])
 
-  
-const
- 
-[
-value
-,
- setValue
-]
- 
-=
- 
-useState
-(
-defaultValue
-)
-
-  
-const
- setTrue 
-=
- 
-useCallback
-(
-(
-)
- 
-=>
- 
-{
-
-    
-setValue
-(
-true
-)
-
-  
-}
-,
- 
-[
-]
-)
-
-  
-const
- setFalse 
-=
- 
-useCallback
-(
-(
-)
- 
-=>
- 
-{
-
-    
-setValue
-(
-false
-)
-
-  
-}
-,
- 
-[
-]
-)
-
-  
-const
- toggle 
-=
- 
-useCallback
-(
-(
-)
- 
-=>
- 
-{
-
-    
-setValue
-(
-x 
-=>
- 
-!
-x
-)
-
-  
-}
-,
- 
-[
-]
-)
-
-  
-return
- 
-{
- value
-,
- setValue
-,
- setTrue
-,
- setFalse
-,
- toggle 
-}
-
+  return { value, setValue, setTrue, setFalse, toggle }
 }
 ```

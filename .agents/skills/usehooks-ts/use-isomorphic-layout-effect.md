@@ -2,70 +2,16 @@
 Custom hook that uses either useLayoutEffect or useEffect based on the environment (client-side or server-side).
 ## Usage
 ```
-import
- 
-{
- useIsomorphicLayoutEffect 
-}
- 
-from
- 
-'usehooks-ts'
+import { useIsomorphicLayoutEffect } from 'usehooks-ts'
 
-export
- 
-default
- 
-function
- 
-Component
-(
-)
- 
-{
+export default function Component() {
+  useIsomorphicLayoutEffect(() => {
+    console.log(
+      "In the browser, I'm an `useLayoutEffect`, but in SSR, I'm an `useEffect`.",
+    )
+  }, [])
 
-  
-useIsomorphicLayoutEffect
-(
-(
-)
- 
-=>
- 
-{
-
-    
-console
-.
-log
-(
-
-      
-"In the browser, I'm an `useLayoutEffect`, but in SSR, I'm an `useEffect`."
-,
-
-    
-)
-
-  
-}
-,
- 
-[
-]
-)
-
-  
-return
- 
-<
-p
->
-Hello, world
-</
-p
->
-
+  return <p>Hello, world</p>
 }
 ```
 ## API
@@ -80,33 +26,8 @@ Custom hook that uses either useLayoutEffect or useEffect based on the environme
 void
 ## Hook
 ```
-import
- 
-{
- useEffect
-,
- useLayoutEffect 
-}
- 
-from
- 
-'react'
+import { useEffect, useLayoutEffect } from 'react'
 
-export
- 
-const
- useIsomorphicLayoutEffect 
-=
-
-  
-typeof
- window 
-!==
- 
-'undefined'
- 
-?
- useLayoutEffect 
-:
- useEffect
+export const useIsomorphicLayoutEffect =
+  typeof window !== 'undefined' ? useLayoutEffect : useEffect
 ```

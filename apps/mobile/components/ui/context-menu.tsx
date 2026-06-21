@@ -1,5 +1,3 @@
-/* oxlint-disable max-lines -- Menu primitive parts stay colocated to match the copied registry component shape. */
-
 import { Icon } from "@/components/ui/icon"
 import { NativeOnlyAnimatedView } from "@/components/ui/native-only-animated-view"
 import { TextClassContext } from "@/components/ui/text"

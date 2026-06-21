@@ -2,364 +2,47 @@
 Custom hook that manages a key-value Map state with setter actions.
 ## Usage
 ```
-import
- 
-{
- 
-Fragment
- 
-}
- 
-from
- 
-'react'
+import { Fragment } from 'react'
 
-import
- 
-{
- useMap 
-}
- 
-from
- 
-'usehooks-ts'
+import { useMap } from 'usehooks-ts'
 
-export
- 
-default
- 
-function
- 
-Component
-(
-)
- 
-{
+export default function Component() {
+  const [map, actions] = useMap<string, string>([['key', '🆕']])
 
-  
-const
- 
-[
-map
-,
- actions
-]
- 
-=
- 
-useMap
-<
-string
-,
- 
-string
->
-(
-[
-[
-'key'
-,
- 
-'🆕'
-]
-]
-)
+  const set = () => {
+    actions.set(String(Date.now()), '📦')
+  }
+  const setAll = () => {
+    actions.setAll([
+      ['hello', '👋'],
+      ['data', '📦'],
+    ])
+  }
+  const reset = () => {
+    actions.reset()
+  }
+  const remove = () => {
+    actions.remove('hello')
+  }
 
-  
-const
- 
-set
- 
-=
- 
-(
-)
- 
-=>
- 
-{
+  return (
+    <div>
+      <button onClick={set}>Add</button>
+      <button onClick={reset}>Reset</button>
+      <button onClick={setAll}>Set new data</button>
+      <button onClick={remove} disabled={!map.get('hello')}>
+        {'Remove "hello"'}
+      </button>
 
-    actions
-.
-set
-(
-String
-(
-Date
-.
-now
-(
-)
-)
-,
- 
-'📦'
-)
-
-  
-}
-
-  
-const
- 
-setAll
- 
-=
- 
-(
-)
- 
-=>
- 
-{
-
-    actions
-.
-setAll
-(
-[
-
-      
-[
-'hello'
-,
- 
-'👋'
-]
-,
-
-      
-[
-'data'
-,
- 
-'📦'
-]
-,
-
-    
-]
-)
-
-  
-}
-
-  
-const
- 
-reset
- 
-=
- 
-(
-)
- 
-=>
- 
-{
-
-    actions
-.
-reset
-(
-)
-
-  
-}
-
-  
-const
- 
-remove
- 
-=
- 
-(
-)
- 
-=>
- 
-{
-
-    actions
-.
-remove
-(
-'hello'
-)
-
-  
-}
-
-  
-return
- 
-(
-
-    
-<
-div
->
-
-      
-<
-button
- 
-onClick
-=
-{
-set
-}
->
-Add
-</
-button
->
-
-      
-<
-button
- 
-onClick
-=
-{
-reset
-}
->
-Reset
-</
-button
->
-
-      
-<
-button
- 
-onClick
-=
-{
-setAll
-}
->
-Set new data</button>
-
-      
-<
-button
- 
-onClick
-=
-{
-remove
-}
- 
-disabled
-=
-{
-!
-map
-.
-get
-(
-'hello'
-)
-}
->
-
-        
-{
-'Remove "hello"'
-}
-
-      
-</
-button
->
-
-      
-<
-pre
->
-
+      <pre>
         Map (
-
-        
-{
-Array
-.
-from
-(
-map
-.
-entries
-(
-)
-)
-.
-map
-(
-(
-[
-key
-,
- value
-]
-)
- 
-=>
- 
-(
-
-          
-<
-Fragment
- 
-key
-=
-{
-key
-}
->
-{
-`
-\n  
-${
-key
-}
-: 
-${
-value
-}
-`
-}
-</
-Fragment
->
-
-        
-)
-)
-}
-
-        
-<
-br
- 
-/>
-)
-
-      
-</
-pre
->
-
-    
-</
-div
->
-
+        {Array.from(map.entries()).map(([key, value]) => (
+          <Fragment key={key}>{`\n  ${key}: ${value}`}</Fragment>
+        ))}
+        <br />)
+      </pre>
+    </div>
   )
-
 }
 ```
 ## API
@@ -408,458 +91,53 @@ Represents the return type of the useMap hook. We hide some setters from the ret
 | V | The type of values in the map. |
 ## Hook
 ```
-import
- 
-{
- useCallback
-,
- useState 
-}
- 
-from
- 
-'react'
+import { useCallback, useState } from 'react'
 
-type
- 
-MapOrEntries
-<
-K
-,
- 
-V
->
- 
-=
- Map
-<
-K
-,
- 
-V
->
- 
-|
- 
-[
-K
-,
- 
-V
-]
-[
-]
+type MapOrEntries<K, V> = Map<K, V> | [K, V][]
 
-type
- 
-UseMapActions
-<
-K
-,
- 
-V
->
- 
-=
- 
-{
-
-  
-set
-:
- 
-(
-key
-:
- 
-K
-,
- value
-:
- 
-V
-)
- 
-=>
- 
-void
-
-  
-setAll
-:
- 
-(
-entries
-:
- MapOrEntries
-<
-K
-,
- 
-V
->
-)
- 
-=>
- 
-void
-
-  
-remove
-:
- 
-(
-key
-:
- 
-K
-)
- 
-=>
- 
-void
-
-  reset
-:
- Map
-<
-K
-,
- 
-V
->
-[
-'clear'
-]
-
+type UseMapActions<K, V> = {
+  set: (key: K, value: V) => void
+  setAll: (entries: MapOrEntries<K, V>) => void
+  remove: (key: K) => void
+  reset: Map<K, V>['clear']
 }
 
-type
- 
-UseMapReturn
-<
-K
-,
- 
-V
->
- 
-=
- 
-[
-
-  Omit
-<
-Map
-<
-K
-,
- 
-V
->
-,
- 
-'set'
- 
-|
- 
-'clear'
- 
-|
- 
-'delete'
->
-,
-
-  UseMapActions
-<
-K
-,
- 
-V
->
-,
-
+type UseMapReturn<K, V> = [
+  Omit<Map<K, V>, 'set' | 'clear' | 'delete'>,
+  UseMapActions<K, V>,
 ]
 
-export
- 
-function
- 
-useMap
-<
-K
-,
- 
-V
->
-(
+export function useMap<K, V>(
+  initialState: MapOrEntries<K, V> = new Map(),
+): UseMapReturn<K, V> {
+  const [map, setMap] = useState(new Map(initialState))
 
-  initialState
-:
- MapOrEntries
-<
-K
-,
- 
-V
->
- 
-=
- 
-new
- 
-Map
-(
-)
-,
+  const actions: UseMapActions<K, V> = {
+    set: useCallback((key, value) => {
+      setMap(prev => {
+        const copy = new Map(prev)
+        copy.set(key, value)
+        return copy
+      })
+    }, []),
 
-)
-:
- UseMapReturn
-<
-K
-,
- 
-V
->
- 
-{
+    setAll: useCallback(entries => {
+      setMap(() => new Map(entries))
+    }, []),
 
-  
-const
- 
-[
-map
-,
- setMap
-]
- 
-=
- 
-useState
-(
-new
- 
-Map
-(
-initialState
-)
-)
+    remove: useCallback(key => {
+      setMap(prev => {
+        const copy = new Map(prev)
+        copy.delete(key)
+        return copy
+      })
+    }, []),
 
-  
-const
- actions
-:
- UseMapActions
-<
-K
-,
- 
-V
->
- 
-=
- 
-{
+    reset: useCallback(() => {
+      setMap(() => new Map())
+    }, []),
+  }
 
-    set
-:
- 
-useCallback
-(
-(
-key
-,
- value
-)
- 
-=>
- 
-{
-
-      
-setMap
-(
-prev 
-=>
- 
-{
-
-        
-const
- copy 
-=
- 
-new
- 
-Map
-(
-prev
-)
-
-        copy
-.
-set
-(
-key
-,
- value
-)
-
-        
-return
- copy
-
-      
-}
-)
-
-    
-}
-,
- 
-[
-]
-)
-,
-
-    setAll
-:
- 
-useCallback
-(
-entries 
-=>
- 
-{
-
-      
-setMap
-(
-(
-)
- 
-=>
- 
-new
- 
-Map
-(
-entries
-)
-)
-
-    
-}
-,
- 
-[
-]
-)
-,
-
-    remove
-:
- 
-useCallback
-(
-key 
-=>
- 
-{
-
-      
-setMap
-(
-prev 
-=>
- 
-{
-
-        
-const
- copy 
-=
- 
-new
- 
-Map
-(
-prev
-)
-
-        copy
-.
-delete
-(
-key
-)
-
-        
-return
- copy
-
-      
-}
-)
-
-    
-}
-,
- 
-[
-]
-)
-,
-
-    reset
-:
- 
-useCallback
-(
-(
-)
- 
-=>
- 
-{
-
-      
-setMap
-(
-(
-)
- 
-=>
- 
-new
- 
-Map
-(
-)
-)
-
-    
-}
-,
- 
-[
-]
-)
-,
-
-  
-}
-
-  
-return
- 
-[
-map
-,
- actions
-]
-
+  return [map, actions]
 }
 ```

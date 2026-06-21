@@ -2,122 +2,22 @@
 Custom hook that returns a debounced version of the provided value, along with a function to update it.
 ## Usage
 ```
-import
- 
-{
- useDebounceValue 
-}
- 
-from
- 
-'usehooks-ts'
+import { useDebounceValue } from 'usehooks-ts'
 
-export
- 
-default
- 
-function
- 
-Component
-(
-{
- defaultValue 
-=
- 
-'John'
- 
-}
-)
- 
-{
+export default function Component({ defaultValue = 'John' }) {
+  const [debouncedValue, setValue] = useDebounceValue(defaultValue, 500)
 
-  
-const
- 
-[
-debouncedValue
-,
- setValue
-]
- 
-=
- 
-useDebounceValue
-(
-defaultValue
-,
- 
-500
-)
+  return (
+    <div>
+      <p>Debounced value: {debouncedValue}</p>
 
-  
-return
- 
-(
-
-    
-<
-div
->
-
-      
-<
-p
->
-Debounced value: 
-{
-debouncedValue
-}
-</
-p
->
-
-      
-<
-input
-
-        
-type
-=
-"
-text
-"
-
-        
-defaultValue
-=
-{
-defaultValue
-}
-
-        
-onChange
-=
-{
-event 
-=>
- 
-setValue
-(
-event
-.
-target
-.
-value
-)
-}
-
-      
-/>
-
-    
-</
-div
->
-
-  
-)
-
+      <input
+        type="text"
+        defaultValue={defaultValue}
+        onChange={event => setValue(event.target.value)}
+      />
+    </div>
+  )
 }
 ```
 ## API
@@ -152,305 +52,41 @@ Hook options.
 | trailing? | boolean | Determines whether the function should be invoked on the trailing edge of the timeout. Default ts false |
 ## Hook
 ```
-import
- 
-{
- useRef
-,
- useState 
-}
- 
-from
- 
-'react'
+import { useRef, useState } from 'react'
 
-import
- 
-type
- 
-{
- DebouncedState 
-}
- 
-from
- 
-'../useDebounceCallback'
+import type { DebouncedState } from '../useDebounceCallback'
+import { useDebounceCallback } from 'usehooks-ts'
 
-import
- 
-{
- useDebounceCallback 
-}
- 
-from
- 
-'usehooks-ts'
-
-type
- 
-UseDebounceValueOptions
-<
-T
->
- 
-=
- 
-{
-
-  leading
-?
-:
- 
-boolean
-
-  trailing
-?
-:
- 
-boolean
-
-  maxWait
-?
-:
- 
-number
-
-  equalityFn
-?
-:
- 
-(
-left
-:
- 
-T
-,
- right
-:
- 
-T
-)
- 
-=>
- 
-boolean
-
+type UseDebounceValueOptions<T> = {
+  leading?: boolean
+  trailing?: boolean
+  maxWait?: number
+  equalityFn?: (left: T, right: T) => boolean
 }
 
-export
- 
-function
- 
-useDebounceValue
-<
-T
->
-(
+export function useDebounceValue<T>(
+  initialValue: T | (() => T),
+  delay: number,
+  options?: UseDebounceValueOptions<T>,
+): [T, DebouncedState<(value: T) => void>] {
+  const eq = options?.equalityFn ?? ((left: T, right: T) => left === right)
+  const unwrappedInitialValue =
+    initialValue instanceof Function ? initialValue() : initialValue
+  const [debouncedValue, setDebouncedValue] = useState<T>(unwrappedInitialValue)
+  const previousValueRef = useRef<T | undefined>(unwrappedInitialValue)
 
-  initialValue
-:
- 
-T
- 
-|
- 
-(
-(
-)
- 
-=>
- 
-T
-)
-,
+  const updateDebouncedValue = useDebounceCallback(
+    setDebouncedValue,
+    delay,
+    options,
+  )
 
-  delay
-:
- 
-number
-,
+  // Update the debounced value if the initial value changes
+  if (!eq(previousValueRef.current as T, unwrappedInitialValue)) {
+    updateDebouncedValue(unwrappedInitialValue)
+    previousValueRef.current = unwrappedInitialValue
+  }
 
-  options
-?
-:
- UseDebounceValueOptions
-<
-T
->
-,
-
-)
-:
- 
-[
-T
-,
- DebouncedState
-<
-(
-value
-:
- 
-T
-)
- 
-=>
- 
-void
->
-]
- 
-{
-
-  
-const
- eq 
-=
- options
-?.
-equalityFn 
-??
- 
-(
-(
-left
-:
- 
-T
-,
- right
-:
- 
-T
-)
- 
-=>
- left 
-===
- right
-)
-
-  
-const
- unwrappedInitialValue 
-=
-
-    initialValue 
-instanceof
- 
-Function
- 
-?
- 
-initialValue
-(
-)
- 
-:
- initialValue
-
-  
-const
- 
-[
-debouncedValue
-,
- setDebouncedValue
-]
- 
-=
- 
-useState
-<
-T
->
-(
-unwrappedInitialValue
-)
-
-  
-const
- previousValueRef 
-=
- 
-useRef
-<
-T
- 
-|
- 
-undefined
->
-(
-unwrappedInitialValue
-)
-
-  
-const
- updateDebouncedValue 
-=
- 
-useDebounceCallback
-(
-
-    setDebouncedValue
-,
-
-    delay
-,
-
-    options
-,
-
-  
-)
-
-  
-// Update the debounced value if the initial value changes
-
-  
-if
- 
-(
-!
-eq
-(
-previousValueRef
-.
-current 
-as
- 
-T
-,
- unwrappedInitialValue
-)
-)
- 
-{
-
-    
-updateDebouncedValue
-(
-unwrappedInitialValue
-)
-
-    previousValueRef
-.
-current 
-=
- unwrappedInitialValue
-
-  
-}
-
-  
-return
- 
-[
-debouncedValue
-,
- updateDebouncedValue
-]
-
+  return [debouncedValue, updateDebouncedValue]
 }
 ```

@@ -2,93 +2,17 @@
 Custom hook that tracks the size of the window.
 ## Usage
 ```
-import
- 
-{
- useWindowSize 
-}
- 
-from
- 
-'usehooks-ts'
+import { useWindowSize } from 'usehooks-ts'
 
-export
- 
-default
- 
-function
- 
-Component
-(
-)
- 
-{
+export default function Component() {
+  const { width = 0, height = 0 } = useWindowSize()
 
-  
-const
- 
-{
- width 
-=
- 
-0
-,
- height 
-=
- 
-0
- 
-}
- 
-=
- 
-useWindowSize
-(
-)
-
-  
-return
- 
-(
-
-    
-<
-div
->
-
-      The current window dimensions are:
-{
-' '
-}
-
-      
-<
-code
->
-{
-JSON
-.
-stringify
-(
-{
- width
-,
- height 
-}
-)
-}
-</
-code
->
-
-    
-</
-div
->
-
-  
-)
-
+  return (
+    <div>
+      The current window dimensions are:{' '}
+      <code>{JSON.stringify({ width, height })}</code>
+    </div>
+  )
 }
 ```
 ## API
@@ -135,413 +59,76 @@ Represent the dimension of the window.
 | width | T | The width of the window. |
 ## Hook
 ```
-import
- 
-{
- useState 
-}
- 
-from
- 
-'react'
+import { useState } from 'react'
 
-import
- 
-{
+import {
+  useDebounceCallback,
+  useEventListener,
+  useIsomorphicLayoutEffect,
+} from 'usehooks-ts'
 
-  useDebounceCallback
-,
-
-  useEventListener
-,
-
-  useIsomorphicLayoutEffect
-,
-
-}
- 
-from
- 
-'usehooks-ts'
-
-type
- 
-WindowSize
-<
-T
- 
-extends
- 
-number
- 
-|
- 
-undefined
- 
-=
- 
-number
- 
-|
- 
-undefined
->
- 
-=
- 
-{
-
-  width
-:
- 
-T
-
-  height
-:
- 
-T
-
+type WindowSize<T extends number | undefined = number | undefined> = {
+  width: T
+  height: T
 }
 
-type
- 
-UseWindowSizeOptions
-<
-InitializeWithValue 
-extends
- 
-boolean
- 
-|
- 
-undefined
->
- 
-=
- 
-{
-
-  initializeWithValue
-:
- InitializeWithValue
-
-  debounceDelay
-?
-:
- 
-number
-
+type UseWindowSizeOptions<InitializeWithValue extends boolean | undefined> = {
+  initializeWithValue: InitializeWithValue
+  debounceDelay?: number
 }
 
-const
- 
-IS_SERVER
- 
-=
- 
-typeof
- window 
-===
- 
-'undefined'
+const IS_SERVER = typeof window === 'undefined'
 
 // SSR version of useWindowSize.
-
-export
- 
-function
- 
-useWindowSize
-(
-options
-:
- UseWindowSizeOptions
-<
-false
->
-)
-:
- WindowSize
-
+export function useWindowSize(options: UseWindowSizeOptions<false>): WindowSize
 // CSR version of useWindowSize.
+export function useWindowSize(
+  options?: Partial<UseWindowSizeOptions<true>>,
+): WindowSize<number>
+export function useWindowSize(
+  options: Partial<UseWindowSizeOptions<boolean>> = {},
+): WindowSize | WindowSize<number> {
+  let { initializeWithValue = true } = options
+  if (IS_SERVER) {
+    initializeWithValue = false
+  }
 
-export
- 
-function
- 
-useWindowSize
-(
+  const [windowSize, setWindowSize] = useState<WindowSize>(() => {
+    if (initializeWithValue) {
+      return {
+        width: window.innerWidth,
+        height: window.innerHeight,
+      }
+    }
+    return {
+      width: undefined,
+      height: undefined,
+    }
+  })
 
-  options
-?
-:
- Partial
-<
-UseWindowSizeOptions
-<
-true
->>
-,
+  const debouncedSetWindowSize = useDebounceCallback(
+    setWindowSize,
+    options.debounceDelay,
+  )
 
-)
-:
- WindowSize
-<
-number
->
+  function handleSize() {
+    const setSize = options.debounceDelay
+      ? debouncedSetWindowSize
+      : setWindowSize
 
-export
- 
-function
- 
-useWindowSize
-(
+    setSize({
+      width: window.innerWidth,
+      height: window.innerHeight,
+    })
+  }
 
-  options
-:
- Partial
-<
-UseWindowSizeOptions
-<
-boolean
->>
- 
-=
- 
-{
-}
-,
+  useEventListener('resize', handleSize)
 
-)
-:
- WindowSize 
-|
- WindowSize
-<
-number
->
- 
-{
+  // Set size at the first client-side load
+  useIsomorphicLayoutEffect(() => {
+    handleSize()
+  }, [])
 
-  
-let
- 
-{
- initializeWithValue 
-=
- 
-true
- 
-}
- 
-=
- options
-
-  
-if
- 
-(
-IS_SERVER
-)
- 
-{
-
-    initializeWithValue 
-=
- 
-false
-
-  
-}
-
-  
-const
- 
-[
-windowSize
-,
- setWindowSize
-]
- 
-=
- 
-useState
-<
-WindowSize
->
-(
-(
-)
- 
-=>
- 
-{
-
-    
-if
- 
-(
-initializeWithValue
-)
- 
-{
-
-      
-return
- 
-{
-
-        width
-:
- window
-.
-innerWidth
-,
-
-        height
-:
- window
-.
-innerHeight
-,
-
-      
-}
-
-    
-}
-
-    
-return
- 
-{
-
-      width
-:
- 
-undefined
-,
-
-      height
-:
- 
-undefined
-,
-
-    
-}
-
-  
-}
-)
-
-  
-const
- debouncedSetWindowSize 
-=
- 
-useDebounceCallback
-(
-
-    setWindowSize
-,
-
-    options
-.
-debounceDelay
-,
-
-  
-)
-
-  
-function
- 
-handleSize
-(
-)
- 
-{
-
-    
-const
- setSize 
-=
- options
-.
-debounceDelay
-
-      
-?
- debouncedSetWindowSize
-
-      
-:
- setWindowSize
-
-    
-setSize
-(
-{
-
-      width
-:
- window
-.
-innerWidth
-,
-
-      height
-:
- window
-.
-innerHeight
-,
-
-    
-}
-)
-
-  
-}
-
-  
-useEventListener
-(
-'resize'
-,
- handleSize
-)
-
-  
-// Set size at the first client-side load
-
-  
-useIsomorphicLayoutEffect
-(
-(
-)
- 
-=>
- 
-{
-
-    
-handleSize
-(
-)
-
-  
-}
-,
- 
-[
-]
-)
-
-  
-return
- windowSize
-
+  return windowSize
 }
 ```

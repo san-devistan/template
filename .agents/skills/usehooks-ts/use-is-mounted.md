@@ -2,272 +2,40 @@
 Custom hook that determines if the component is currently mounted.
 ## Usage
 ```
-import
- 
-{
- useEffect
-,
- useState 
-}
- 
-from
- 
-'react'
+import { useEffect, useState } from 'react'
 
-import
- 
-{
- useIsMounted 
-}
- 
-from
- 
-'usehooks-ts'
+import { useIsMounted } from 'usehooks-ts'
 
-const
- 
-delay
- 
-=
- 
-(
-ms
-:
- 
-number
-)
- 
-=>
- 
-new
- 
-Promise
-(
-resolve 
-=>
- 
-setTimeout
-(
-resolve
-,
- ms
-)
-)
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 
-function
- 
-Child
-(
-)
- 
-{
+function Child() {
+  const [data, setData] = useState('loading')
+  const isMounted = useIsMounted()
 
-  
-const
- 
-[
-data
-,
- setData
-]
- 
-=
- 
-useState
-(
-'loading'
-)
+  // simulate an api call and update state
+  useEffect(() => {
+    void delay(3000).then(() => {
+      if (isMounted()) setData('OK')
+    })
+  }, [isMounted])
 
-  
-const
- isMounted 
-=
- 
-useIsMounted
-(
-)
-
-  
-// simulate an api call and update state
-
-  
-useEffect
-(
-(
-)
- 
-=>
- 
-{
-
-    
-void
- 
-delay
-(
-3000
-)
-.
-then
-(
-(
-)
- 
-=>
- 
-{
-
-      
-if
- 
-(
-isMounted
-(
-)
-)
- 
-setData
-(
-'OK'
-)
-
-    
-}
-)
-
-  
-}
-,
- 
-[
-isMounted
-]
-)
-
-  
-return
- 
-<
-p
->
-{
-data
-}
-</
-p
->
-
+  return <p>{data}</p>
 }
 
-export
- 
-default
- 
-function
- 
-Component
-(
-)
- 
-{
+export default function Component() {
+  const [isVisible, setVisible] = useState<boolean>(false)
 
-  
-const
- 
-[
-isVisible
-,
- setVisible
-]
- 
-=
- 
-useState
-<
-boolean
->
-(
-false
-)
+  const toggleVisibility = () => {
+    setVisible(state => !state)
+  }
 
-  
-const
- 
-toggleVisibility
- 
-=
- 
-(
-)
- 
-=>
- 
-{
+  return (
+    <>
+      <button onClick={toggleVisibility}>{isVisible ? 'Hide' : 'Show'}</button>
 
-    
-setVisible
-(
-state 
-=>
- 
-!
-state
-)
-
-  
-}
-
-  
-return
- 
-(
-
-    
-<
->
-
-      
-<
-button
- 
-onClick
-=
-{
-toggleVisibility
-}
->
-{
-isVisible 
-?
- 
-'Hide'
- 
-:
- 
-'Show'
-}
-</
-button
->
-
-      
-{
-isVisible 
-&&
- 
-<
-Child
- 
-/>
-}
-
-    
-</
->
-
-  
-)
-
+      {isVisible && <Child />}
+    </>
+  )
 }
 ```
 ## API
@@ -281,110 +49,19 @@ A function that returns a boolean value indicating whether the component is moun
 boolean
 ## Hook
 ```
-import
- 
-{
- useCallback
-,
- useEffect
-,
- useRef 
-}
- 
-from
- 
-'react'
+import { useCallback, useEffect, useRef } from 'react'
 
-export
- 
-function
- 
-useIsMounted
-(
-)
-:
- 
-(
-)
- 
-=>
- 
-boolean
- 
-{
+export function useIsMounted(): () => boolean {
+  const isMounted = useRef(false)
 
-  
-const
- isMounted 
-=
- 
-useRef
-(
-false
-)
+  useEffect(() => {
+    isMounted.current = true
 
-  
-useEffect
-(
-(
-)
- 
-=>
- 
-{
+    return () => {
+      isMounted.current = false
+    }
+  }, [])
 
-    isMounted
-.
-current 
-=
- 
-true
-
-    
-return
- 
-(
-)
- 
-=>
- 
-{
-
-      isMounted
-.
-current 
-=
- 
-false
-
-    
-}
-
-  
-}
-,
- 
-[
-]
-)
-
-  
-return
- 
-useCallback
-(
-(
-)
- 
-=>
- isMounted
-.
-current
-,
- 
-[
-]
-)
-
+  return useCallback(() => isMounted.current, [])
 }
 ```

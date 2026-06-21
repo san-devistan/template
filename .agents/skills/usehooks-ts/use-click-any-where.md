@@ -2,93 +2,18 @@
 Custom hook that handles click events anywhere on the document.
 ## Usage
 ```
-import
- 
-{
- useState 
-}
- 
-from
- 
-'react'
+import { useState } from 'react'
 
-import
- 
-{
- useClickAnyWhere 
-}
- 
-from
- 
-'usehooks-ts'
+import { useClickAnyWhere } from 'usehooks-ts'
 
-export
- 
-default
- 
-function
- 
-Component
-(
-)
- 
-{
+export default function Component() {
+  const [count, setCount] = useState(0)
 
-  
-const
- 
-[
-count
-,
- setCount
-]
- 
-=
- 
-useState
-(
-0
-)
+  useClickAnyWhere(() => {
+    setCount(prev => prev + 1)
+  })
 
-  
-useClickAnyWhere
-(
-(
-)
- 
-=>
- 
-{
-
-    
-setCount
-(
-prev 
-=>
- prev 
-+
- 
-1
-)
-
-  
-}
-)
-
-  
-return
- 
-<
-p
->
-Click count: 
-{
-count
-}
-</
-p
->
-
+  return <p>Click count: {count}</p>
 }
 ```
 ## API
@@ -102,57 +27,11 @@ Custom hook that handles click events anywhere on the document.
 void
 ## Hook
 ```
-import
- 
-{
- useEventListener 
-}
- 
-from
- 
-'usehooks-ts'
+import { useEventListener } from 'usehooks-ts'
 
-export
- 
-function
- 
-useClickAnyWhere
-(
-handler
-:
- 
-(
-event
-:
- MouseEvent
-)
- 
-=>
- 
-void
-)
- 
-{
-
-  
-useEventListener
-(
-'click'
-,
- event 
-=>
- 
-{
-
-    
-handler
-(
-event
-)
-
-  
-}
-)
-
+export function useClickAnyWhere(handler: (event: MouseEvent) => void) {
+  useEventListener('click', event => {
+    handler(event)
+  })
 }
 ```

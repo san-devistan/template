@@ -2,82 +2,17 @@
 Custom hook that tracks the screen dimensions and properties.
 ## Usage
 ```
-import
- 
-{
- useScreen 
-}
- 
-from
- 
-'usehooks-ts'
+import { useScreen } from 'usehooks-ts'
 
-export
- 
-default
- 
-function
- 
-Component
-(
-)
- 
-{
+export default function Component() {
+  const screen = useScreen()
 
-  
-const
- screen 
-=
- 
-useScreen
-(
-)
-
-  
-return
- 
-(
-
-    
-<
-div
->
-
-      The current window dimensions are:
-{
-' '
-}
-
-      
-<
-code
->
-{
-JSON
-.
-stringify
-(
-screen
-,
- 
-null
-,
- 
-2
-)
-}
-</
-code
->
-
-    
-</
-div
->
-
-  
-)
-
+  return (
+    <div>
+      The current window dimensions are:{' '}
+      <code>{JSON.stringify(screen, null, 2)}</code>
+    </div>
+  )
 }
 ```
 ## API
@@ -113,444 +48,88 @@ The hooks options.
 | initializeWithValue | InitializeWithValue | If true (default), the hook will initialize reading the screen dimensions. In SSR, you should set it to false , returning undefined initially. Default ts true |
 ## Hook
 ```
-import
- 
-{
- useState 
-}
- 
-from
- 
-'react'
+import { useState } from 'react'
 
-import
- 
-{
+import {
+  useDebounceCallback,
+  useEventListener,
+  useIsomorphicLayoutEffect,
+} from 'usehooks-ts'
 
-  useDebounceCallback
-,
-
-  useEventListener
-,
-
-  useIsomorphicLayoutEffect
-,
-
-}
- 
-from
- 
-'usehooks-ts'
-
-type
- 
-UseScreenOptions
-<
-InitializeWithValue 
-extends
- 
-boolean
- 
-|
- 
-undefined
->
- 
-=
- 
-{
-
-  initializeWithValue
-:
- InitializeWithValue
-
-  debounceDelay
-?
-:
- 
-number
-
+type UseScreenOptions<InitializeWithValue extends boolean | undefined> = {
+  initializeWithValue: InitializeWithValue
+  debounceDelay?: number
 }
 
-const
- 
-IS_SERVER
- 
-=
- 
-typeof
- window 
-===
- 
-'undefined'
+const IS_SERVER = typeof window === 'undefined'
 
 // SSR version of useScreen.
-
-export
- 
-function
- 
-useScreen
-(
-options
-:
- UseScreenOptions
-<
-false
->
-)
-:
- Screen 
-|
- 
-undefined
-
+export function useScreen(options: UseScreenOptions<false>): Screen | undefined
 // CSR version of useScreen.
+export function useScreen(options?: Partial<UseScreenOptions<true>>): Screen
+export function useScreen(
+  options: Partial<UseScreenOptions<boolean>> = {},
+): Screen | undefined {
+  let { initializeWithValue = true } = options
+  if (IS_SERVER) {
+    initializeWithValue = false
+  }
 
-export
- 
-function
- 
-useScreen
-(
-options
-?
-:
- Partial
-<
-UseScreenOptions
-<
-true
->>
-)
-:
- Screen
+  const readScreen = () => {
+    if (IS_SERVER) {
+      return undefined
+    }
+    return window.screen
+  }
 
-export
- 
-function
- 
-useScreen
-(
+  const [screen, setScreen] = useState<Screen | undefined>(() => {
+    if (initializeWithValue) {
+      return readScreen()
+    }
+    return undefined
+  })
 
-  options
-:
- Partial
-<
-UseScreenOptions
-<
-boolean
->>
- 
-=
- 
-{
-}
-,
+  const debouncedSetScreen = useDebounceCallback(
+    setScreen,
+    options.debounceDelay,
+  )
 
-)
-:
- Screen 
-|
- 
-undefined
- 
-{
+  // Handles the resize event of the window.
+  function handleSize() {
+    const newScreen = readScreen()
+    const setSize = options.debounceDelay ? debouncedSetScreen : setScreen
 
-  
-let
- 
-{
- initializeWithValue 
-=
- 
-true
- 
-}
- 
-=
- options
+    if (newScreen) {
+      // Create a shallow clone to trigger a re-render (#280).
+      const {
+        width,
+        height,
+        availHeight,
+        availWidth,
+        colorDepth,
+        orientation,
+        pixelDepth,
+      } = newScreen
 
-  
-if
- 
-(
-IS_SERVER
-)
- 
-{
+      setSize({
+        width,
+        height,
+        availHeight,
+        availWidth,
+        colorDepth,
+        orientation,
+        pixelDepth,
+      })
+    }
+  }
 
-    initializeWithValue 
-=
- 
-false
+  useEventListener('resize', handleSize)
 
-  
-}
+  // Set size at the first client-side load
+  useIsomorphicLayoutEffect(() => {
+    handleSize()
+  }, [])
 
-  
-const
- 
-readScreen
- 
-=
- 
-(
-)
- 
-=>
- 
-{
-
-    
-if
- 
-(
-IS_SERVER
-)
- 
-{
-
-      
-return
- 
-undefined
-
-    
-}
-
-    
-return
- window
-.
-screen
-
-  
-}
-
-  
-const
- 
-[
-screen
-,
- setScreen
-]
- 
-=
- 
-useState
-<
-Screen 
-|
- 
-undefined
->
-(
-(
-)
- 
-=>
- 
-{
-
-    
-if
- 
-(
-initializeWithValue
-)
- 
-{
-
-      
-return
- 
-readScreen
-(
-)
-
-    
-}
-
-    
-return
- 
-undefined
-
-  
-}
-)
-
-  
-const
- debouncedSetScreen 
-=
- 
-useDebounceCallback
-(
-
-    setScreen
-,
-
-    options
-.
-debounceDelay
-,
-
-  
-)
-
-  
-// Handles the resize event of the window.
-
-  
-function
- 
-handleSize
-(
-)
- 
-{
-
-    
-const
- newScreen 
-=
- 
-readScreen
-(
-)
-
-    
-const
- setSize 
-=
- options
-.
-debounceDelay 
-?
- debouncedSetScreen 
-:
- setScreen
-
-    
-if
- 
-(
-newScreen
-)
- 
-{
-
-      
-// Create a shallow clone to trigger a re-render (#280).
-
-      
-const
- 
-{
-
-        width
-,
-
-        height
-,
-
-        availHeight
-,
-
-        availWidth
-,
-
-        colorDepth
-,
-
-        orientation
-,
-
-        pixelDepth
-,
-
-      
-}
- 
-=
- newScreen
-
-      
-setSize
-(
-{
-
-        width
-,
-
-        height
-,
-
-        availHeight
-,
-
-        availWidth
-,
-
-        colorDepth
-,
-
-        orientation
-,
-
-        pixelDepth
-,
-
-      
-}
-)
-
-    
-}
-
-  
-}
-
-  
-useEventListener
-(
-'resize'
-,
- handleSize
-)
-
-  
-// Set size at the first client-side load
-
-  
-useIsomorphicLayoutEffect
-(
-(
-)
- 
-=>
- 
-{
-
-    
-handleSize
-(
-)
-
-  
-}
-,
- 
-[
-]
-)
-
-  
-return
- screen
-
+  return screen
 }
 ```

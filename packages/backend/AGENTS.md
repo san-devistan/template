@@ -12,30 +12,6 @@ Convex agent skills for common tasks can be installed by running
 
 <!-- convex-ai-end -->
 
-## Client Environment Variables
-
-Client apps only need a public Convex URL when they use the Convex backend.
-After Convex creates or links the deployment, copy the generated deployment URL
-into the env file for each client app that uses Convex:
-
-```txt
-apps/web/.env.local
-VITE_CONVEX_URL=https://<deployment>.convex.cloud
-
-apps/mobile/.env.local
-EXPO_PUBLIC_CONVEX_URL=https://<deployment>.convex.cloud
-```
-
-You can sync both client env files from `packages/backend/.env.local` when it
-contains `CONVEX_URL`:
-
-```sh
-pnpm sync:convex-url
-```
-
-Client apps should import generated function references from
-`@workspace/backend/api`.
-
 ## Backend Feature Ownership
 
 Auth, transactional email, and billing are backend-owned features in this

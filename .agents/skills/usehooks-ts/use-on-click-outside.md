@@ -2,164 +2,32 @@
 Custom hook that handles clicks outside a specified element.
 ## Usage
 ```
-import
- 
-{
- useRef 
-}
- 
-from
- 
-'react'
+import { useRef } from 'react'
 
-import
- 
-{
- useOnClickOutside 
-}
- 
-from
- 
-'usehooks-ts'
+import { useOnClickOutside } from 'usehooks-ts'
 
-export
- 
-default
- 
-function
- 
-Component
-(
-)
- 
-{
+export default function Component() {
+  const ref = useRef(null)
 
-  
-const
- ref 
-=
- 
-useRef
-(
-null
-)
+  const handleClickOutside = () => {
+    // Your custom logic here
+    console.log('clicked outside')
+  }
 
-  
-const
- 
-handleClickOutside
- 
-=
- 
-(
-)
- 
-=>
- 
-{
+  const handleClickInside = () => {
+    // Your custom logic here
+    console.log('clicked inside')
+  }
 
-    
-// Your custom logic here
+  useOnClickOutside(ref, handleClickOutside)
 
-    
-console
-.
-log
-(
-'clicked outside'
-)
-
-  
-}
-
-  
-const
- 
-handleClickInside
- 
-=
- 
-(
-)
- 
-=>
- 
-{
-
-    
-// Your custom logic here
-
-    
-console
-.
-log
-(
-'clicked inside'
-)
-
-  
-}
-
-  
-useOnClickOutside
-(
-ref
-,
- handleClickOutside
-)
-
-  
-return
- 
-(
-
-    
-<
-button
-
-      
-ref
-=
-{
-ref
-}
-
-      
-onClick
-=
-{
-handleClickInside
-}
-
-      
-style
-=
-{
-{
- width
-:
- 
-200
-,
- height
-:
- 
-200
-,
- background
-:
- 
-'cyan'
- 
-}
-}
-
-    
-/>
-
-  
-)
-
+  return (
+    <button
+      ref={ref}
+      onClick={handleClickInside}
+      style={{ width: 200, height: 200, background: 'cyan' }}
+    />
+  )
 }
 ```
 ## API
@@ -183,286 +51,46 @@ void
 Supported event types.
 ## Hook
 ```
-import
- 
-type
- 
-{
- RefObject 
-}
- 
-from
- 
-'react'
+import type { RefObject } from 'react'
 
-import
- 
-{
- useEventListener 
-}
- 
-from
- 
-'usehooks-ts'
+import { useEventListener } from 'usehooks-ts'
 
-type
- 
-EventType
- 
-=
+type EventType =
+  | 'mousedown'
+  | 'mouseup'
+  | 'touchstart'
+  | 'touchend'
+  | 'focusin'
+  | 'focusout'
 
-  
-|
- 
-'mousedown'
+export function useOnClickOutside<T extends HTMLElement = HTMLElement>(
+  ref: RefObject<T> | RefObject<T>[],
+  handler: (event: MouseEvent | TouchEvent | FocusEvent) => void,
+  eventType: EventType = 'mousedown',
+  eventListenerOptions: AddEventListenerOptions = {},
+): void {
+  useEventListener(
+    eventType,
+    event => {
+      const target = event.target as Node
 
-  
-|
- 
-'mouseup'
+      // Do nothing if the target is not connected element with document
+      if (!target || !target.isConnected) {
+        return
+      }
 
-  
-|
- 
-'touchstart'
+      const isOutside = Array.isArray(ref)
+        ? ref
+            .filter(r => Boolean(r.current))
+            .every(r => r.current && !r.current.contains(target))
+        : ref.current && !ref.current.contains(target)
 
-  
-|
- 
-'touchend'
-
-  
-|
- 
-'focusin'
-
-  
-|
- 
-'focusout'
-
-export
- 
-function
- 
-useOnClickOutside
-<
-T
- 
-extends
- HTMLElement 
-=
- HTMLElement
->
-(
-
-  ref
-:
- RefObject
-<
-T
->
- 
-|
- RefObject
-<
-T
->
-[
-]
-,
-
-  
-handler
-:
- 
-(
-event
-:
- MouseEvent 
-|
- TouchEvent 
-|
- FocusEvent
-)
- 
-=>
- 
-void
-,
-
-  eventType
-:
- EventType 
-=
- 
-'mousedown'
-,
-
-  eventListenerOptions
-:
- AddEventListenerOptions 
-=
- 
-{
-}
-,
-
-)
-:
- 
-void
- 
-{
-
-  
-useEventListener
-(
-
-    eventType
-,
-
-    event 
-=>
- 
-{
-
-      
-const
- target 
-=
- event
-.
-target 
-as
- Node
-
-      
-// Do nothing if the target is not connected element with document
-
-      
-if
- 
-(
-!
-target 
-||
- 
-!
-target
-.
-isConnected
-)
- 
-{
-
-        
-return
-
-      
-}
-
-      
-const
- isOutside 
-=
- 
-Array
-.
-isArray
-(
-ref
-)
-
-        
-?
- ref
-
-            
-.
-filter
-(
-r 
-=>
- 
-Boolean
-(
-r
-.
-current
-)
-)
-
-            
-.
-every
-(
-r 
-=>
- r
-.
-current 
-&&
- 
-!
-r
-.
-current
-.
-contains
-(
-target
-)
-)
-
-        
-:
- ref
-.
-current 
-&&
- 
-!
-ref
-.
-current
-.
-contains
-(
-target
-)
-
-      
-if
- 
-(
-isOutside
-)
- 
-{
-
-        
-handler
-(
-event
-)
-
-      
-}
-
-    
-}
-,
-
-    
-undefined
-,
-
-    eventListenerOptions
-,
-
-  
-)
-
+      if (isOutside) {
+        handler(event)
+      }
+    },
+    undefined,
+    eventListenerOptions,
+  )
 }
 ```

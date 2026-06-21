@@ -2,242 +2,32 @@
 Custom hook that copies text to the clipboard using the Clipboard API .
 ## Usage
 ```
-import
- 
-{
- useCopyToClipboard 
-}
- 
-from
- 
-'usehooks-ts'
+import { useCopyToClipboard } from 'usehooks-ts'
 
-export
- 
-default
- 
-function
- 
-Component
-(
-)
- 
-{
+export default function Component() {
+  const [copiedText, copy] = useCopyToClipboard()
 
-  
-const
- 
-[
-copiedText
-,
- copy
-]
- 
-=
- 
-useCopyToClipboard
-(
-)
+  const handleCopy = (text: string) => () => {
+    copy(text)
+      .then(() => {
+        console.log('Copied!', { text })
+      })
+      .catch(error => {
+        console.error('Failed to copy!', error)
+      })
+  }
 
-  
-const
- 
-handleCopy
- 
-=
- 
-(
-text
-:
- 
-string
-)
- 
-=>
- 
-(
-)
- 
-=>
- 
-{
-
-    
-copy
-(
-text
-)
-
-      
-.
-then
-(
-(
-)
- 
-=>
- 
-{
-
-        
-console
-.
-log
-(
-'Copied!'
-,
- 
-{
- text 
-}
-)
-
-      
-}
-)
-
-      
-.
-catch
-(
-error 
-=>
- 
-{
-
-        
-console
-.
-error
-(
-'Failed to copy!'
-,
- error
-)
-
-      
-}
-)
-
-  
-}
-
-  
-return
- 
-(
-
-    
-<
->
-
-      
-<
-h1
->
-Click to copy:
-</
-h1
->
-
-      
-<
-div
- 
-style
-=
-{
-{
- display
-:
- 
-'flex'
- 
-}
-}
->
-
-        
-<
-button
- 
-onClick
-=
-{
-handleCopy
-(
-'A'
-)
-}
->
-A
-</
-button
->
-
-        
-<
-button
- 
-onClick
-=
-{
-handleCopy
-(
-'B'
-)
-}
->
-B
-</
-button
->
-
-        
-<
-button
- 
-onClick
-=
-{
-handleCopy
-(
-'C'
-)
-}
->
-C
-</
-button
->
-
-      
-</
-div
->
-
-      
-<
-p
->
-Copied value: 
-{
-copiedText 
-??
- 
-'Nothing is copied yet!'
-}
-</
-p
->
-
-    
-</
->
-
-  
-)
-
+  return (
+    <>
+      <h1>Click to copy:</h1>
+      <div style={{ display: 'flex' }}>
+        <button onClick={handleCopy('A')}>A</button>
+        <button onClick={handleCopy('B')}>B</button>
+        <button onClick={handleCopy('C')}>C</button>
+      </div>
+      <p>Copied value: {copiedText ?? 'Nothing is copied yet!'}</p>
+    </>
+  )
 }
 ```
 ## API
@@ -261,210 +51,33 @@ Function to copy text to the clipboard.
 Promise < boolean >
 ## Hook
 ```
-import
- 
-{
- useCallback
-,
- useState 
-}
- 
-from
- 
-'react'
+import { useCallback, useState } from 'react'
 
-type
- 
-CopiedValue
- 
-=
- 
-string
- 
-|
- 
-null
+type CopiedValue = string | null
 
-type
- 
-CopyFn
- 
-=
- 
-(
-text
-:
- 
-string
-)
- 
-=>
- 
-Promise
-<
-boolean
->
+type CopyFn = (text: string) => Promise<boolean>
 
-export
- 
-function
- 
-useCopyToClipboard
-(
-)
-:
- 
-[
-CopiedValue
-,
- CopyFn
-]
- 
-{
+export function useCopyToClipboard(): [CopiedValue, CopyFn] {
+  const [copiedText, setCopiedText] = useState<CopiedValue>(null)
 
-  
-const
- 
-[
-copiedText
-,
- setCopiedText
-]
- 
-=
- 
-useState
-<
-CopiedValue
->
-(
-null
-)
+  const copy: CopyFn = useCallback(async text => {
+    if (!navigator?.clipboard) {
+      console.warn('Clipboard not supported')
+      return false
+    }
 
-  
-const
- copy
-:
- CopyFn 
-=
- 
-useCallback
-(
-async
- text 
-=>
- 
-{
+    // Try to save to clipboard then save it in the state if worked
+    try {
+      await navigator.clipboard.writeText(text)
+      setCopiedText(text)
+      return true
+    } catch (error) {
+      console.warn('Copy failed', error)
+      setCopiedText(null)
+      return false
+    }
+  }, [])
 
-    
-if
- 
-(
-!
-navigator
-?.
-clipboard
-)
- 
-{
-
-      
-console
-.
-warn
-(
-'Clipboard not supported'
-)
-
-      
-return
- 
-false
-
-    
-}
-
-    
-// Try to save to clipboard then save it in the state if worked
-
-    
-try
- 
-{
-
-      
-await
- navigator
-.
-clipboard
-.
-writeText
-(
-text
-)
-
-      
-setCopiedText
-(
-text
-)
-
-      
-return
- 
-true
-
-    
-}
- 
-catch
- 
-(
-error
-)
- 
-{
-
-      
-console
-.
-warn
-(
-'Copy failed'
-,
- error
-)
-
-      
-setCopiedText
-(
-null
-)
-
-      
-return
- 
-false
-
-    
-}
-
-  
-}
-,
- 
-[
-]
-)
-
-  
-return
- 
-[
-copiedText
-,
- copy
-]
-
+  return [copiedText, copy]
 }
 ```

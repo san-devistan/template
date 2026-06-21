@@ -2,172 +2,24 @@
 Custom hook that manages a counter with increment, decrement, reset, and setCount functionalities.
 ## Usage
 ```
-import
- 
-{
- useCounter 
-}
- 
-from
- 
-'usehooks-ts'
+import { useCounter } from 'usehooks-ts'
 
-export
- 
-default
- 
-function
- 
-Component
-(
-)
- 
-{
+export default function Component() {
+  const { count, setCount, increment, decrement, reset } = useCounter(0)
 
-  
-const
- 
-{
- count
-,
- setCount
-,
- increment
-,
- decrement
-,
- reset 
-}
- 
-=
- 
-useCounter
-(
-0
-)
+  const multiplyBy2 = () => {
+    setCount((x: number) => x * 2)
+  }
 
-  
-const
- 
-multiplyBy2
- 
-=
- 
-(
-)
- 
-=>
- 
-{
-
-    
-setCount
-(
-(
-x
-:
- 
-number
-)
- 
-=>
- x 
-*
- 
-2
-)
-
-  
-}
-
-  
-return
- 
-(
-
-    
-<
->
-
-      
-<
-p
->
-Count is 
-{
-count
-}
-</
-p
->
-
-      
-<
-button
- 
-onClick
-=
-{
-increment
-}
->
-Increment
-</
-button
->
-
-      
-<
-button
- 
-onClick
-=
-{
-decrement
-}
->
-Decrement
-</
-button
->
-
-      
-<
-button
- 
-onClick
-=
-{
-reset
-}
->
-Reset
-</
-button
->
-
-      
-<
-button
- 
-onClick
-=
-{
-multiplyBy2
-}
->
-Multiply by 2
-</
-button
->
-
-    
-</
->
-
-  
-)
-
+  return (
+    <>
+      <p>Count is {count}</p>
+      <button onClick={increment}>Increment</button>
+      <button onClick={decrement}>Decrement</button>
+      <button onClick={reset}>Reset</button>
+      <button onClick={multiplyBy2}>Multiply by 2</button>
+    </>
+  )
 }
 ```
 ## API
@@ -193,244 +45,39 @@ The hook return type.
 | setCount | Dispatch < SetStateAction < number >> | Function to set a specific value to the counter. |
 ## Hook
 ```
-import
- 
-{
- useCallback
-,
- useState 
-}
- 
-from
- 
-'react'
+import { useCallback, useState } from 'react'
 
-import
- 
-type
- 
-{
- Dispatch
-,
- SetStateAction 
-}
- 
-from
- 
-'react'
+import type { Dispatch, SetStateAction } from 'react'
 
-type
- 
-UseCounterReturn
- 
-=
- 
-{
-
-  count
-:
- 
-number
-
-  
-increment
-:
- 
-(
-)
- 
-=>
- 
-void
-
-  
-decrement
-:
- 
-(
-)
- 
-=>
- 
-void
-
-  
-reset
-:
- 
-(
-)
- 
-=>
- 
-void
-
-  setCount
-:
- Dispatch
-<
-SetStateAction
-<
-number
->>
-
+type UseCounterReturn = {
+  count: number
+  increment: () => void
+  decrement: () => void
+  reset: () => void
+  setCount: Dispatch<SetStateAction<number>>
 }
 
-export
- 
-function
- 
-useCounter
-(
-initialValue
-?
-:
- 
-number
-)
-:
- UseCounterReturn 
-{
+export function useCounter(initialValue?: number): UseCounterReturn {
+  const [count, setCount] = useState(initialValue ?? 0)
 
-  
-const
- 
-[
-count
-,
- setCount
-]
- 
-=
- 
-useState
-(
-initialValue 
-??
- 
-0
-)
+  const increment = useCallback(() => {
+    setCount(x => x + 1)
+  }, [])
 
-  
-const
- increment 
-=
- 
-useCallback
-(
-(
-)
- 
-=>
- 
-{
+  const decrement = useCallback(() => {
+    setCount(x => x - 1)
+  }, [])
 
-    
-setCount
-(
-x 
-=>
- x 
-+
- 
-1
-)
+  const reset = useCallback(() => {
+    setCount(initialValue ?? 0)
+  }, [initialValue])
 
-  
-}
-,
- 
-[
-]
-)
-
-  
-const
- decrement 
-=
- 
-useCallback
-(
-(
-)
- 
-=>
- 
-{
-
-    
-setCount
-(
-x 
-=>
- x 
--
- 
-1
-)
-
-  
-}
-,
- 
-[
-]
-)
-
-  
-const
- reset 
-=
- 
-useCallback
-(
-(
-)
- 
-=>
- 
-{
-
-    
-setCount
-(
-initialValue 
-??
- 
-0
-)
-
-  
-}
-,
- 
-[
-initialValue
-]
-)
-
-  
-return
- 
-{
-
-    count
-,
-
-    increment
-,
-
-    decrement
-,
-
-    reset
-,
-
-    setCount
-,
-
-  
-}
-
+  return {
+    count,
+    increment,
+    decrement,
+    reset,
+    setCount,
+  }
 }
 ```

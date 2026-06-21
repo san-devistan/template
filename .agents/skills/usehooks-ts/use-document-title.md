@@ -2,34 +2,10 @@
 Custom hook that sets the document title.
 ## Usage
 ```
-import
- 
-{
- useDocumentTitle 
-}
- 
-from
- 
-'usehooks-ts'
+import { useDocumentTitle } from 'usehooks-ts'
 
-export
- 
-default
- 
-function
- 
-Component
-(
-)
- 
-{
-
-  
-useDocumentTitle
-(
-'foo bar'
-)
-
+export default function Component() {
+  useDocumentTitle('foo bar')
 }
 ```
 ## API
@@ -51,199 +27,33 @@ Hook options.
 | preserveTitleOnUnmount? | boolean | Whether to keep the title after unmounting the component (default is true ). |
 ## Hook
 ```
-import
- 
-{
- useRef 
-}
- 
-from
- 
-'react'
+import { useRef } from 'react'
 
-import
- 
-{
- useIsomorphicLayoutEffect
-,
- useUnmount 
-}
- 
-from
- 
-'usehooks-ts'
+import { useIsomorphicLayoutEffect, useUnmount } from 'usehooks-ts'
 
-type
- 
-UseDocumentTitleOptions
- 
-=
- 
-{
-
-  preserveTitleOnUnmount
-?
-:
- 
-boolean
-
+type UseDocumentTitleOptions = {
+  preserveTitleOnUnmount?: boolean
 }
 
-export
- 
-function
- 
-useDocumentTitle
-(
+export function useDocumentTitle(
+  title: string,
+  options: UseDocumentTitleOptions = {},
+): void {
+  const { preserveTitleOnUnmount = true } = options
+  const defaultTitle = useRef<string | null>(null)
 
-  title
-:
- 
-string
-,
+  useIsomorphicLayoutEffect(() => {
+    defaultTitle.current = window.document.title
+  }, [])
 
-  options
-:
- UseDocumentTitleOptions 
-=
- 
-{
-}
-,
+  useIsomorphicLayoutEffect(() => {
+    window.document.title = title
+  }, [title])
 
-)
-:
- 
-void
- 
-{
-
-  
-const
- 
-{
- preserveTitleOnUnmount 
-=
- 
-true
- 
-}
- 
-=
- options
-
-  
-const
- defaultTitle 
-=
- 
-useRef
-<
-string
- 
-|
- 
-null
->
-(
-null
-)
-
-  
-useIsomorphicLayoutEffect
-(
-(
-)
- 
-=>
- 
-{
-
-    defaultTitle
-.
-current 
-=
- window
-.
-document
-.
-title
-
-  
-}
-,
- 
-[
-]
-)
-
-  
-useIsomorphicLayoutEffect
-(
-(
-)
- 
-=>
- 
-{
-
-    window
-.
-document
-.
-title 
-=
- title
-
-  
-}
-,
- 
-[
-title
-]
-)
-
-  
-useUnmount
-(
-(
-)
- 
-=>
- 
-{
-
-    
-if
- 
-(
-!
-preserveTitleOnUnmount 
-&&
- defaultTitle
-.
-current
-)
- 
-{
-
-      window
-.
-document
-.
-title 
-=
- defaultTitle
-.
-current
-
-    
-}
-
-  
-}
-)
-
+  useUnmount(() => {
+    if (!preserveTitleOnUnmount && defaultTitle.current) {
+      window.document.title = defaultTitle.current
+    }
+  })
 }
 ```

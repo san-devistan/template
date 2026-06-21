@@ -2,222 +2,39 @@
 Custom hook that manages a boolean toggle state in React components.
 ## Usage
 ```
-import
- 
-{
- useToggle 
-}
- 
-from
- 
-'usehooks-ts'
+import { useToggle } from 'usehooks-ts'
 
-export
- 
-default
- 
-function
- 
-Component
-(
-)
- 
-{
+export default function Component() {
+  const [value, toggle, setValue] = useToggle()
 
-  
-const
- 
-[
-value
-,
- toggle
-,
- setValue
-]
- 
-=
- 
-useToggle
-(
-)
+  // Just an example to use "setValue"
+  const customToggle = () => {
+    setValue((x: boolean) => !x)
+  }
 
-  
-// Just an example to use "setValue"
-
-  
-const
- 
-customToggle
- 
-=
- 
-(
-)
- 
-=>
- 
-{
-
-    
-setValue
-(
-(
-x
-:
- 
-boolean
-)
- 
-=>
- 
-!
-x
-)
-
-  
-}
-
-  
-return
- 
-(
-
-    
-<
->
-
-      
-<
-p
->
-
-        Value is 
-<
-code
->
-{
-value
-.
-toString
-(
-)
-}
-</
-code
->
-
-      
-</
-p
->
-
-      
-<
-button
-
-        
-onClick
-=
-{
-(
-)
- 
-=>
- 
-{
-
-          
-setValue
-(
-true
-)
-
-        
-}
-}
-
-      
->
-
+  return (
+    <>
+      <p>
+        Value is <code>{value.toString()}</code>
+      </p>
+      <button
+        onClick={() => {
+          setValue(true)
+        }}
+      >
         set true
-
-      
-</
-button
->
-
-      
-<
-button
-
-        
-onClick
-=
-{
-(
-)
- 
-=>
- 
-{
-
-          
-setValue
-(
-false
-)
-
-        
-}
-}
-
-      
->
-
+      </button>
+      <button
+        onClick={() => {
+          setValue(false)
+        }}
+      >
         set false
-
-      
-</
-button
->
-
-      
-<
-button
- 
-onClick
-=
-{
-toggle
-}
->
-toggle
-</
-button
->
-
-      
-<
-button
- 
-onClick
-=
-{
-customToggle
-}
->
-custom toggle
-</
-button
->
-
-    
-</
->
-
-  
-)
-
+      </button>
+      <button onClick={toggle}>toggle</button>
+      <button onClick={customToggle}>custom toggle</button>
+    </>
+  )
 }
 ```
 ## API
@@ -232,130 +49,19 @@ Custom hook that manages a boolean toggle state in React components.
 A tuple containing the current state, a function to toggle the state, and a function to set the state explicitly.
 ## Hook
 ```
-import
- 
-{
- useCallback
-,
- useState 
-}
- 
-from
- 
-'react'
+import { useCallback, useState } from 'react'
 
-import
- 
-type
- 
-{
- Dispatch
-,
- SetStateAction 
-}
- 
-from
- 
-'react'
+import type { Dispatch, SetStateAction } from 'react'
 
-export
- 
-function
- 
-useToggle
-(
+export function useToggle(
+  defaultValue?: boolean,
+): [boolean, () => void, Dispatch<SetStateAction<boolean>>] {
+  const [value, setValue] = useState(!!defaultValue)
 
-  defaultValue
-?
-:
- 
-boolean
-,
+  const toggle = useCallback(() => {
+    setValue(x => !x)
+  }, [])
 
-)
-:
- 
-[
-boolean
-,
- 
-(
-)
- 
-=>
- 
-void
-,
- Dispatch
-<
-SetStateAction
-<
-boolean
->>
-]
- 
-{
-
-  
-const
- 
-[
-value
-,
- setValue
-]
- 
-=
- 
-useState
-(
-!
-!
-defaultValue
-)
-
-  
-const
- toggle 
-=
- 
-useCallback
-(
-(
-)
- 
-=>
- 
-{
-
-    
-setValue
-(
-x 
-=>
- 
-!
-x
-)
-
-  
-}
-,
- 
-[
-]
-)
-
-  
-return
- 
-[
-value
-,
- toggle
-,
- setValue
-]
-
+  return [value, toggle, setValue]
 }
 ```

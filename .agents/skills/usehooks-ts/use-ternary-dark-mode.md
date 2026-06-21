@@ -2,270 +2,46 @@
 Custom hook that manages ternary (system, dark, light) dark mode with local storage support.
 ## Usage
 ```
-import
- 
-{
- useTernaryDarkMode 
-}
- 
-from
- 
-'usehooks-ts'
+import { useTernaryDarkMode } from 'usehooks-ts'
 
-type
- 
-TernaryDarkMode
- 
-=
- 
-ReturnType
-<
-typeof
- useTernaryDarkMode
->
-[
-'ternaryDarkMode'
-]
+type TernaryDarkMode = ReturnType<typeof useTernaryDarkMode>['ternaryDarkMode']
 
-export
- 
-default
- 
-function
- 
-Component
-(
-)
- 
-{
+export default function Component() {
+  const {
+    isDarkMode,
+    ternaryDarkMode,
+    setTernaryDarkMode,
+    toggleTernaryDarkMode,
+  } = useTernaryDarkMode()
 
-  
-const
- 
-{
-
-    isDarkMode
-,
-
-    ternaryDarkMode
-,
-
-    setTernaryDarkMode
-,
-
-    toggleTernaryDarkMode
-,
-
-  
-}
- 
-=
- 
-useTernaryDarkMode
-(
-)
-
-  
-return
- 
-(
-
-    
-<
-div
->
-
-      
-<
-p
->
-Current theme: 
-{
-isDarkMode 
-?
- 
-'dark'
- 
-:
- 
-'light'
-}
-</
-p
->
-
-      
-<
-p
->
-ternaryMode: 
-{
-ternaryDarkMode
-}
-</
-p
->
-
-      
-<
-p
->
-
+  return (
+    <div>
+      <p>Current theme: {isDarkMode ? 'dark' : 'light'}</p>
+      <p>ternaryMode: {ternaryDarkMode}</p>
+      <p>
         Toggle between three modes
-
-        
-<
-button
- 
-onClick
-=
-{
-toggleTernaryDarkMode
-}
->
-
-          Toggle from 
-{
-ternaryDarkMode
-}
-
-        
-</
-button
->
-
-      
-</
-p
->
-
-      
-<
-p
->
-
+        <button onClick={toggleTernaryDarkMode}>
+          Toggle from {ternaryDarkMode}
+        </button>
+      </p>
+      <p>
         Select a mode
-
-        
-<
-br
- 
-/>
-
-        
-<
-select
-
-          
-name
-=
-"
-select-ternaryDarkMode
-"
-
-          
-onChange
-=
-{
-ev 
-=>
- 
-{
-
-            
-// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-
-            
-setTernaryDarkMode
-(
-ev
-.
-target
-.
-value
- 
-as
- 
-TernaryDarkMode
-)
-
-          
-}
-}
-
-          
-value
-=
-{
-ternaryDarkMode
-}
-
-        
->
-
-          
-<
-option
- 
-value
-=
-"
-light
-"
->
-light
-</
-option
->
-
-          
-<
-option
- 
-value
-=
-"
-system
-"
->
-system
-</
-option
->
-
-          
-<
-option
- 
-value
-=
-"
-dark
-"
->
-dark
-</
-option
->
-
-        
-</
-select
->
-
-      
-</
-p
->
-
-    
-</
-div
->
-
-  
-)
-
+        <br />
+        <select
+          name="select-ternaryDarkMode"
+          onChange={ev => {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+            setTernaryDarkMode(ev.target.value as TernaryDarkMode)
+          }}
+          value={ternaryDarkMode}
+        >
+          <option value="light">light</option>
+          <option value="system">system</option>
+          <option value="dark">dark</option>
+        </select>
+      </p>
+    </div>
+  )
 }
 ```
 ## API
@@ -300,343 +76,53 @@ Represents the return type of the useTernaryDarkMode hook.
 | toggleTernaryDarkMode | () => void | A function to toggle the dark mode state. |
 ## Hook
 ```
-import
- 
-type
- 
-{
- Dispatch
-,
- SetStateAction 
-}
- 
-from
- 
-'react'
+import type { Dispatch, SetStateAction } from 'react'
 
-import
- 
-{
- useLocalStorage
-,
- useMediaQuery 
-}
- 
-from
- 
-'usehooks-ts'
+import { useLocalStorage, useMediaQuery } from 'usehooks-ts'
 
-const
- 
-COLOR_SCHEME_QUERY
- 
-=
- 
-'(prefers-color-scheme: dark)'
+const COLOR_SCHEME_QUERY = '(prefers-color-scheme: dark)'
+const LOCAL_STORAGE_KEY = 'usehooks-ts-ternary-dark-mode'
 
-const
- 
-LOCAL_STORAGE_KEY
- 
-=
- 
-'usehooks-ts-ternary-dark-mode'
+export type TernaryDarkMode = 'system' | 'dark' | 'light'
 
-export
- 
-type
- 
-TernaryDarkMode
- 
-=
- 
-'system'
- 
-|
- 
-'dark'
- 
-|
- 
-'light'
-
-export
- 
-type
- 
-TernaryDarkModeOptions
- 
-=
- 
-{
-
-  defaultValue
-?
-:
- TernaryDarkMode
-
-  localStorageKey
-?
-:
- 
-string
-
-  initializeWithValue
-?
-:
- 
-boolean
-
+export type TernaryDarkModeOptions = {
+  defaultValue?: TernaryDarkMode
+  localStorageKey?: string
+  initializeWithValue?: boolean
 }
 
-export
- 
-type
- 
-TernaryDarkModeReturn
- 
-=
- 
-{
-
-  isDarkMode
-:
- 
-boolean
-
-  ternaryDarkMode
-:
- TernaryDarkMode
-
-  setTernaryDarkMode
-:
- Dispatch
-<
-SetStateAction
-<
-TernaryDarkMode
->>
-
-  
-toggleTernaryDarkMode
-:
- 
-(
-)
- 
-=>
- 
-void
-
+export type TernaryDarkModeReturn = {
+  isDarkMode: boolean
+  ternaryDarkMode: TernaryDarkMode
+  setTernaryDarkMode: Dispatch<SetStateAction<TernaryDarkMode>>
+  toggleTernaryDarkMode: () => void
 }
 
-export
- 
-function
- 
-useTernaryDarkMode
-(
-{
+export function useTernaryDarkMode({
+  defaultValue = 'system',
+  localStorageKey = LOCAL_STORAGE_KEY,
+  initializeWithValue = true,
+}: TernaryDarkModeOptions = {}): TernaryDarkModeReturn {
+  const isDarkOS = useMediaQuery(COLOR_SCHEME_QUERY, { initializeWithValue })
+  const [mode, setMode] = useLocalStorage(localStorageKey, defaultValue, {
+    initializeWithValue,
+  })
 
-  defaultValue 
-=
- 
-'system'
-,
+  const isDarkMode = mode === 'dark' || (mode === 'system' && isDarkOS)
 
-  localStorageKey 
-=
- 
-LOCAL_STORAGE_KEY
-,
+  const toggleTernaryDarkMode = () => {
+    const modes: TernaryDarkMode[] = ['light', 'system', 'dark']
+    setMode((prevMode): TernaryDarkMode => {
+      const nextIndex = (modes.indexOf(prevMode) + 1) % modes.length
+      return modes[nextIndex]
+    })
+  }
 
-  initializeWithValue 
-=
- 
-true
-,
-
-}
-:
- TernaryDarkModeOptions 
-=
- 
-{
-}
-)
-:
- TernaryDarkModeReturn 
-{
-
-  
-const
- isDarkOS 
-=
- 
-useMediaQuery
-(
-COLOR_SCHEME_QUERY
-,
- 
-{
- initializeWithValue 
-}
-)
-
-  
-const
- 
-[
-mode
-,
- setMode
-]
- 
-=
- 
-useLocalStorage
-(
-localStorageKey
-,
- defaultValue
-,
- 
-{
-
-    initializeWithValue
-,
-
-  
-}
-)
-
-  
-const
- isDarkMode 
-=
- mode 
-===
- 
-'dark'
- 
-||
- 
-(
-mode 
-===
- 
-'system'
- 
-&&
- isDarkOS
-)
-
-  
-const
- 
-toggleTernaryDarkMode
- 
-=
- 
-(
-)
- 
-=>
- 
-{
-
-    
-const
- modes
-:
- TernaryDarkMode
-[
-]
- 
-=
- 
-[
-'light'
-,
- 
-'system'
-,
- 
-'dark'
-]
-
-    
-setMode
-(
-(
-prevMode
-)
-:
- TernaryDarkMode 
-=>
- 
-{
-
-      
-const
- nextIndex 
-=
- 
-(
-modes
-.
-indexOf
-(
-prevMode
-)
- 
-+
- 
-1
-)
- 
-%
- modes
-.
-length
-
-      
-return
- modes
-[
-nextIndex
-]
-
-    
-}
-)
-
-  
-}
-
-  
-return
- 
-{
-
-    isDarkMode
-,
-
-    ternaryDarkMode
-:
- mode
-,
-
-    setTernaryDarkMode
-:
- setMode
-,
-
-    toggleTernaryDarkMode
-,
-
-  
-}
-
+  return {
+    isDarkMode,
+    ternaryDarkMode: mode,
+    setTernaryDarkMode: setMode,
+    toggleTernaryDarkMode,
+  }
 }
 ```

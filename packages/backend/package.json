@@ -19,7 +19,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "convex": "^1.41.0"
+    "convex": "^1.41.0",
+    "effect": "^3.21.3"
   },
   "devDependencies": {
     "typescript": "5.9.3"

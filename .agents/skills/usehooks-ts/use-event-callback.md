@@ -2,74 +2,15 @@
 Custom hook that creates a memoized event callback.
 ## Usage
 ```
-import
- 
-{
- useEventCallback 
-}
- 
-from
- 
-'usehooks-ts'
+import { useEventCallback } from 'usehooks-ts'
 
-export
- 
-default
- 
-function
- 
-Component
-(
-)
- 
-{
+export default function Component() {
+  const handleClick = useEventCallback(event => {
+    // Handle the event here
+    console.log('Clicked', event)
+  })
 
-  
-const
- handleClick 
-=
- 
-useEventCallback
-(
-event 
-=>
- 
-{
-
-    
-// Handle the event here
-
-    
-console
-.
-log
-(
-'Clicked'
-,
- event
-)
-
-  
-}
-)
-
-  
-return
- 
-<
-button
- 
-onClick
-=
-{
-handleClick
-}
->
-Click me
-</
-button
->
-
+  return <button onClick={handleClick}>Click me</button>
 }
 ```
 ## API
@@ -96,297 +37,29 @@ A memoized event callback function.
 R
 ## Hook
 ```
-import
- 
-{
- useCallback
-,
- useRef 
-}
- 
-from
- 
-'react'
+import { useCallback, useRef } from 'react'
 
-import
- 
-{
- useIsomorphicLayoutEffect 
-}
- 
-from
- 
-'usehooks-ts'
+import { useIsomorphicLayoutEffect } from 'usehooks-ts'
 
-export
- 
-function
- 
-useEventCallback
-<
-Args 
-extends
- 
-unknown
-[
-]
-,
- 
-R
->
-(
+export function useEventCallback<Args extends unknown[], R>(
+  fn: (...args: Args) => R,
+): (...args: Args) => R
+export function useEventCallback<Args extends unknown[], R>(
+  fn: ((...args: Args) => R) | undefined,
+): ((...args: Args) => R) | undefined
+export function useEventCallback<Args extends unknown[], R>(
+  fn: ((...args: Args) => R) | undefined,
+): ((...args: Args) => R) | undefined {
+  const ref = useRef<typeof fn>(() => {
+    throw new Error('Cannot call an event handler while rendering.')
+  })
 
-  
-fn
-:
- 
-(
-...
-args
-:
- Args
-)
- 
-=>
- 
-R
-,
+  useIsomorphicLayoutEffect(() => {
+    ref.current = fn
+  }, [fn])
 
-)
-:
- 
-(
-...
-args
-:
- Args
-)
- 
-=>
- 
-R
-
-export
- 
-function
- 
-useEventCallback
-<
-Args 
-extends
- 
-unknown
-[
-]
-,
- 
-R
->
-(
-
-  fn
-:
- 
-(
-(
-...
-args
-:
- Args
-)
- 
-=>
- 
-R
-)
- 
-|
- 
-undefined
-,
-
-)
-:
- 
-(
-(
-...
-args
-:
- Args
-)
- 
-=>
- 
-R
-)
- 
-|
- 
-undefined
-
-export
- 
-function
- 
-useEventCallback
-<
-Args 
-extends
- 
-unknown
-[
-]
-,
- 
-R
->
-(
-
-  fn
-:
- 
-(
-(
-...
-args
-:
- Args
-)
- 
-=>
- 
-R
-)
- 
-|
- 
-undefined
-,
-
-)
-:
- 
-(
-(
-...
-args
-:
- Args
-)
- 
-=>
- 
-R
-)
- 
-|
- 
-undefined
- 
-{
-
-  
-const
- ref 
-=
- 
-useRef
-<
-typeof
- fn
->
-(
-(
-)
- 
-=>
- 
-{
-
-    
-throw
- 
-new
- 
-Error
-(
-'Cannot call an event handler while rendering.'
-)
-
-  
-}
-)
-
-  
-useIsomorphicLayoutEffect
-(
-(
-)
- 
-=>
- 
-{
-
-    ref
-.
-current 
-=
- fn
-
-  
-}
-,
- 
-[
-fn
-]
-)
-
-  
-return
- 
-useCallback
-(
-(
-...
-args
-:
- Args
-)
- 
-=>
- ref
-.
-current
-?.
-(
-...
-args
-)
-,
- 
-[
-ref
-]
-)
- 
-as
- 
-(
-
-    
-...
-args
-:
- Args
-
-  
-)
- 
-=>
- 
-R
-
+  return useCallback((...args: Args) => ref.current?.(...args), [ref]) as (
+    ...args: Args
+  ) => R
 }
 ```

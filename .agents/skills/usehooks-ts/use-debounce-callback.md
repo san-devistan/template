@@ -2,135 +2,26 @@
 Custom hook that creates a debounced version of a callback function.
 ## Usage
 ```
-import
- 
-{
- useState 
-}
- 
-from
- 
-'react'
+import { useState } from 'react'
 
-import
- 
-{
- useDebounceCallback 
-}
- 
-from
- 
-'usehooks-ts'
+import { useDebounceCallback } from 'usehooks-ts'
 
-export
- 
-default
- 
-function
- 
-Component
-(
-)
- 
-{
+export default function Component() {
+  const [value, setValue] = useState('')
 
-  
-const
- 
-[
-value
-,
- setValue
-]
- 
-=
- 
-useState
-(
-''
-)
+  const debounced = useDebounceCallback(setValue, 500)
 
-  
-const
- debounced 
-=
- 
-useDebounceCallback
-(
-setValue
-,
- 
-500
-)
+  return (
+    <div>
+      <p>Debounced value: {value}</p>
 
-  
-return
- 
-(
-
-    
-<
-div
->
-
-      
-<
-p
->
-Debounced value: 
-{
-value
-}
-</
-p
->
-
-      
-<
-input
-
-        
-type
-=
-"
-text
-"
-
-        
-defaultValue
-=
-{
-value
-}
-
-        
-onChange
-=
-{
-event 
-=>
- 
-debounced
-(
-event
-.
-target
-.
-value
-)
-}
-
-      
-/>
-
-    
-</
-div
->
-
-  
-)
-
+      <input
+        type="text"
+        defaultValue={value}
+        onChange={event => debounced(event.target.value)}
+      />
+    </div>
+  )
 }
 ```
 ## API
@@ -174,460 +65,69 @@ Represents the state and control functions of a debounced callback. Subsequent c
 | T | extends (... args : any ) => ReturnType < T > |
 ## Hook
 ```
-import
- 
-{
- useEffect
-,
- useMemo
-,
- useRef 
-}
- 
-from
- 
-'react'
+import { useEffect, useMemo, useRef } from 'react'
 
-import
- debounce 
-from
- 
-'lodash.debounce'
+import debounce from 'lodash.debounce'
 
-import
- 
-{
- useUnmount 
-}
- 
-from
- 
-'usehooks-ts'
+import { useUnmount } from 'usehooks-ts'
 
-type
- 
-DebounceOptions
- 
-=
- 
-{
-
-  leading
-?
-:
- 
-boolean
-
-  trailing
-?
-:
- 
-boolean
-
-  maxWait
-?
-:
- 
-number
-
+type DebounceOptions = {
+  leading?: boolean
+  trailing?: boolean
+  maxWait?: number
 }
 
-type
- 
-ControlFunctions
- 
-=
- 
-{
-
-  
-cancel
-:
- 
-(
-)
- 
-=>
- 
-void
-
-  
-flush
-:
- 
-(
-)
- 
-=>
- 
-void
-
-  
-isPending
-:
- 
-(
-)
- 
-=>
- 
-boolean
-
+type ControlFunctions = {
+  cancel: () => void
+  flush: () => void
+  isPending: () => boolean
 }
 
-export
- 
-type
- 
-DebouncedState
-<
-T
- 
-extends
- 
-(
-...
-args
-:
- 
-any
-)
- 
-=>
- ReturnType
-<
-T
->>
- 
-=
- 
-(
-(
-
-  
-...
-args
-:
- Parameters
-<
-T
->
-
-)
- 
-=>
- ReturnType
-<
-T
->
- 
-|
- 
-undefined
-)
- 
-&
-
+export type DebouncedState<T extends (...args: any) => ReturnType<T>> = ((
+  ...args: Parameters<T>
+) => ReturnType<T> | undefined) &
   ControlFunctions
 
-export
- 
-function
- useDebounceCallback
-<
-T
- 
-extends
- 
-(
-...
-args
-:
- 
-any
-)
- 
-=>
- ReturnType
-<
-T
->>
-(
+export function useDebounceCallback<T extends (...args: any) => ReturnType<T>>(
+  func: T,
+  delay = 500,
+  options?: DebounceOptions,
+): DebouncedState<T> {
+  const debouncedFunc = useRef<ReturnType<typeof debounce>>()
 
-  func
-:
- 
-T
-,
+  useUnmount(() => {
+    if (debouncedFunc.current) {
+      debouncedFunc.current.cancel()
+    }
+  })
 
-  delay 
-=
- 
-500
-,
+  const debounced = useMemo(() => {
+    const debouncedFuncInstance = debounce(func, delay, options)
 
-  options
-?
-:
- DebounceOptions
-,
+    const wrappedFunc: DebouncedState<T> = (...args: Parameters<T>) => {
+      return debouncedFuncInstance(...args)
+    }
 
-)
-:
- DebouncedState
-<
-T
->
- 
-{
+    wrappedFunc.cancel = () => {
+      debouncedFuncInstance.cancel()
+    }
 
-  
-const
- debouncedFunc 
-=
- 
-useRef
-<
-ReturnType
-<
-typeof
- debounce
->>
-(
-)
+    wrappedFunc.isPending = () => {
+      return !!debouncedFunc.current
+    }
 
-  
-useUnmount
-(
-(
-)
- 
-=>
- 
-{
+    wrappedFunc.flush = () => {
+      return debouncedFuncInstance.flush()
+    }
 
-    
-if
- 
-(
-debouncedFunc
-.
-current
-)
- 
-{
+    return wrappedFunc
+  }, [func, delay, options])
 
-      debouncedFunc
-.
-current
-.
-cancel
-(
-)
+  // Update the debounced function ref whenever func, wait, or options change
+  useEffect(() => {
+    debouncedFunc.current = debounce(func, delay, options)
+  }, [func, delay, options])
 
-    
-}
-
-  
-}
-)
-
-  
-const
- debounced 
-=
- 
-useMemo
-(
-(
-)
- 
-=>
- 
-{
-
-    
-const
- debouncedFuncInstance 
-=
- 
-debounce
-(
-func
-,
- delay
-,
- options
-)
-
-    
-const
- wrappedFunc
-:
- DebouncedState
-<
-T
->
- 
-=
- 
-(
-...
-args
-:
- Parameters
-<
-T
->
-)
- 
-=>
- 
-{
-
-      
-return
- 
-debouncedFuncInstance
-(
-...
-args
-)
-
-    
-}
-
-    wrappedFunc
-.
-cancel
- 
-=
- 
-(
-)
- 
-=>
- 
-{
-
-      debouncedFuncInstance
-.
-cancel
-(
-)
-
-    
-}
-
-    wrappedFunc
-.
-isPending
- 
-=
- 
-(
-)
- 
-=>
- 
-{
-
-      
-return
- 
-!
-!
-debouncedFunc
-.
-current
-
-    
-}
-
-    wrappedFunc
-.
-flush
- 
-=
- 
-(
-)
- 
-=>
- 
-{
-
-      
-return
- debouncedFuncInstance
-.
-flush
-(
-)
-
-    
-}
-
-    
-return
- wrappedFunc
-
-  
-}
-,
- 
-[
-func
-,
- delay
-,
- options
-]
-)
-
-  
-// Update the debounced function ref whenever func, wait, or options change
-
-  
-useEffect
-(
-(
-)
- 
-=>
- 
-{
-
-    debouncedFunc
-.
-current 
-=
- 
-debounce
-(
-func
-,
- delay
-,
- options
-)
-
-  
-}
-,
- 
-[
-func
-,
- delay
-,
- options
-]
-)
-
-  
-return
- debounced
-
+  return debounced
 }
 ```

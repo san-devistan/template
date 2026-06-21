@@ -2,249 +2,37 @@
 Custom hook that manages countdown.
 ## Usage
 ```
-import
- 
-{
- useState 
-}
- 
-from
- 
-'react'
+import { useState } from 'react'
 
-import
- 
-type
- 
-{
- 
-ChangeEvent
- 
-}
- 
-from
- 
-'react'
+import type { ChangeEvent } from 'react'
 
-import
- 
-{
- useCountdown 
-}
- 
-from
- 
-'usehooks-ts'
+import { useCountdown } from 'usehooks-ts'
 
-export
- 
-default
- 
-function
- 
-Component
-(
-)
- 
-{
+export default function Component() {
+  const [intervalValue, setIntervalValue] = useState<number>(1000)
+  const [count, { startCountdown, stopCountdown, resetCountdown }] =
+    useCountdown({
+      countStart: 60,
+      intervalMs: intervalValue,
+    })
 
-  
-const
- 
-[
-intervalValue
-,
- setIntervalValue
-]
- 
-=
- 
-useState
-<
-number
->
-(
-1000
-)
+  const handleChangeIntervalValue = (event: ChangeEvent<HTMLInputElement>) => {
+    setIntervalValue(Number(event.target.value))
+  }
+  return (
+    <div>
+      <p>Count: {count}</p>
 
-  
-const
- 
-[
-count
-,
- 
-{
- startCountdown
-,
- stopCountdown
-,
- resetCountdown 
-}
-]
- 
-=
-
-    
-useCountdown
-(
-{
-
-      countStart
-:
- 
-60
-,
-
-      intervalMs
-:
- intervalValue
-,
-
-    
-}
-)
-
-  
-const
- 
-handleChangeIntervalValue
- 
-=
- 
-(
-event
-:
- 
-ChangeEvent
-<
-HTMLInputElement
->
-)
- 
-=>
- 
-{
-
-    
-setIntervalValue
-(
-Number
-(
-event
-.
-target
-.
-value
-)
-)
-
-  
-}
-
-  
-return
- 
-(
-
-    
-<
-div
->
-
-      
-<
-p
->
-Count: 
-{
-count
-}
-</
-p
->
-
-      
-<
-input
-
-        
-type
-=
-"
-number
-"
-
-        
-value
-=
-{
-intervalValue
-}
-
-        
-onChange
-=
-{
-handleChangeIntervalValue
-}
-
-      
-/>
-
-      
-<
-button
- 
-onClick
-=
-{
-startCountdown
-}
->
-start
-</
-button
->
-
-      
-<
-button
- 
-onClick
-=
-{
-stopCountdown
-}
->
-stop
-</
-button
->
-
-      
-<
-button
- 
-onClick
-=
-{
-resetCountdown
-}
->
-reset
-</
-button
->
-
-    
-</
-div
->
-
-  
-)
-
+      <input
+        type="number"
+        value={intervalValue}
+        onChange={handleChangeIntervalValue}
+      />
+      <button onClick={startCountdown}>start</button>
+      <button onClick={stopCountdown}>stop</button>
+      <button onClick={resetCountdown}>reset</button>
+    </div>
+  )
 }
 ```
 ## API
@@ -277,371 +65,71 @@ The countdown's options.
 | isIncrement? | boolean | True if the countdown is increment. Default ts false |
 ## Hook
 ```
-import
- 
-{
- useCallback 
-}
- 
-from
- 
-'react'
+import { useCallback } from 'react'
 
-import
- 
-{
- useBoolean
-,
- useCounter
-,
- useInterval 
-}
- 
-from
- 
-'usehooks-ts'
+import { useBoolean, useCounter, useInterval } from 'usehooks-ts'
 
-type
- 
-CountdownOptions
- 
-=
- 
-{
+type CountdownOptions = {
+  countStart: number
 
-  countStart
-:
- 
-number
+  intervalMs?: number
+  isIncrement?: boolean
 
-  intervalMs
-?
-:
- 
-number
-
-  isIncrement
-?
-:
- 
-boolean
-
-  countStop
-?
-:
- 
-number
-
+  countStop?: number
 }
 
-type
- 
-CountdownControllers
- 
-=
- 
-{
-
-  
-startCountdown
-:
- 
-(
-)
- 
-=>
- 
-void
-
-  
-stopCountdown
-:
- 
-(
-)
- 
-=>
- 
-void
-
-  
-resetCountdown
-:
- 
-(
-)
- 
-=>
- 
-void
-
+type CountdownControllers = {
+  startCountdown: () => void
+  stopCountdown: () => void
+  resetCountdown: () => void
 }
 
-export
- 
-function
- 
-useCountdown
-(
-{
+export function useCountdown({
+  countStart,
+  countStop = 0,
+  intervalMs = 1000,
+  isIncrement = false,
+}: CountdownOptions): [number, CountdownControllers] {
+  const {
+    count,
+    increment,
+    decrement,
+    reset: resetCounter,
+  } = useCounter(countStart)
 
-  countStart
-,
-
-  countStop 
-=
- 
-0
-,
-
-  intervalMs 
-=
- 
-1000
-,
-
-  isIncrement 
-=
- 
-false
-,
-
-}
-:
- CountdownOptions
-)
-:
- 
-[
-number
-,
- CountdownControllers
-]
- 
-{
-
-  
-const
- 
-{
-
-    count
-,
-
-    increment
-,
-
-    decrement
-,
-
-    reset
-:
- resetCounter
-,
-
-  
-}
- 
-=
- 
-useCounter
-(
-countStart
-)
-
-  
-/*
-
+  /*
    * Note: used to control the useInterval
-
    * running: If true, the interval is running
-
    * start: Should set running true to trigger interval
-
    * stop: Should set running false to remove interval.
-
    */
+  const {
+    value: isCountdownRunning,
+    setTrue: startCountdown,
+    setFalse: stopCountdown,
+  } = useBoolean(false)
 
-  
-const
- 
-{
+  // Will set running false and reset the seconds to initial value.
+  const resetCountdown = useCallback(() => {
+    stopCountdown()
+    resetCounter()
+  }, [stopCountdown, resetCounter])
 
-    value
-:
- isCountdownRunning
-,
+  const countdownCallback = useCallback(() => {
+    if (count === countStop) {
+      stopCountdown()
+      return
+    }
 
-    setTrue
-:
- startCountdown
-,
+    if (isIncrement) {
+      increment()
+    } else {
+      decrement()
+    }
+  }, [count, countStop, decrement, increment, isIncrement, stopCountdown])
 
-    setFalse
-:
- stopCountdown
-,
+  useInterval(countdownCallback, isCountdownRunning ? intervalMs : null)
 
-  
-}
- 
-=
- 
-useBoolean
-(
-false
-)
-
-  
-// Will set running false and reset the seconds to initial value.
-
-  
-const
- resetCountdown 
-=
- 
-useCallback
-(
-(
-)
- 
-=>
- 
-{
-
-    
-stopCountdown
-(
-)
-
-    
-resetCounter
-(
-)
-
-  
-}
-,
- 
-[
-stopCountdown
-,
- resetCounter
-]
-)
-
-  
-const
- countdownCallback 
-=
- 
-useCallback
-(
-(
-)
- 
-=>
- 
-{
-
-    
-if
- 
-(
-count 
-===
- countStop
-)
- 
-{
-
-      
-stopCountdown
-(
-)
-
-      
-return
-
-    
-}
-
-    
-if
- 
-(
-isIncrement
-)
- 
-{
-
-      
-increment
-(
-)
-
-    
-}
- 
-else
- 
-{
-
-      
-decrement
-(
-)
-
-    
-}
-
-  
-}
-,
- 
-[
-count
-,
- countStop
-,
- decrement
-,
- increment
-,
- isIncrement
-,
- stopCountdown
-]
-)
-
-  
-useInterval
-(
-countdownCallback
-,
- isCountdownRunning 
-?
- intervalMs 
-:
- 
-null
-)
-
-  
-return
- 
-[
-count
-,
- 
-{
- startCountdown
-,
- stopCountdown
-,
- resetCountdown 
-}
-]
-
+  return [count, { startCountdown, stopCountdown, resetCountdown }]
 }
 ```

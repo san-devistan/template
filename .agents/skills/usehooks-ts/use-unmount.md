@@ -2,56 +2,14 @@
 Custom hook that runs a cleanup function when the component is unmounted.
 ## Usage
 ```
-import
- 
-{
- useUnmount 
-}
- 
-from
- 
-'usehooks-ts'
+import { useUnmount } from 'usehooks-ts'
 
-export
- 
-default
- 
-function
- 
-Component
-(
-)
- 
-{
+export default function Component() {
+  useUnmount(() => {
+    // Cleanup logic here
+  })
 
-  
-useUnmount
-(
-(
-)
- 
-=>
- 
-{
-
-    
-// Cleanup logic here
-
-  
-}
-)
-
-  
-return
- 
-<
-div
->
-Hello world
-</
-div
->
-
+  return <div>Hello world</div>
 }
 ```
 ## API
@@ -65,87 +23,18 @@ Custom hook that runs a cleanup function when the component is unmounted.
 void
 ## Hook
 ```
-import
- 
-{
- useEffect
-,
- useRef 
-}
- 
-from
- 
-'react'
+import { useEffect, useRef } from 'react'
 
-export
- 
-function
- 
-useUnmount
-(
-func
-:
- 
-(
-)
- 
-=>
- 
-void
-)
- 
-{
+export function useUnmount(func: () => void) {
+  const funcRef = useRef(func)
 
-  
-const
- funcRef 
-=
- 
-useRef
-(
-func
-)
+  funcRef.current = func
 
-  funcRef
-.
-current 
-=
- func
-
-  
-useEffect
-(
-
-    
-(
-)
- 
-=>
- 
-(
-)
- 
-=>
- 
-{
-
-      funcRef
-.
-current
-(
-)
-
-    
-}
-,
-
-    
-[
-]
-,
-
-  
-)
-
+  useEffect(
+    () => () => {
+      funcRef.current()
+    },
+    [],
+  )
 }
 ```
