@@ -165,6 +165,6 @@ export {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
+  navigationMenuTriggerStyle, // react-doctor-disable-line react-doctor/only-export-components -- Variant helpers are part of the public design-system API.
   NavigationMenuPositioner,
 }

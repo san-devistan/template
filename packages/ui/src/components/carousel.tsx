@@ -32,7 +32,7 @@ type CarouselContextProps = {
 const CarouselContext = React.createContext<CarouselContextProps | null>(null)
 
 function useCarousel() {
-  const context = React.useContext(CarouselContext)
+  const context = React.use(CarouselContext)
 
   if (!context) {
     throw new Error("useCarousel must be used within a <Carousel />")
@@ -66,6 +66,8 @@ function Carousel({
     setCanScrollPrev(carouselApi.canScrollPrev())
     setCanScrollNext(carouselApi.canScrollNext())
   }, [])
+  const onSelectRef = React.useRef(onSelect)
+  onSelectRef.current = onSelect
 
   const scrollPrev = React.useCallback(() => {
     api?.scrollPrev()
@@ -90,20 +92,26 @@ function Carousel({
 
   React.useEffect(() => {
     if (!api || !setApi) return undefined
+    // react-doctor-disable-next-line react-doctor/no-prop-callback-in-effect, react-doctor/no-pass-data-to-parent -- setApi is the public escape hatch for Embla's imperative API.
     setApi(api)
     return undefined
   }, [api, setApi])
 
   React.useEffect(() => {
     if (!api) return undefined
-    onSelect(api)
-    api.on("reInit", onSelect)
-    api.on("select", onSelect)
+    const handleSelect = (carouselApi: CarouselApi) => {
+      onSelectRef.current(carouselApi)
+    }
+
+    handleSelect(api)
+    api.on("reInit", handleSelect)
+    api.on("select", handleSelect)
 
     return () => {
-      api.off("select", onSelect)
+      api.off("reInit", handleSelect)
+      api.off("select", handleSelect)
     }
-  }, [api, onSelect])
+  }, [api])
   const contextValue = React.useMemo(
     () => ({
       carouselRef,

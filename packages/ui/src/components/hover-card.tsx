@@ -7,12 +7,14 @@ function HoverCard({ ...props }: PreviewCardPrimitive.Root.Props) {
   return <PreviewCardPrimitive.Root data-slot="hover-card" {...props} />
 }
 
+// react-doctor-disable-next-line react-doctor/no-multi-comp -- Compound shadcn component modules intentionally co-locate related parts.
 function HoverCardTrigger({ ...props }: PreviewCardPrimitive.Trigger.Props) {
   return (
     <PreviewCardPrimitive.Trigger data-slot="hover-card-trigger" {...props} />
   )
 }
 
+// react-doctor-disable-next-line react-doctor/no-multi-comp -- Compound shadcn component modules intentionally co-locate related parts.
 function HoverCardContent({
   className,
   side = "bottom",

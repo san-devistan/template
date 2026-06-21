@@ -38,11 +38,10 @@ function getChartCssText(
       ([theme, prefix]) => `
 ${prefix} [data-chart=${id}] {
 ${colorConfig
-  .map(([key, itemConfig]) => {
+  .flatMap(([key, itemConfig]) => {
     const color = itemConfig.theme?.[theme] ?? itemConfig.color
-    return color ? `  --color-${key}: ${color};` : null
+    return color ? [`  --color-${key}: ${color};`] : []
   })
-  .filter(Boolean)
   .join("\n")}
 }
 `

@@ -76,4 +76,5 @@ function TabsContent({ className, ...props }: TabsPrimitive.Panel.Props) {
   )
 }
 
+// react-doctor-disable-next-line react-doctor/only-export-components -- Variant helpers are part of the public design-system API.
 export { Tabs, TabsList, TabsTrigger, TabsContent, tabsListVariants }

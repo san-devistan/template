@@ -35,6 +35,7 @@ function NativeSelect({
   )
 }
 
+// react-doctor-disable-next-line react-doctor/no-multi-comp -- Compound shadcn component modules intentionally co-locate related parts.
 function NativeSelectOption({
   className,
   ...props
@@ -48,6 +49,7 @@ function NativeSelectOption({
   )
 }
 
+// react-doctor-disable-next-line react-doctor/no-multi-comp -- Compound shadcn component modules intentionally co-locate related parts.
 function NativeSelectOptGroup({
   className,
   ...props

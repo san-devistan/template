@@ -2,7 +2,6 @@ import { Label } from "@workspace/ui/components/label"
 import { Separator } from "@workspace/ui/components/separator"
 import { cn } from "@workspace/ui/lib/utils"
 import { cva, type VariantProps } from "class-variance-authority"
-import { useMemo } from "react"
 
 function FieldSet({ className, ...props }: React.ComponentProps<"fieldset">) {
   return (
@@ -177,24 +176,30 @@ function FieldError({
 }: React.ComponentProps<"div"> & {
   errors?: Array<{ message?: string } | undefined>
 }) {
-  const content = useMemo(() => {
-    if (children) {
-      return children
-    }
-
-    if (!errors?.length) {
-      return null
-    }
-
-    const uniqueErrors = [
-      ...new Map(errors.map((error) => [error?.message, error])).values(),
-    ]
-
-    if (uniqueErrors.length === 1) {
-      return uniqueErrors[0]?.message
-    }
-
+  if (children) {
     return (
+      <div
+        role="alert"
+        data-slot="field-error"
+        className={cn("text-sm font-normal text-destructive", className)}
+        {...props}
+      >
+        {children}
+      </div>
+    )
+  }
+
+  if (!errors?.length) {
+    return null
+  }
+
+  const uniqueErrors = [
+    ...new Map(errors.map((error) => [error?.message, error])).values(),
+  ]
+  const content =
+    uniqueErrors.length === 1 ? (
+      uniqueErrors[0]?.message
+    ) : (
       <ul className="ml-4 flex list-disc flex-col gap-1">
         {uniqueErrors.map(
           (error) =>
@@ -202,7 +207,6 @@ function FieldError({
         )}
       </ul>
     )
-  }, [children, errors])
 
   if (!content) {
     return null

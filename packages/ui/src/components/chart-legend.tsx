@@ -37,17 +37,19 @@ function ChartLegendContent({
         className
       )}
     >
-      {payload
-        .filter((item) => item.type !== "none")
-        .map((item) => (
-          <ChartLegendItem
-            key={getPayloadItemKey(item)}
-            config={config}
-            hideIcon={hideIcon}
-            item={item}
-            nameKey={nameKey}
-          />
-        ))}
+      {payload.flatMap((item) =>
+        item.type === "none"
+          ? []
+          : [
+              <ChartLegendItem
+                key={getPayloadItemKey(item)}
+                config={config}
+                hideIcon={hideIcon}
+                item={item}
+                nameKey={nameKey}
+              />,
+            ]
+      )}
     </div>
   )
 }

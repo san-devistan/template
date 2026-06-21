@@ -41,6 +41,7 @@ const inputGroupAddonVariants = cva(
   }
 )
 
+// react-doctor-disable-next-line react-doctor/no-multi-comp -- Compound shadcn component modules intentionally co-locate related parts.
 function InputGroupAddon({
   className,
   align = "inline-start",
@@ -110,6 +111,7 @@ function InputGroupButton({
   )
 }
 
+// react-doctor-disable-next-line react-doctor/no-multi-comp -- Compound shadcn component modules intentionally co-locate related parts.
 function InputGroupText({ className, ...props }: React.ComponentProps<"span">) {
   return (
     <span

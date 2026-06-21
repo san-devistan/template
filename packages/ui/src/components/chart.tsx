@@ -7,6 +7,7 @@ import { ChartStyle } from "@workspace/ui/components/chart-style"
 import { ChartTooltipContent } from "@workspace/ui/components/chart-tooltip"
 import { cn } from "@workspace/ui/lib/utils"
 import * as React from "react"
+// react-doctor-disable-next-line react-doctor/prefer-dynamic-import -- This module is the opt-in chart wrapper, so Recharts is only loaded by consumers importing chart components.
 import * as RechartsPrimitive from "recharts"
 
 const INITIAL_DIMENSION = { width: 320, height: 200 } as const

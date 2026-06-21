@@ -19,10 +19,12 @@ function ResizablePanelGroup({
   )
 }
 
+// react-doctor-disable-next-line react-doctor/no-multi-comp -- Compound shadcn component modules intentionally co-locate related parts.
 function ResizablePanel({ ...props }: ResizablePrimitive.PanelProps) {
   return <ResizablePrimitive.Panel data-slot="resizable-panel" {...props} />
 }
 
+// react-doctor-disable-next-line react-doctor/no-multi-comp -- Compound shadcn component modules intentionally co-locate related parts.
 function ResizableHandle({
   withHandle,
   className,

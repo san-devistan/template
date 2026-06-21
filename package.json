@@ -8,7 +8,7 @@
     "deps:update": "pnpm update -r",
     "deps:update:latest": "pnpm update -r --latest",
     "fix": "bash scripts/fix.sh",
-    "sync:convex-url": "node scripts/sync-convex-url.mjs",
+    "sync:shadcn": "npx shadcn@latest diff -c packages/ui",
     "sync:mobile-theme": "node scripts/sync-mobile-theme.mjs"
   },
   "devDependencies": {

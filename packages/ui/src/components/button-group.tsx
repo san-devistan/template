@@ -81,5 +81,5 @@ export {
   ButtonGroup,
   ButtonGroupSeparator,
   ButtonGroupText,
-  buttonGroupVariants,
+  buttonGroupVariants, // react-doctor-disable-line react-doctor/only-export-components -- Variant helpers are part of the public design-system API.
 }

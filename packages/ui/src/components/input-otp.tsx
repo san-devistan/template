@@ -37,6 +37,7 @@ function InputOTPGroup({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
+// react-doctor-disable-next-line react-doctor/no-multi-comp -- Compound shadcn component modules intentionally co-locate related parts.
 function InputOTPSlot({
   index,
   className,
@@ -44,7 +45,7 @@ function InputOTPSlot({
 }: React.ComponentProps<"div"> & {
   index: number
 }) {
-  const inputOTPContext = React.useContext(OTPInputContext)
+  const inputOTPContext = React.use(OTPInputContext)
   const { char, hasFakeCaret, isActive } = inputOTPContext.slots[index]
 
   return (
@@ -67,6 +68,7 @@ function InputOTPSlot({
   )
 }
 
+// react-doctor-disable-next-line react-doctor/no-multi-comp -- Compound shadcn component modules intentionally co-locate related parts.
 function InputOTPSeparator({ ...props }: React.ComponentProps<"div">) {
   return (
     <div
