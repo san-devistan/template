@@ -37,13 +37,14 @@ function Menubar({
   const id = React.useId()
   const [value, setValue] = React.useState<string | undefined>(undefined)
 
-  const closeMenu = React.useCallback(() => {
+  // oxlint-disable-next-line react-perf/jsx-no-new-function-as-prop -- React Compiler handles event handler identity; avoid useCallback so React Doctor can optimize this component.
+  const closeMenu = () => {
     if (onValueChangeProp) {
       onValueChangeProp(undefined)
       return
     }
     setValue(undefined)
-  }, [onValueChangeProp])
+  }
 
   return (
     <>
@@ -71,13 +72,9 @@ function MenubarTrigger({
 }: React.ComponentProps<typeof MenubarPrimitive.Trigger>) {
   const { value } = MenubarPrimitive.useRootContext()
   const { value: itemValue } = MenubarPrimitive.useMenuContext()
-  const textClassName = React.useMemo(
-    () =>
-      cn(
-        "select-none text-sm font-medium group-active:text-accent-foreground",
-        value === itemValue && "text-accent-foreground"
-      ),
-    [itemValue, value]
+  const textClassName = cn(
+    "select-none text-sm font-medium group-active:text-accent-foreground",
+    value === itemValue && "text-accent-foreground"
   )
 
   return (
@@ -111,13 +108,9 @@ function MenubarSubTrigger({
   const { open } = MenubarPrimitive.useSubContext()
   const icon =
     Platform.OS === "web" ? ChevronRight : open ? ChevronUp : ChevronDown
-  const textClassName = React.useMemo(
-    () =>
-      cn(
-        "select-none text-sm group-active:text-accent-foreground",
-        open && "text-accent-foreground"
-      ),
-    [open]
+  const textClassName = cn(
+    "select-none text-sm group-active:text-accent-foreground",
+    open && "text-accent-foreground"
   )
 
   return (
@@ -220,14 +213,10 @@ function MenubarItem({
   inset?: boolean
   variant?: "default" | "destructive"
 }) {
-  const textClassName = React.useMemo(
-    () =>
-      cn(
-        "select-none text-sm text-popover-foreground group-active:text-popover-foreground",
-        variant === "destructive" &&
-          "text-destructive group-active:text-destructive"
-      ),
-    [variant]
+  const textClassName = cn(
+    "select-none text-sm text-popover-foreground group-active:text-popover-foreground",
+    variant === "destructive" &&
+      "text-destructive group-active:text-destructive"
   )
 
   return (

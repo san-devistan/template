@@ -37,13 +37,9 @@ function TabsTrigger({
   ...props
 }: React.ComponentProps<typeof TabsPrimitive.Trigger>) {
   const { value } = TabsPrimitive.useRootContext()
-  const textClassName = React.useMemo(
-    () =>
-      cn(
-        "text-sm font-medium text-foreground dark:text-muted-foreground",
-        value === props.value && "dark:text-foreground"
-      ),
-    [props.value, value]
+  const textClassName = cn(
+    "text-sm font-medium text-foreground dark:text-muted-foreground",
+    value === props.value && "dark:text-foreground"
   )
 
   return (

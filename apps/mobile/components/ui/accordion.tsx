@@ -74,6 +74,10 @@ function AccordionItem({
 }
 
 const Trigger = Platform.OS === "web" ? View : Pressable
+const accordionTriggerTextClassName = cn(
+  "text-left text-sm font-medium",
+  Platform.select({ web: "group-hover:underline" })
+)
 
 function AccordionTrigger({
   className,
@@ -83,14 +87,6 @@ function AccordionTrigger({
   children?: React.ReactNode
 }) {
   const { isExpanded } = AccordionPrimitive.useItemContext()
-  const textClassName = React.useMemo(
-    () =>
-      cn(
-        "text-left text-sm font-medium",
-        Platform.select({ web: "group-hover:underline" })
-      ),
-    []
-  )
 
   const progress = useDerivedValue(
     () =>
@@ -107,7 +103,7 @@ function AccordionTrigger({
   )
 
   return (
-    <TextClassContext.Provider value={textClassName}>
+    <TextClassContext.Provider value={accordionTriggerTextClassName}>
       <AccordionPrimitive.Header>
         <AccordionPrimitive.Trigger {...props} asChild>
           <Trigger

@@ -41,13 +41,9 @@ function ContextMenuSubTrigger({
   const { open } = ContextMenuPrimitive.useSubContext()
   const icon =
     Platform.OS === "web" ? ChevronRight : open ? ChevronUp : ChevronDown
-  const textClassName = React.useMemo(
-    () =>
-      cn(
-        "select-none text-sm group-active:text-accent-foreground",
-        open && "text-accent-foreground"
-      ),
-    [open]
+  const textClassName = cn(
+    "select-none text-sm group-active:text-accent-foreground",
+    open && "text-accent-foreground"
   )
 
   return (
@@ -167,14 +163,10 @@ function ContextMenuItem({
   inset?: boolean
   variant?: "default" | "destructive"
 }) {
-  const textClassName = React.useMemo(
-    () =>
-      cn(
-        "select-none text-sm text-popover-foreground group-active:text-popover-foreground",
-        variant === "destructive" &&
-          "text-destructive group-active:text-destructive"
-      ),
-    [variant]
+  const textClassName = cn(
+    "select-none text-sm text-popover-foreground group-active:text-popover-foreground",
+    variant === "destructive" &&
+      "text-destructive group-active:text-destructive"
   )
 
   return (

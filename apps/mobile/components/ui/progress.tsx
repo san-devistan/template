@@ -10,6 +10,10 @@ import Animated, {
   withSpring,
 } from "react-native-reanimated"
 
+function getWebIndicatorStyle(value: number | null | undefined) {
+  return { transform: `translateX(-${100 - (value ?? 0)}%)` }
+}
+
 function Progress({
   className,
   value,
@@ -45,11 +49,6 @@ type IndicatorProps = {
 }
 
 function WebIndicator({ value, className }: IndicatorProps) {
-  const indicatorStyle = React.useMemo(
-    () => ({ transform: `translateX(-${100 - (value ?? 0)}%)` }),
-    [value]
-  )
-
   if (Platform.OS !== "web") {
     return null
   }
@@ -60,7 +59,7 @@ function WebIndicator({ value, className }: IndicatorProps) {
         "h-full w-full flex-1 bg-primary transition-all",
         className
       )}
-      style={indicatorStyle}
+      style={getWebIndicatorStyle(value)}
     >
       <ProgressPrimitive.Indicator className={cn("h-full w-full", className)} />
     </View>

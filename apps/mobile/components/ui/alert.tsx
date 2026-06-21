@@ -18,14 +18,10 @@ function Alert({
     variant?: "default" | "destructive"
     iconClassName?: string
   }) {
-  const textClassName = React.useMemo(
-    () =>
-      cn(
-        "text-sm text-foreground",
-        variant === "destructive" && "text-destructive",
-        className
-      ),
-    [className, variant]
+  const textClassName = cn(
+    "text-sm text-foreground",
+    variant === "destructive" && "text-destructive",
+    className
   )
 
   return (

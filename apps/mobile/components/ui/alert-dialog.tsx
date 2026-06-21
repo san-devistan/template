@@ -1,4 +1,7 @@
-import { buttonTextVariants, buttonVariants } from "@/components/ui/button"
+import {
+  buttonTextVariants,
+  buttonVariants,
+} from "@/components/ui/button-variants"
 import { NativeOnlyAnimatedView } from "@/components/ui/native-only-animated-view"
 import { TextClassContext } from "@/components/ui/text"
 import { cn } from "@/lib/utils"
@@ -123,10 +126,7 @@ function AlertDialogAction({
   className,
   ...props
 }: React.ComponentProps<typeof AlertDialogPrimitive.Action>) {
-  const textClassName = React.useMemo(
-    () => buttonTextVariants({ className }),
-    [className]
-  )
+  const textClassName = buttonTextVariants({ className })
 
   return (
     <TextClassContext.Provider value={textClassName}>
@@ -142,10 +142,7 @@ function AlertDialogCancel({
   className,
   ...props
 }: React.ComponentProps<typeof AlertDialogPrimitive.Cancel>) {
-  const textClassName = React.useMemo(
-    () => buttonTextVariants({ className, variant: "outline" }),
-    [className]
-  )
+  const textClassName = buttonTextVariants({ className, variant: "outline" })
 
   return (
     <TextClassContext.Provider value={textClassName}>
