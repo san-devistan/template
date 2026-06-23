@@ -192,7 +192,6 @@ Native text input with various keyboard types.
 
 ```tsx
 import { TextInput } from "react-native"
-
 ;<TextInput
   placeholder="Enter text..."
   placeholderTextColor="#999"

@@ -179,7 +179,6 @@ Add long press context menus to Link components:
 
 ```tsx
 import { Link } from "expo-router"
-
 ;<Link href="/settings" asChild>
   <Link.Trigger>
     <Pressable>

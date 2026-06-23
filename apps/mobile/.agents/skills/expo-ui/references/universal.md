@@ -10,7 +10,6 @@ Import everything, including `Host`, from the package root (`@expo/ui`). Every t
 
 ```tsx
 import { Host, Column, Button, Text } from "@expo/ui"
-
 ;<Host matchContents>
   <Column>
     <Text>Hello</Text>

@@ -6,7 +6,6 @@ Use `expo-blur` for blur effects. Prefer systemMaterial tints as they adapt to d
 
 ```tsx
 import { BlurView } from "expo-blur"
-
 ;<BlurView tint="systemMaterial" intensity={100} />
 ```
 
@@ -85,7 +84,6 @@ Use `expo-glass-effect` for liquid glass backdrops on iOS 26+.
 
 ```tsx
 import { GlassView } from "expo-glass-effect"
-
 ;<GlassView style={{ borderRadius: 16, padding: 16 }}>
   <Text>Content inside glass</Text>
 </GlassView>
@@ -99,7 +97,6 @@ Add `isInteractive` for buttons and pressable glass:
 import { GlassView } from "expo-glass-effect"
 import { SymbolView } from "expo-symbols"
 import { PlatformColor } from "react-native"
-
 ;<GlassView isInteractive style={{ borderRadius: 50 }}>
   <Pressable style={{ padding: 12 }} onPress={handlePress}>
     <SymbolView name="plus" tintColor={PlatformColor("label")} size={36} />

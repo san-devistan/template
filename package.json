@@ -1,5 +1,5 @@
 {
-  "name": "TEMPLATE",
+  "name": "template",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -12,10 +12,8 @@
     "sync:mobile-theme": "node scripts/sync-mobile-theme.mjs"
   },
   "devDependencies": {
-    "oxc-minify": "^0.129.0",
     "oxc-parser": "^0.129.0",
     "oxc-resolver": "^11.21.3",
-    "oxc-transform": "^0.129.0",
     "oxfmt": "^0.48.0",
     "oxlint": "^1.70.0",
     "oxlint-tsgolint": "^0.22.1",

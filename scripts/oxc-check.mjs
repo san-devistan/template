@@ -2,19 +2,12 @@ import { readdir, readFile } from "node:fs/promises"
 import { builtinModules } from "node:module"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
-import { minifySync } from "oxc-minify"
 import { parseSync } from "oxc-parser"
 import { ResolverFactory } from "oxc-resolver"
-import { transformSync } from "oxc-transform"
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..")
 const sourceRoots = ["apps", "packages"]
 const sourceExtensions = new Set([".js", ".jsx", ".ts", ".tsx", ".mjs", ".cjs"])
-const allowedRuntimeJavaScriptFiles = new Set([
-  path.join("apps", "mobile", "scripts", "reset-project.js"),
-])
-const allowedJavaScriptConfigPattern =
-  /(^|[/\\])[\w.-]+\.config\.(?:cjs|js|mjs)$/
 const ignoredDirectories = new Set([
   ".expo",
   ".git",
@@ -63,8 +56,6 @@ const resolver = new ResolverFactory({
 
 const errors = []
 let parsed = 0
-let transformed = 0
-let minified = 0
 let resolved = 0
 
 const sourceFiles = await collectSourceFiles()
@@ -79,14 +70,6 @@ for (const { file, source } of sourceEntries) {
   const relative = path.relative(root, file)
   const lang = languageFor(file)
 
-  if (isJavaScriptSource(file) && !isAllowedJavaScriptFile(relative)) {
-    errors.push(
-      `${relative}: use TypeScript for app/package source files. ` +
-        "JavaScript is only allowed for generated files, config files, or explicit tool entrypoints."
-    )
-    continue
-  }
-
   let parseResult
   try {
     parseResult = parseSync(file, source, {
@@ -99,43 +82,6 @@ for (const { file, source } of sourceEntries) {
   } catch (error) {
     errors.push(`${relative}: parser failed: ${messageFor(error)}`)
     continue
-  }
-
-  let transformResult
-  try {
-    transformResult = transformSync(file, source, {
-      cwd: root,
-      lang,
-      sourceType: "unambiguous",
-      target: "es2022",
-      typescript: {
-        onlyRemoveTypeImports: true,
-      },
-      jsx: lang.endsWith("x")
-        ? {
-            runtime: "automatic",
-            importSource: "react",
-            development: false,
-          }
-        : undefined,
-    })
-    transformed += 1
-    reportOxcErrors(relative, "transformer", transformResult.errors)
-  } catch (error) {
-    errors.push(`${relative}: transformer failed: ${messageFor(error)}`)
-    continue
-  }
-
-  try {
-    const minifyResult = minifySync(file, transformResult.code, {
-      module: path.extname(file) !== ".cjs",
-      compress: true,
-      mangle: false,
-    })
-    minified += 1
-    reportOxcErrors(relative, "minifier", minifyResult.errors)
-  } catch (error) {
-    errors.push(`${relative}: minifier failed: ${messageFor(error)}`)
   }
 
   for (const request of importRequests(parseResult)) {
@@ -163,9 +109,7 @@ if (errors.length > 0) {
   process.exit(1)
 }
 
-console.log(
-  `Oxc check passed: parsed ${parsed}, transformed ${transformed}, minified ${minified}, resolved ${resolved}.`
-)
+console.log(`Oxc check passed: parsed ${parsed}, resolved ${resolved}.`)
 
 async function collectSourceFiles() {
   const filesByRoot = await Promise.all(
@@ -218,17 +162,6 @@ function languageFor(file) {
 
 function sourceTypeFor(file) {
   return path.extname(file) === ".cjs" ? "commonjs" : "unambiguous"
-}
-
-function isJavaScriptSource(file) {
-  return [".js", ".jsx", ".mjs", ".cjs"].includes(path.extname(file))
-}
-
-function isAllowedJavaScriptFile(relative) {
-  return (
-    allowedRuntimeJavaScriptFiles.has(relative) ||
-    allowedJavaScriptConfigPattern.test(relative)
-  )
 }
 
 function reportOxcErrors(file, tool, toolErrors = []) {

@@ -7,7 +7,6 @@ Use SF Symbols for native feel. Never use FontAwesome or Ionicons.
 ```tsx
 import { SymbolView } from "expo-symbols"
 import { PlatformColor } from "react-native"
-
 ;<SymbolView
   tintColor={PlatformColor("label")}
   resizeMode="scaleAspectFit"

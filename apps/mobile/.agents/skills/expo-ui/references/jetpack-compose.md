@@ -14,7 +14,6 @@ Use this layer only when the universal `@expo/ui` components don't cover what yo
 ```jsx
 import { Host, Column, Button, Text } from "@expo/ui/jetpack-compose"
 import { fillMaxWidth, paddingAll } from "@expo/ui/jetpack-compose/modifiers"
-
 ;<Host matchContents>
   <Column
     verticalArrangement={{ spacedBy: 8 }}

@@ -264,7 +264,6 @@ If you must use @expo/vector-icons instead of SF Symbols:
 ```tsx
 import { NativeTabs } from "expo-router/unstable-native-tabs"
 import Ionicons from "@expo/vector-icons/Ionicons"
-
 ;<NativeTabs.Trigger name="home">
   <NativeTabs.Trigger.VectorIcon vector={Ionicons} name="home" />
   <NativeTabs.Trigger.Label>Home</NativeTabs.Trigger.Label>
@@ -328,7 +327,6 @@ Or extract to a component: `components/app-tabs.tsx` + `components/app-tabs.web.
 
 ```tsx
 import { Tabs } from "expo-router"
-
 ;<Tabs>
   <Tabs.Screen
     name="index"
@@ -345,7 +343,6 @@ import { Tabs } from "expo-router"
 
 ```tsx
 import { NativeTabs } from "expo-router/unstable-native-tabs"
-
 ;<NativeTabs>
   <NativeTabs.Trigger name="index">
     <NativeTabs.Trigger.Label>Home</NativeTabs.Trigger.Label>
