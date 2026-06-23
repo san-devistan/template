@@ -115,12 +115,12 @@ class MyModule : Module() {
 **TypeScript:**
 
 ```typescript
-import { requireNativeModule } from "expo"
+import { requireNativeModule } from "expo";
 
-const MyModule = requireNativeModule("MyModule")
+const MyModule = requireNativeModule("MyModule");
 
 export function hello(name: string): string {
-  return MyModule.hello(name)
+  return MyModule.hello(name);
 }
 ```
 

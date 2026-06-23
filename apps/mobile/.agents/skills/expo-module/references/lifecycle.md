@@ -72,7 +72,6 @@ Register in `expo-module.config.json`:
 ```
 
 Result aggregation:
-
 - `didFinishLaunchingWithOptions`: Returns `true` if **any** subscriber returns `true`
 - `didReceiveRemoteNotification`: Priority: `failed` > `newData` > `noData`
 

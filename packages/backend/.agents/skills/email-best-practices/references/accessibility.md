@@ -6,7 +6,7 @@ Emails must be readable by screen readers, dark-mode clients, translation tools,
 
 ### Set `lang` and `dir` on `<html>` and on `<body>`'s direct children (Serious)
 
-Both attributes are needed in **two places**: on `<html>` _and_ on the direct children of `<body>`. Several email clients strip the attributes from `<html>`, which is why duplicating them on the body's children is the single most common accessibility failure in production email.
+Both attributes are needed in **two places**: on `<html>` *and* on the direct children of `<body>`. Several email clients strip the attributes from `<html>`, which is why duplicating them on the body's children is the single most common accessibility failure in production email.
 
 ```html
 <html lang="en" dir="ltr">
@@ -51,10 +51,10 @@ Most emails should have one `<h1>` that names the email, with subheadings nested
 
 ```html
 <h1>Order confirmation</h1>
-<h2>Items</h2>
-<h2>Shipping</h2>
-<h3>Address</h3>
-<h3>Tracking</h3>
+  <h2>Items</h2>
+  <h2>Shipping</h2>
+    <h3>Address</h3>
+    <h3>Tracking</h3>
 ```
 
 Headings are how assistive tech and AI clients navigate and summarize the email.
@@ -70,17 +70,17 @@ A **linked image is never decorative.** It's functional, so its `alt` must descr
 ```html
 <!-- Wrong: linked image with no accessible name -->
 <a href="/order/123">
-  <img src="view-order.png" alt="" />
+  <img src="view-order.png" alt="">
 </a>
 
 <!-- Right: alt describes the action -->
 <a href="/order/123">
-  <img src="view-order.png" alt="View order #123" />
+  <img src="view-order.png" alt="View order #123">
 </a>
 
 <!-- Also right: visible text alongside the image -->
 <a href="/order/123">
-  <img src="icon.png" alt="" />
+  <img src="icon.png" alt="">
   View order #123
 </a>
 ```
@@ -108,20 +108,17 @@ Two distinct rules, both mandatory. `alt` must always be present; the value depe
 
 ```html
 <!-- Wrong: redundant, vague -->
-<img src="..." alt="image" />
-<img src="..." alt="photo of a bike" />
+<img src="..." alt="image">
+<img src="..." alt="photo of a bike">
 
 <!-- Right: purpose + key details -->
-<img
-  src="..."
-  alt="Red bicycle leaning against a brick wall on a rainy street"
-/>
+<img src="..." alt="Red bicycle leaning against a brick wall on a rainy street">
 ```
 
 **Decorative images** (spacers, dividers, background flourishes, pure branding ornaments): use an empty `alt=""`. This tells screen readers to skip them. Never omit the attribute entirely — omitting it and `alt=""` are not equivalent; some screen readers announce the filename when `alt` is absent.
 
 ```html
-<img src="divider.png" alt="" role="presentation" />
+<img src="divider.png" alt="" role="presentation">
 ```
 
 If an image conveys no information that isn't already in the surrounding text, it is decorative. If it's inside an `<a>`, it is **not** decorative — see the "Every link must have discernible text" rule.

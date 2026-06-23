@@ -105,17 +105,21 @@ guide first. Do not assume workspace-local skills are globally available by name
 | `packages/ui`                     | `packages/ui/AGENTS.md`      | shadcn, web design tokens, shared React components, UI primitives |
 | Root, `scripts`, workspace config | this file                    | Turborepo, package boundaries, repo tooling                       |
 
-Workspace-specific skills live under the workspace's own `.agents/skills/`
-directory. Shared root skills live in `.agents/skills/<skill>/SKILL.md` and are
-only for cross-cutting concerns:
+For TypeScript code, prefer the project-standard packages that encode safer
+patterns instead of hand-written equivalents:
 
-| Skill                     | Invoke when                                                                                                               |
-| ------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| `turborepo`               | Turbo tasks, `turbo.json`, caching, remote cache, `--filter`, `--affected`, CI, package boundaries, or workspace tooling  |
-| `typescript-code-quality` | TypeScript modeling, refactors, explicit errors, module APIs, maintainability, or package boundary design                 |
-| `effect-ts`               | Nontrivial Effect services/layers, typed errors, Schema/JSONSchema, Config, runtime, concurrency, or Effect tests         |
-| `frontend-design`         | Creating or reshaping UI where visual direction, typography, layout, or interaction polish matters                        |
-| `usehooks-ts`             | Browser/SSR-safe React hooks for storage, media queries, dark mode, events, debounce, timers, observers, or mounted state |
+- Use `effect-ts` for typed async workflows, service dependencies, structured
+  errors, schemas, config, retries, resource handling, and concurrency. Prefer
+  Effect composition over scattered `try`/`catch`, nullable error state, ad hoc
+  dependency wiring, or bespoke validation in nontrivial logic.
+- Use `usehooks-ts` for common browser and React hook concerns such as storage,
+  media queries, events, debounce/throttle, timers, observers, clipboard, dark
+  mode, scroll lock, and mounted/client checks. Prefer its SSR-safe hooks over
+  handwritten `useEffect` wrappers unless the behavior is genuinely
+  domain-specific or unsupported.
+
+Keep trivial synchronous code simple; do not force these packages into places
+where they add ceremony without reducing risk or duplication.
 
 ## Available MCPs
 

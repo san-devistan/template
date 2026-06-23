@@ -11,7 +11,7 @@ TanStack Query's `networkMode` controls how queries and mutations behave when th
 ```tsx
 // Not considering offline behavior
 const { data } = useQuery({
-  queryKey: ["todos"],
+  queryKey: ['todos'],
   queryFn: fetchTodos,
   // Default networkMode: 'online'
   // Query pauses with no feedback when offline
@@ -27,9 +27,9 @@ const { data } = useQuery({
 // Show clear offline state to users
 function TodoList() {
   const { data, fetchStatus, status } = useQuery({
-    queryKey: ["todos"],
+    queryKey: ['todos'],
     queryFn: fetchTodos,
-    networkMode: "online", // Default - pauses when offline
+    networkMode: 'online',  // Default - pauses when offline
   })
 
   // fetchStatus: 'fetching' | 'paused' | 'idle'
@@ -37,7 +37,7 @@ function TodoList() {
 
   return (
     <div>
-      {fetchStatus === "paused" && (
+      {fetchStatus === 'paused' && (
         <Banner>You're offline. Showing cached data.</Banner>
       )}
       <TodoItems todos={data} />
@@ -51,29 +51,29 @@ function TodoList() {
 ```tsx
 // App works offline with local data
 const { data, error } = useQuery({
-  queryKey: ["todos"],
+  queryKey: ['todos'],
   queryFn: async () => {
     // Try network first
     try {
       const todos = await fetchTodosFromServer()
-      await saveToLocalDB(todos) // Sync to local
+      await saveToLocalDB(todos)  // Sync to local
       return todos
     } catch (e) {
       // Fall back to local data
       return getFromLocalDB()
     }
   },
-  networkMode: "always", // Always runs queryFn, even offline
+  networkMode: 'always',  // Always runs queryFn, even offline
 })
 
 // Or set globally
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      networkMode: "always",
+      networkMode: 'always',
     },
     mutations: {
-      networkMode: "always",
+      networkMode: 'always',
     },
   },
 })
@@ -84,9 +84,9 @@ const queryClient = new QueryClient({
 ```tsx
 // Only fetch when online, but don't fail when offline
 const { data } = useQuery({
-  queryKey: ["user-preferences"],
+  queryKey: ['user-preferences'],
   queryFn: fetchPreferences,
-  networkMode: "offlineFirst",
+  networkMode: 'offlineFirst',
   // Runs queryFn once, then waits for network if it fails
   // Good for: data that's useful to attempt offline
 })
@@ -100,33 +100,37 @@ function TodoApp() {
 
   const addTodo = useMutation({
     mutationFn: createTodo,
-    networkMode: "online", // Pauses when offline
+    networkMode: 'online',  // Pauses when offline
     onMutate: async (newTodo) => {
       // Optimistic update works offline
-      await queryClient.cancelQueries({ queryKey: ["todos"] })
-      const previous = queryClient.getQueryData(["todos"])
-      queryClient.setQueryData(["todos"], (old: Todo[]) => [...old, newTodo])
+      await queryClient.cancelQueries({ queryKey: ['todos'] })
+      const previous = queryClient.getQueryData(['todos'])
+      queryClient.setQueryData(['todos'], (old: Todo[]) => [...old, newTodo])
       return { previous }
     },
     onError: (err, newTodo, context) => {
-      queryClient.setQueryData(["todos"], context?.previous)
+      queryClient.setQueryData(['todos'], context?.previous)
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["todos"] })
+      queryClient.invalidateQueries({ queryKey: ['todos'] })
     },
   })
 
   // Track paused mutations
   const pendingMutations = useMutationState({
-    filters: { status: "pending" },
+    filters: { status: 'pending' },
   })
 
-  const pausedMutations = pendingMutations.filter((m) => m.state.isPaused)
+  const pausedMutations = pendingMutations.filter(
+    m => m.state.isPaused
+  )
 
   return (
     <div>
       {pausedMutations.length > 0 && (
-        <Banner>{pausedMutations.length} changes waiting to sync</Banner>
+        <Banner>
+          {pausedMutations.length} changes waiting to sync
+        </Banner>
       )}
       <TodoList />
     </div>
@@ -136,26 +140,27 @@ function TodoApp() {
 
 ## Network Mode Comparison
 
-| Mode                 | Behavior                                    | Use Case                            |
-| -------------------- | ------------------------------------------- | ----------------------------------- |
-| `'online'` (default) | Pauses when offline, resumes when online    | Most apps, show offline state       |
-| `'always'`           | Always runs queryFn regardless of network   | Offline-first apps, local-only data |
-| `'offlineFirst'`     | Tries once, then waits for network if fails | Best-effort offline                 |
+| Mode | Behavior | Use Case |
+|------|----------|----------|
+| `'online'` (default) | Pauses when offline, resumes when online | Most apps, show offline state |
+| `'always'` | Always runs queryFn regardless of network | Offline-first apps, local-only data |
+| `'offlineFirst'` | Tries once, then waits for network if fails | Best-effort offline |
 
 ## Good Example: Online Status Detection
 
 ```tsx
-import { onlineManager } from "@tanstack/react-query"
+import { onlineManager } from '@tanstack/react-query'
 
 // React to online/offline changes
 function NetworkStatus() {
-  const isOnline = useSyncExternalStore(onlineManager.subscribe, () =>
-    onlineManager.isOnline()
+  const isOnline = useSyncExternalStore(
+    onlineManager.subscribe,
+    () => onlineManager.isOnline(),
   )
 
   return (
-    <div className={isOnline ? "online" : "offline"}>
-      {isOnline ? "Connected" : "Offline"}
+    <div className={isOnline ? 'online' : 'offline'}>
+      {isOnline ? 'Connected' : 'Offline'}
     </div>
   )
 }

@@ -16,30 +16,27 @@ Send a unique key with each request. If the same key is sent again, the server r
 
 ```typescript
 // Generate deterministic key based on the business event
-const idempotencyKey = `password-reset-${userId}-${resetRequestId}`
+const idempotencyKey = `password-reset-${userId}-${resetRequestId}`;
 
-await resend.emails.send(
-  {
-    from: "noreply@example.com",
-    to: user.email,
-    subject: "Reset your password",
-    html: emailHtml,
-  },
-  {
-    headers: {
-      "Idempotency-Key": idempotencyKey,
-    },
+await resend.emails.send({
+  from: 'noreply@example.com',
+  to: user.email,
+  subject: 'Reset your password',
+  html: emailHtml,
+}, {
+  headers: {
+    'Idempotency-Key': idempotencyKey
   }
-)
+});
 ```
 
 ### Key Generation Strategies
 
-| Strategy       | Example                             | Use When                                       |
-| -------------- | ----------------------------------- | ---------------------------------------------- |
-| Event-based    | `order-confirm-${orderId}`          | One email per event (recommended)              |
-| Request-scoped | `reset-${userId}-${resetRequestId}` | Retries within same request                    |
-| UUID           | `crypto.randomUUID()`               | No natural key (generate once, reuse on retry) |
+| Strategy | Example | Use When |
+|----------|---------|----------|
+| Event-based | `order-confirm-${orderId}` | One email per event (recommended) |
+| Request-scoped | `reset-${userId}-${resetRequestId}` | Retries within same request |
+| UUID | `crypto.randomUUID()` | No natural key (generate once, reuse on retry) |
 
 **Best practice:** Use deterministic keys based on the business event. If you retry the same logical send, the same key must be generated. Avoid `Date.now()` or random values generated fresh on each attempt.
 
@@ -51,13 +48,13 @@ Handle transient failures with exponential backoff.
 
 ### When to Retry
 
-| Error Type         | Retry? | Notes                        |
-| ------------------ | ------ | ---------------------------- |
+| Error Type | Retry? | Notes |
+|------------|--------|-------|
 | 5xx (server error) | ✅ Yes | Transient, likely to resolve |
-| 429 (rate limit)   | ✅ Yes | Wait for rate limit window   |
-| 4xx (client error) | ❌ No  | Fix the request first        |
-| Network timeout    | ✅ Yes | Transient                    |
-| DNS failure        | ✅ Yes | May be transient             |
+| 429 (rate limit) | ✅ Yes | Wait for rate limit window |
+| 4xx (client error) | ❌ No | Fix the request first |
+| Network timeout | ✅ Yes | Transient |
+| DNS failure | ✅ Yes | May be transient |
 
 ### Exponential Backoff
 
@@ -65,23 +62,21 @@ Handle transient failures with exponential backoff.
 async function sendWithRetry(emailData, maxRetries = 3) {
   for (let attempt = 0; attempt < maxRetries; attempt++) {
     try {
-      return await resend.emails.send(emailData)
+      return await resend.emails.send(emailData);
     } catch (error) {
       if (!isRetryable(error) || attempt === maxRetries - 1) {
-        throw error
+        throw error;
       }
-      const delay = Math.min(1000 * Math.pow(2, attempt), 30000)
-      await sleep(delay + Math.random() * 1000) // Add jitter
+      const delay = Math.min(1000 * Math.pow(2, attempt), 30000);
+      await sleep(delay + Math.random() * 1000); // Add jitter
     }
   }
 }
 
 function isRetryable(error) {
-  return (
-    error.statusCode >= 500 ||
-    error.statusCode === 429 ||
-    error.code === "ETIMEDOUT"
-  )
+  return error.statusCode >= 500 ||
+         error.statusCode === 429 ||
+         error.code === 'ETIMEDOUT';
 }
 ```
 
@@ -91,31 +86,31 @@ function isRetryable(error) {
 
 ### Common Error Codes
 
-| Code | Meaning             | Action                                     |
-| ---- | ------------------- | ------------------------------------------ |
-| 400  | Bad request         | Fix payload (invalid email, missing field) |
-| 401  | Unauthorized        | Check API key                              |
-| 403  | Forbidden           | Check permissions, domain verification     |
-| 404  | Not found           | Check endpoint URL                         |
-| 422  | Validation error    | Fix request data                           |
-| 429  | Rate limited        | Back off, retry after delay                |
-| 500  | Server error        | Retry with backoff                         |
-| 503  | Service unavailable | Retry with backoff                         |
+| Code | Meaning | Action |
+|------|---------|--------|
+| 400 | Bad request | Fix payload (invalid email, missing field) |
+| 401 | Unauthorized | Check API key |
+| 403 | Forbidden | Check permissions, domain verification |
+| 404 | Not found | Check endpoint URL |
+| 422 | Validation error | Fix request data |
+| 429 | Rate limited | Back off, retry after delay |
+| 500 | Server error | Retry with backoff |
+| 503 | Service unavailable | Retry with backoff |
 
 ### Error Handling Pattern
 
 ```typescript
 try {
-  const result = await resend.emails.send(emailData)
-  await logSuccess(result.id, emailData)
+  const result = await resend.emails.send(emailData);
+  await logSuccess(result.id, emailData);
 } catch (error) {
   if (error.statusCode === 429) {
-    await queueForRetry(emailData, error.retryAfter)
+    await queueForRetry(emailData, error.retryAfter);
   } else if (error.statusCode >= 500) {
-    await queueForRetry(emailData)
+    await queueForRetry(emailData);
   } else {
-    await logFailure(error, emailData)
-    await alertOnCriticalEmail(emailData) // For password resets, etc.
+    await logFailure(error, emailData);
+    await alertOnCriticalEmail(emailData); // For password resets, etc.
   }
 }
 ```
@@ -125,14 +120,12 @@ try {
 For critical emails, use a queue to ensure delivery even if the initial send fails.
 
 **Benefits:**
-
 - Survives application restarts
 - Automatic retry handling
 - Rate limit management
 - Audit trail
 
 **Simple pattern:**
-
 1. Write email to queue/database with "pending" status
 2. Process queue, attempt send
 3. On success: mark "sent", store message ID
@@ -144,13 +137,13 @@ For critical emails, use a queue to ensure delivery even if the initial send fai
 Set appropriate timeouts to avoid hanging requests.
 
 ```typescript
-const controller = new AbortController()
-const timeout = setTimeout(() => controller.abort(), 10000)
+const controller = new AbortController();
+const timeout = setTimeout(() => controller.abort(), 10000);
 
 try {
-  await resend.emails.send(emailData, { signal: controller.signal })
+  await resend.emails.send(emailData, { signal: controller.signal });
 } finally {
-  clearTimeout(timeout)
+  clearTimeout(timeout);
 }
 ```
 

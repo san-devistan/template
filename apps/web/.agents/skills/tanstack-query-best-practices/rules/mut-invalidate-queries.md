@@ -20,7 +20,7 @@ const deleteTodo = useMutation({
   mutationFn: (todoId) => api.deleteTodo(todoId),
   onSuccess: () => {
     // Only invalidates list, not summary/counts
-    queryClient.invalidateQueries({ queryKey: ["todos", "list"] })
+    queryClient.invalidateQueries({ queryKey: ['todos', 'list'] })
     // Missing: ['todos', 'count'], ['todos', 'completed-count'], etc.
   },
 })
@@ -34,7 +34,7 @@ const createTodo = useMutation({
   mutationFn: (newTodo) => api.createTodo(newTodo),
   onSuccess: () => {
     // Invalidate all todo-related queries
-    queryClient.invalidateQueries({ queryKey: ["todos"] })
+    queryClient.invalidateQueries({ queryKey: ['todos'] })
   },
 })
 
@@ -43,12 +43,12 @@ const updateTodo = useMutation({
   mutationFn: ({ id, data }) => api.updateTodo(id, data),
   onSuccess: (data, { id }) => {
     // Specific todo
-    queryClient.invalidateQueries({ queryKey: ["todos", id] })
+    queryClient.invalidateQueries({ queryKey: ['todos', id] })
     // Lists that might contain this todo
-    queryClient.invalidateQueries({ queryKey: ["todos", "list"] })
+    queryClient.invalidateQueries({ queryKey: ['todos', 'list'] })
     // If todo status changed, invalidate filtered views
-    queryClient.invalidateQueries({ queryKey: ["todos", "completed"] })
-    queryClient.invalidateQueries({ queryKey: ["todos", "active"] })
+    queryClient.invalidateQueries({ queryKey: ['todos', 'completed'] })
+    queryClient.invalidateQueries({ queryKey: ['todos', 'active'] })
   },
 })
 
@@ -57,13 +57,13 @@ const assignTodoToUser = useMutation({
   mutationFn: ({ todoId, userId }) => api.assignTodo(todoId, userId),
   onSuccess: (data, { todoId, userId }) => {
     // Invalidate the todo
-    queryClient.invalidateQueries({ queryKey: ["todos", todoId] })
+    queryClient.invalidateQueries({ queryKey: ['todos', todoId] })
     // Invalidate user's assigned todos
-    queryClient.invalidateQueries({ queryKey: ["users", userId, "todos"] })
+    queryClient.invalidateQueries({ queryKey: ['users', userId, 'todos'] })
     // Invalidate previous assignee's list if available
     if (data.previousAssignee) {
       queryClient.invalidateQueries({
-        queryKey: ["users", data.previousAssignee, "todos"],
+        queryKey: ['users', data.previousAssignee, 'todos'],
       })
     }
   },
@@ -76,15 +76,13 @@ const assignTodoToUser = useMutation({
 const mutation = useMutation({
   mutationFn: updatePost,
   onSuccess: (
-    data, // Server response
+    data,      // Server response
     variables, // What you passed to mutate()
-    context // What onMutate returned
+    context    // What onMutate returned
   ) => {
     // Use variables to know which queries to invalidate
-    queryClient.invalidateQueries({ queryKey: ["posts", variables.id] })
-    queryClient.invalidateQueries({
-      queryKey: ["posts", "list", variables.category],
-    })
+    queryClient.invalidateQueries({ queryKey: ['posts', variables.id] })
+    queryClient.invalidateQueries({ queryKey: ['posts', 'list', variables.category] })
   },
 })
 ```
@@ -94,23 +92,20 @@ const mutation = useMutation({
 ```tsx
 // Option 1: Invalidate and refetch
 onSuccess: () => {
-  queryClient.invalidateQueries({ queryKey: ["todos"] })
+  queryClient.invalidateQueries({ queryKey: ['todos'] })
 }
 
 // Option 2: Update cache directly (no network request)
 onSuccess: (newTodo) => {
-  queryClient.setQueryData(["todos"], (old: Todo[]) => [...old, newTodo])
+  queryClient.setQueryData(['todos'], (old: Todo[]) => [...old, newTodo])
 }
 
 // Option 3: Hybrid - update one, invalidate others
 onSuccess: (newTodo) => {
   // Immediately add to list
-  queryClient.setQueryData(["todos", "list"], (old: Todo[]) => [
-    ...old,
-    newTodo,
-  ])
+  queryClient.setQueryData(['todos', 'list'], (old: Todo[]) => [...old, newTodo])
   // Invalidate counts/summaries for eventual consistency
-  queryClient.invalidateQueries({ queryKey: ["todos", "count"] })
+  queryClient.invalidateQueries({ queryKey: ['todos', 'count'] })
 }
 ```
 
