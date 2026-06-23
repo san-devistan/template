@@ -5,12 +5,15 @@ import { cn } from "@workspace/ui/lib/utils"
 import { type VariantProps } from "class-variance-authority"
 import * as React from "react"
 
-const ToggleGroupContext = React.createContext<
-  VariantProps<typeof toggleVariants> & {
-    spacing?: number
-    orientation?: "horizontal" | "vertical"
-  }
->({
+type ToggleGroupContextValue = VariantProps<typeof toggleVariants> & {
+  spacing?: number
+  orientation?: "horizontal" | "vertical"
+}
+type ToggleGroupStyle = React.CSSProperties & {
+  "--gap": number
+}
+
+const ToggleGroupContext = React.createContext<ToggleGroupContextValue>({
   size: "default",
   variant: "default",
   spacing: 2,
@@ -30,6 +33,15 @@ function ToggleGroup({
     spacing?: number
     orientation?: "horizontal" | "vertical"
   }) {
+  const groupStyle = React.useMemo<ToggleGroupStyle>(
+    () => ({ "--gap": spacing }),
+    [spacing]
+  )
+  const contextValue = React.useMemo<ToggleGroupContextValue>(
+    () => ({ variant, size, spacing, orientation }),
+    [variant, size, spacing, orientation]
+  )
+
   return (
     <ToggleGroupPrimitive
       data-slot="toggle-group"
@@ -37,16 +49,14 @@ function ToggleGroup({
       data-size={size}
       data-spacing={spacing}
       data-orientation={orientation}
-      style={{ "--gap": spacing } as React.CSSProperties}
+      style={groupStyle}
       className={cn(
         "group/toggle-group flex w-fit flex-row items-center gap-[--spacing(var(--gap))] rounded-md data-[spacing=0]:data-[variant=outline]:shadow-xs data-vertical:flex-col data-vertical:items-stretch",
         className
       )}
       {...props}
     >
-      <ToggleGroupContext.Provider
-        value={{ variant, size, spacing, orientation }}
-      >
+      <ToggleGroupContext.Provider value={contextValue}>
         {children}
       </ToggleGroupContext.Provider>
     </ToggleGroupPrimitive>
@@ -60,7 +70,7 @@ function ToggleGroupItem({
   size = "default",
   ...props
 }: TogglePrimitive.Props & VariantProps<typeof toggleVariants>) {
-  const context = React.useContext(ToggleGroupContext)
+  const context = React.use(ToggleGroupContext)
 
   return (
     <TogglePrimitive

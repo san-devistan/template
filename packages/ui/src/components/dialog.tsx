@@ -4,6 +4,26 @@ import { cn } from "@workspace/ui/lib/utils"
 import { XIcon } from "lucide-react"
 import * as React from "react"
 
+function renderDialogIconCloseButton({
+  className,
+  ...props
+}: React.ComponentProps<typeof Button>) {
+  return (
+    <Button
+      {...props}
+      variant="ghost"
+      className={cn("absolute top-4 right-4", className)}
+      size="icon-sm"
+    />
+  )
+}
+
+function renderDialogFooterCloseButton(
+  props: React.ComponentProps<typeof Button>
+) {
+  return <Button {...props} variant="outline" />
+}
+
 function Dialog({ ...props }: DialogPrimitive.Root.Props) {
   return <DialogPrimitive.Root data-slot="dialog" {...props} />
 }
@@ -59,13 +79,7 @@ function DialogContent({
         {showCloseButton && (
           <DialogPrimitive.Close
             data-slot="dialog-close"
-            render={
-              <Button
-                variant="ghost"
-                className="absolute top-4 right-4"
-                size="icon-sm"
-              />
-            }
+            render={renderDialogIconCloseButton}
           >
             <XIcon />
             <span className="sr-only">Close</span>
@@ -105,7 +119,7 @@ function DialogFooter({
     >
       {children}
       {showCloseButton && (
-        <DialogPrimitive.Close render={<Button variant="outline" />}>
+        <DialogPrimitive.Close render={renderDialogFooterCloseButton}>
           Close
         </DialogPrimitive.Close>
       )}

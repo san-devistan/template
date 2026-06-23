@@ -1,4 +1,7 @@
-import { Button } from "@workspace/ui/components/button"
+import {
+  buttonVariants,
+  type ButtonVariantProps,
+} from "@workspace/ui/components/button"
 import { cn } from "@workspace/ui/lib/utils"
 import {
   ChevronLeftIcon,
@@ -10,7 +13,6 @@ import * as React from "react"
 function Pagination({ className, ...props }: React.ComponentProps<"nav">) {
   return (
     <nav
-      role="navigation"
       aria-label="pagination"
       data-slot="pagination"
       className={cn("mx-auto flex w-full justify-center", className)}
@@ -38,30 +40,30 @@ function PaginationItem({ ...props }: React.ComponentProps<"li">) {
 
 type PaginationLinkProps = {
   isActive?: boolean
-} & Pick<React.ComponentProps<typeof Button>, "size"> &
-  React.ComponentProps<"a">
+} & {
+  size?: ButtonVariantProps["size"]
+} & React.ComponentProps<"a">
 
 function PaginationLink({
   className,
   isActive,
   size = "icon",
+  children,
   ...props
 }: PaginationLinkProps) {
   return (
-    <Button
-      variant={isActive ? "outline" : "ghost"}
-      size={size}
-      className={cn(className)}
-      nativeButton={false}
-      render={
-        <a
-          aria-current={isActive ? "page" : undefined}
-          data-slot="pagination-link"
-          data-active={isActive}
-          {...props}
-        />
-      }
-    />
+    <a
+      aria-current={isActive ? "page" : undefined}
+      data-slot="pagination-link"
+      data-active={isActive}
+      className={cn(
+        buttonVariants({ variant: isActive ? "outline" : "ghost", size }),
+        className
+      )}
+      {...props}
+    >
+      {children}
+    </a>
   )
 }
 

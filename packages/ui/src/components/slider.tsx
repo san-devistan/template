@@ -1,5 +1,17 @@
 import { Slider as SliderPrimitive } from "@base-ui/react/slider"
 import { cn } from "@workspace/ui/lib/utils"
+import * as React from "react"
+
+function getSliderThumbKeys(values: Array<number>) {
+  const valueCounts = new Map<number, number>()
+
+  return values.map((itemValue) => {
+    const occurrence = valueCounts.get(itemValue) ?? 0
+    valueCounts.set(itemValue, occurrence + 1)
+
+    return `thumb-${itemValue}-${occurrence}`
+  })
+}
 
 function Slider({
   className,
@@ -9,11 +21,16 @@ function Slider({
   max = 100,
   ...props
 }: SliderPrimitive.Root.Props) {
-  const _values = Array.isArray(value)
-    ? value
-    : Array.isArray(defaultValue)
-      ? defaultValue
-      : [min, max]
+  const values = React.useMemo(
+    () =>
+      Array.isArray(value)
+        ? value
+        : Array.isArray(defaultValue)
+          ? defaultValue
+          : [min, max],
+    [defaultValue, max, min, value]
+  )
+  const thumbKeys = React.useMemo(() => getSliderThumbKeys(values), [values])
 
   return (
     <SliderPrimitive.Root
@@ -36,10 +53,10 @@ function Slider({
             className="bg-primary select-none data-horizontal:h-full data-vertical:w-full"
           />
         </SliderPrimitive.Track>
-        {Array.from({ length: _values.length }, (_, index) => (
+        {thumbKeys.map((thumbKey) => (
           <SliderPrimitive.Thumb
             data-slot="slider-thumb"
-            key={index}
+            key={thumbKey}
             className="block size-4 shrink-0 rounded-full border border-primary bg-white shadow-sm ring-ring/50 transition-[color,box-shadow] select-none hover:ring-4 focus-visible:ring-4 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50"
           />
         ))}

@@ -2,7 +2,6 @@ import { Label } from "@workspace/ui/components/label"
 import { Separator } from "@workspace/ui/components/separator"
 import { cn } from "@workspace/ui/lib/utils"
 import { cva, type VariantProps } from "class-variance-authority"
-import { useMemo } from "react"
 
 function FieldSet({ className, ...props }: React.ComponentProps<"fieldset">) {
   return (
@@ -70,10 +69,9 @@ function Field({
   className,
   orientation = "vertical",
   ...props
-}: React.ComponentProps<"div"> & VariantProps<typeof fieldVariants>) {
+}: React.ComponentProps<"fieldset"> & VariantProps<typeof fieldVariants>) {
   return (
-    <div
-      role="group"
+    <fieldset
       data-slot="field"
       data-orientation={orientation}
       className={cn(fieldVariants({ orientation }), className)}
@@ -178,32 +176,18 @@ function FieldError({
 }: React.ComponentProps<"div"> & {
   errors?: Array<{ message?: string } | undefined>
 }) {
-  const content = useMemo(() => {
-    if (children) {
-      return children
-    }
+  if (!children && !errors?.length) {
+    return null
+  }
 
-    if (!errors?.length) {
-      return null
-    }
-
-    const uniqueErrors = [
-      ...new Map(errors.map((error) => [error?.message, error])).values(),
-    ]
-
-    if (uniqueErrors?.length == 1) {
-      return uniqueErrors[0]?.message
-    }
-
-    return (
-      <ul className="ml-4 flex list-disc flex-col gap-1">
-        {uniqueErrors.map(
-          (error, index) =>
-            error?.message && <li key={index}>{error.message}</li>
-        )}
-      </ul>
-    )
-  }, [children, errors])
+  const uniqueErrors = errors?.length
+    ? [...new Map(errors.map((error) => [error?.message, error])).values()]
+    : []
+  const content =
+    children ??
+    (uniqueErrors.length === 1
+      ? uniqueErrors[0]?.message
+      : renderFieldErrorList(uniqueErrors))
 
   if (!content) {
     return null
@@ -218,6 +202,21 @@ function FieldError({
     >
       {content}
     </div>
+  )
+}
+
+function renderFieldErrorList(errors: Array<{ message?: string } | undefined>) {
+  if (!errors.length) {
+    return null
+  }
+
+  return (
+    <ul className="ml-4 flex list-disc flex-col gap-1">
+      {errors.map(
+        (error) =>
+          error?.message && <li key={error.message}>{error.message}</li>
+      )}
+    </ul>
   )
 }
 

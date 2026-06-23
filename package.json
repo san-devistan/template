@@ -3,8 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "build": "turbo build",
-    "dev": "turbo dev",
+    "build": "turbo run build",
+    "dev": "turbo run dev --filter=web --filter=@workspace/backend",
     "fix": "bash scripts/fix.sh",
     "update:deps": "pnpm update -r",
     "update:skills": "npx --yes skills update --project --yes && pnpm -r --workspace-concurrency=1 exec npx --yes skills update --project --yes",

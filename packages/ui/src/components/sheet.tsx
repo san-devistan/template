@@ -6,6 +6,20 @@ import { cn } from "@workspace/ui/lib/utils"
 import { XIcon } from "lucide-react"
 import * as React from "react"
 
+function renderSheetCloseButton({
+  className,
+  ...props
+}: React.ComponentProps<typeof Button>) {
+  return (
+    <Button
+      {...props}
+      variant="ghost"
+      className={cn("absolute top-4 right-4", className)}
+      size="icon-sm"
+    />
+  )
+}
+
 function Sheet({ ...props }: SheetPrimitive.Root.Props) {
   return <SheetPrimitive.Root data-slot="sheet" {...props} />
 }
@@ -61,13 +75,7 @@ function SheetContent({
         {showCloseButton && (
           <SheetPrimitive.Close
             data-slot="sheet-close"
-            render={
-              <Button
-                variant="ghost"
-                className="absolute top-4 right-4"
-                size="icon-sm"
-              />
-            }
+            render={renderSheetCloseButton}
           >
             <XIcon />
             <span className="sr-only">Close</span>
