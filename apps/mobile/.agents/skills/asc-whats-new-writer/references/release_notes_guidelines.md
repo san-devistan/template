@@ -31,15 +31,15 @@ Example hook (168 chars):
 
 ## Anti-Patterns
 
-| Don't | Why |
-|-------|-----|
-| "Bug fixes and improvements" | Tells the user nothing. Wastes the conversion opportunity. |
+| Don't                                      | Why                                                                                     |
+| ------------------------------------------ | --------------------------------------------------------------------------------------- |
+| "Bug fixes and improvements"               | Tells the user nothing. Wastes the conversion opportunity.                              |
 | "Version 2.1.0 — We've been working hard!" | Version numbers in headings violate Apple guidelines. Self-congratulation wastes space. |
-| Mentioning competitors by name | Against App Store Review Guidelines. |
-| References to other platforms | "Now matching our Android version" alienates iOS users. |
-| Keyword stuffing | What's New is NOT indexed for search. Every word should serve conversion, not SEO. |
-| Marketing fluff with no substance | "The best update ever!" without specifics erodes trust. |
-| Walls of text | Users skim. Use short paragraphs or bullet points. |
+| Mentioning competitors by name             | Against App Store Review Guidelines.                                                    |
+| References to other platforms              | "Now matching our Android version" alienates iOS users.                                 |
+| Keyword stuffing                           | What's New is NOT indexed for search. Every word should serve conversion, not SEO.      |
+| Marketing fluff with no substance          | "The best update ever!" without specifics erodes trust.                                 |
+| Walls of text                              | Users skim. Use short paragraphs or bullet points.                                      |
 
 ## Good vs. Bad Examples
 
@@ -78,6 +78,7 @@ Example hook (168 chars):
 What's New is **not indexed** for App Store search. Keywords here serve **conversion only** — users who see familiar search terms in the release notes feel confident they found the right app.
 
 **How to echo:**
+
 1. Read the locale's `keywords` field from local metadata
 2. Identify keywords relevant to the changes being described
 3. Weave them naturally into sentences — do NOT force irrelevant keywords
@@ -111,7 +112,7 @@ When drafting What's New, optionally draft a matching **Promotional Text** (170 
 
 ## Character Limits
 
-| Field | Limit | Indexed? | Requires Submission? |
-|-------|-------|----------|---------------------|
-| What's New | 4,000 | No | Yes |
-| Promotional Text | 170 | No | No |
+| Field            | Limit | Indexed? | Requires Submission? |
+| ---------------- | ----- | -------- | -------------------- |
+| What's New       | 4,000 | No       | Yes                  |
+| Promotional Text | 170   | No       | No                   |

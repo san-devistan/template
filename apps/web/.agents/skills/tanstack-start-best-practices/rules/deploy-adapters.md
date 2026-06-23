@@ -19,7 +19,7 @@ export default defineConfig({
 // Or using wrong adapter for platform
 export default defineConfig({
   server: {
-    preset: 'node-server',  // But deploying to Vercel Edge
+    preset: "node-server", // But deploying to Vercel Edge
   },
 })
 ```
@@ -49,11 +49,11 @@ export default defineConfig({
 
 ```tsx
 // app.config.ts
-import { defineConfig } from '@tanstack/react-start/config'
+import { defineConfig } from "@tanstack/react-start/config"
 
 export default defineConfig({
   server: {
-    preset: 'cloudflare-pages',
+    preset: "cloudflare-pages",
   },
 })
 
@@ -65,7 +65,7 @@ pages_build_output_dir = ".output/public"
 // For Cloudflare Workers (full control)
 export default defineConfig({
   server: {
-    preset: 'cloudflare',
+    preset: "cloudflare",
   },
 })
 ```
@@ -74,21 +74,17 @@ export default defineConfig({
 
 ```tsx
 // app.config.ts
-import { defineConfig } from '@tanstack/react-start/config'
+import { defineConfig } from "@tanstack/react-start/config"
 
-export default defineConfig({
+export default // netlify.toml
+defineConfig({
   server: {
-    preset: 'netlify',
+    preset: "netlify",
   },
-})
-
-// netlify.toml
-[build]
-  command = "npm run build"
-  publish = ".output/public"
-
-[functions]
-  directory = ".output/server"
+})[build]
+command = "npm run build"
+publish = ".output/public"[functions]
+directory = ".output/server"
 ```
 
 ## Good Example: Node.js Server
@@ -121,13 +117,13 @@ CMD ["node", ".output/server/index.mjs"]
 
 ```tsx
 // app.config.ts
-import { defineConfig } from '@tanstack/react-start/config'
+import { defineConfig } from "@tanstack/react-start/config"
 
 export default defineConfig({
   server: {
-    preset: 'static',
+    preset: "static",
     prerender: {
-      routes: ['/'],
+      routes: ["/"],
       crawlLinks: true,
     },
   },
@@ -167,11 +163,11 @@ functions:
 
 ```tsx
 // app.config.ts
-import { defineConfig } from '@tanstack/react-start/config'
+import { defineConfig } from "@tanstack/react-start/config"
 
 export default defineConfig({
   server: {
-    preset: 'bun',
+    preset: "bun",
   },
 })
 
@@ -180,16 +176,16 @@ export default defineConfig({
 
 ## Adapter Comparison
 
-| Adapter | Runtime | Edge | Static | Best For |
-|---------|---------|------|--------|----------|
-| `vercel` | Node/Edge | Yes | Yes | Vercel hosting |
-| `cloudflare-pages` | Workers | Yes | Yes | Cloudflare Pages |
-| `cloudflare` | Workers | Yes | No | Cloudflare Workers |
-| `netlify` | Node | Yes | Yes | Netlify hosting |
-| `node-server` | Node | No | No | Docker, VPS, self-host |
-| `static` | None | No | Yes | Any static host |
-| `aws-lambda` | Node | No | No | AWS serverless |
-| `bun` | Bun | No | No | Bun runtime |
+| Adapter            | Runtime   | Edge | Static | Best For               |
+| ------------------ | --------- | ---- | ------ | ---------------------- |
+| `vercel`           | Node/Edge | Yes  | Yes    | Vercel hosting         |
+| `cloudflare-pages` | Workers   | Yes  | Yes    | Cloudflare Pages       |
+| `cloudflare`       | Workers   | Yes  | No     | Cloudflare Workers     |
+| `netlify`          | Node      | Yes  | Yes    | Netlify hosting        |
+| `node-server`      | Node      | No   | No     | Docker, VPS, self-host |
+| `static`           | None      | No   | Yes    | Any static host        |
+| `aws-lambda`       | Node      | No   | No     | AWS serverless         |
+| `bun`              | Bun       | No   | No     | Bun runtime            |
 
 ## Context
 

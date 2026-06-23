@@ -136,14 +136,14 @@ asc migrate import --app "APP_ID" --version-id "VERSION_ID" --fastlane-dir "./fa
 
 ## Character limits
 
-| Field | Limit |
-|-------|-------|
-| Name | 30 |
-| Subtitle | 30 |
-| Keywords | 100 comma-separated characters |
-| Description | 4000 |
-| What's New | 4000 |
-| Promotional Text | 170 |
+| Field            | Limit                          |
+| ---------------- | ------------------------------ |
+| Name             | 30                             |
+| Subtitle         | 30                             |
+| Keywords         | 100 comma-separated characters |
+| Description      | 4000                           |
+| What's New       | 4000                           |
+| Promotional Text | 170                            |
 
 ## Agent behavior
 

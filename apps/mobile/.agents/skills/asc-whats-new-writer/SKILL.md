@@ -40,6 +40,7 @@ Filter out noise: merge commits, dependency bumps, CI changes, formatting-only c
 ### Bullet Points
 
 User provides rough bullets like:
+
 - "improved search"
 - "fixed crash on launch"
 - "added sleep timer"
@@ -47,6 +48,7 @@ User provides rough bullets like:
 ### Free Text
 
 User describes changes conversationally:
+
 > "We made search faster, fixed that annoying crash when you open the app, and added a sleep timer feature"
 
 The skill extracts and structures the changes from the text.
@@ -60,6 +62,7 @@ Prompt the user: "What changed in this release? You can paste git log output, bu
 ### Step 1: Classify Changes
 
 Group changes into sections per the guidelines:
+
 - **New** — new features or capabilities
 - **Improved** — enhancements to existing features
 - **Fixed** — bug fixes users would notice
@@ -69,6 +72,7 @@ Omit empty sections. If all changes are fixes, only show "Fixed."
 ### Step 2: Write Benefit-Focused Copy
 
 Follow the tone rules from `references/release_notes_guidelines.md`:
+
 - Describe user impact, not implementation details
 - Use direct address ("you") and action verbs
 - Be specific — mention concrete improvements
@@ -94,6 +98,7 @@ The first ~170 characters are the only visible part before "more." Lead with the
 ### Step 6: Optionally Draft Promotional Text
 
 If the user wants it, draft a 170-char promotional text that:
+
 - Summarizes the update's theme in one punchy line
 - Can reference seasonal events
 - Is updatable without a new submission
@@ -116,6 +121,7 @@ Translate the approved notes to all existing locales.
 ### Locale-Specific Keyword Echo
 
 For each locale:
+
 1. Read `keywords` from `metadata/version/{latest}/{locale}.json`
 2. Echo locale-specific keywords naturally in the translated notes
 3. If keywords field is empty, skip echo for that locale
@@ -162,6 +168,7 @@ If promotional text was drafted, either include `--promotional-text "..."` in th
 ### Step 4: Handle Failures
 
 On partial upload failure:
+
 - Report which locales succeeded and which failed
 - Offer to retry failed locales
 

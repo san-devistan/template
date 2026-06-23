@@ -15,7 +15,7 @@ function PostList() {
 
   return (
     <div>
-      {posts.map(post => (
+      {posts.map((post) => (
         <div key={post.id} onClick={() => setSelectedPost(post.id)}>
           {post.title}
         </div>
@@ -41,7 +41,7 @@ function PostList() {
 
 ```tsx
 // routes/posts.tsx
-export const Route = createFileRoute('/posts')({
+export const Route = createFileRoute("/posts")({
   component: PostList,
 })
 
@@ -50,26 +50,26 @@ function PostList() {
 
   return (
     <div>
-      {posts.map(post => (
+      {posts.map((post) => (
         <Link
           key={post.id}
           to="/posts/$postId"
           params={{ postId: post.id }}
           mask={{
-            to: '/posts',
+            to: "/posts",
             // URL shows /posts but routes to /posts/$postId
           }}
         >
           {post.title}
         </Link>
       ))}
-      <Outlet />  {/* Modal renders here */}
+      <Outlet /> {/* Modal renders here */}
     </div>
   )
 }
 
 // routes/posts/$postId.tsx
-export const Route = createFileRoute('/posts/$postId')({
+export const Route = createFileRoute("/posts/$postId")({
   component: PostModal,
 })
 
@@ -78,7 +78,7 @@ function PostModal() {
   const navigate = useNavigate()
 
   return (
-    <Modal onClose={() => navigate({ to: '/posts' })}>
+    <Modal onClose={() => navigate({ to: "/posts" })}>
       <PostDetail postId={postId} />
     </Modal>
   )
@@ -97,14 +97,14 @@ function PostModal() {
 function PostList() {
   return (
     <div>
-      {posts.map(post => (
+      {posts.map((post) => (
         <Link
           key={post.id}
           to="/posts/$postId"
           params={{ postId: post.id }}
           mask={{
-            to: '/posts',
-            search: { modal: post.id },  // /posts?modal=123
+            to: "/posts",
+            search: { modal: post.id }, // /posts?modal=123
           }}
         >
           {post.title}
@@ -123,17 +123,17 @@ function PostCard({ post }: { post: Post }) {
 
   const openInModal = () => {
     navigate({
-      to: '/posts/$postId',
+      to: "/posts/$postId",
       params: { postId: post.id },
       mask: {
-        to: '/posts',
+        to: "/posts",
       },
     })
   }
 
   const openFullPage = () => {
     navigate({
-      to: '/posts/$postId',
+      to: "/posts/$postId",
       params: { postId: post.id },
       // No mask - shows real URL
     })
@@ -159,19 +159,17 @@ function PostModal() {
   const expandToFullPage = () => {
     // Navigate to real URL, removing mask
     navigate({
-      to: '/posts/$postId',
+      to: "/posts/$postId",
       params: { postId },
       // No mask = real URL
-      replace: true,  // Replace history entry
+      replace: true, // Replace history entry
     })
   }
 
   return (
     <Modal>
       <PostDetail postId={postId} />
-      <button onClick={expandToFullPage}>
-        Expand to full page
-      </button>
+      <button onClick={expandToFullPage}>Expand to full page</button>
     </Modal>
   )
 }
@@ -179,13 +177,13 @@ function PostModal() {
 
 ## Route Mask Behavior
 
-| Scenario | URL Shown | Actual Route |
-|----------|-----------|--------------|
-| Click masked link | Masked URL | Real route |
-| Share/copy URL | Real URL | Real route |
-| Direct navigation | Real URL | Real route |
-| Browser refresh | Depends on URL in bar | Matches URL |
-| Back button | Previous URL | Previous route |
+| Scenario          | URL Shown             | Actual Route   |
+| ----------------- | --------------------- | -------------- |
+| Click masked link | Masked URL            | Real route     |
+| Share/copy URL    | Real URL              | Real route     |
+| Direct navigation | Real URL              | Real route     |
+| Browser refresh   | Depends on URL in bar | Matches URL    |
+| Back button       | Previous URL          | Previous route |
 
 ## Context
 

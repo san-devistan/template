@@ -81,15 +81,15 @@ A minimal local component with a table and two functions, plus the app wiring.
 
 ```ts
 // convex/components/notifications/convex.config.ts
-import { defineComponent } from "convex/server";
+import { defineComponent } from "convex/server"
 
-export default defineComponent("notifications");
+export default defineComponent("notifications")
 ```
 
 ```ts
 // convex/components/notifications/schema.ts
-import { defineSchema, defineTable } from "convex/server";
-import { v } from "convex/values";
+import { defineSchema, defineTable } from "convex/server"
+import { v } from "convex/values"
 
 export default defineSchema({
   notifications: defineTable({
@@ -97,13 +97,13 @@ export default defineSchema({
     message: v.string(),
     read: v.boolean(),
   }).index("by_user_read", ["userId", "read"]),
-});
+})
 ```
 
 ```ts
 // convex/components/notifications/lib.ts
-import { v } from "convex/values";
-import { mutation, query } from "./_generated/server.js";
+import { v } from "convex/values"
+import { mutation, query } from "./_generated/server.js"
 
 export const send = mutation({
   args: { userId: v.string(), message: v.string() },
@@ -113,9 +113,9 @@ export const send = mutation({
       userId: args.userId,
       message: args.message,
       read: false,
-    });
+    })
   },
-});
+})
 
 export const listUnread = query({
   args: { userId: v.string() },
@@ -126,63 +126,63 @@ export const listUnread = query({
       userId: v.string(),
       message: v.string(),
       read: v.boolean(),
-    }),
+    })
   ),
   handler: async (ctx, args) => {
     return await ctx.db
       .query("notifications")
       .withIndex("by_user_read", (q) =>
-        q.eq("userId", args.userId).eq("read", false),
+        q.eq("userId", args.userId).eq("read", false)
       )
-      .collect();
+      .collect()
   },
-});
+})
 ```
 
 ```ts
 // convex/convex.config.ts
-import { defineApp } from "convex/server";
-import notifications from "./components/notifications/convex.config.js";
+import { defineApp } from "convex/server"
+import notifications from "./components/notifications/convex.config.js"
 
-const app = defineApp();
-app.use(notifications);
+const app = defineApp()
+app.use(notifications)
 
-export default app;
+export default app
 ```
 
 ```ts
 // convex/notifications.ts  (app-side wrapper)
-import { v } from "convex/values";
-import { mutation, query } from "./_generated/server";
-import { components } from "./_generated/api";
-import { getAuthUserId } from "@convex-dev/auth/server";
+import { v } from "convex/values"
+import { mutation, query } from "./_generated/server"
+import { components } from "./_generated/api"
+import { getAuthUserId } from "@convex-dev/auth/server"
 
 export const sendNotification = mutation({
   args: { message: v.string() },
   returns: v.null(),
   handler: async (ctx, args) => {
-    const userId = await getAuthUserId(ctx);
-    if (!userId) throw new Error("Not authenticated");
+    const userId = await getAuthUserId(ctx)
+    if (!userId) throw new Error("Not authenticated")
 
     await ctx.runMutation(components.notifications.lib.send, {
       userId,
       message: args.message,
-    });
-    return null;
+    })
+    return null
   },
-});
+})
 
 export const myUnread = query({
   args: {},
   handler: async (ctx) => {
-    const userId = await getAuthUserId(ctx);
-    if (!userId) throw new Error("Not authenticated");
+    const userId = await getAuthUserId(ctx)
+    if (!userId) throw new Error("Not authenticated")
 
     return await ctx.runQuery(components.notifications.lib.listUnread, {
       userId,
-    });
+    })
   },
-});
+})
 ```
 
 Note the reference path shape: a function in
@@ -220,27 +220,27 @@ Note the reference path shape: a function in
 
 ```ts
 // Bad: component code cannot rely on app auth or env
-const identity = await ctx.auth.getUserIdentity();
-const apiKey = process.env.OPENAI_API_KEY;
+const identity = await ctx.auth.getUserIdentity()
+const apiKey = process.env.OPENAI_API_KEY
 ```
 
 ```ts
 // Good: the app resolves auth and env, then passes explicit values
-const userId = await getAuthUserId(ctx);
-if (!userId) throw new Error("Not authenticated");
+const userId = await getAuthUserId(ctx)
+if (!userId) throw new Error("Not authenticated")
 
 await ctx.runAction(components.translator.translate, {
   userId,
   apiKey: process.env.OPENAI_API_KEY,
   text: args.text,
-});
+})
 ```
 
 ### Client-facing API
 
 ```ts
 // Bad: assuming a component function is directly callable by clients
-export const send = components.notifications.send;
+export const send = components.notifications.send
 ```
 
 ```ts
@@ -249,16 +249,16 @@ export const sendNotification = mutation({
   args: { message: v.string() },
   returns: v.null(),
   handler: async (ctx, args) => {
-    const userId = await getAuthUserId(ctx);
-    if (!userId) throw new Error("Not authenticated");
+    const userId = await getAuthUserId(ctx)
+    if (!userId) throw new Error("Not authenticated")
 
     await ctx.runMutation(components.notifications.lib.send, {
       userId,
       message: args.message,
-    });
-    return null;
+    })
+    return null
   },
-});
+})
 ```
 
 ### IDs across the boundary

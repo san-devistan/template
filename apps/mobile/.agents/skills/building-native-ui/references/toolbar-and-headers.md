@@ -7,8 +7,8 @@ Add native iOS toolbar items to Stack screens. Items can be placed in the header
 ## Notes app example
 
 ```tsx
-import { Stack } from "expo-router";
-import { ScrollView } from "react-native";
+import { Stack } from "expo-router"
+import { ScrollView } from "react-native"
 
 export default function FoldersScreen() {
   return (
@@ -38,19 +38,19 @@ export default function FoldersScreen() {
         />
       </Stack.Toolbar>
     </>
-  );
+  )
 }
 ```
 
 ## Mail inbox example
 
 ```tsx
-import { Color, Stack } from "expo-router";
-import { useState } from "react";
-import { ScrollView, Text, View } from "react-native";
+import { Color, Stack } from "expo-router"
+import { useState } from "react"
+import { ScrollView, Text, View } from "react-native"
 
 export default function InboxScreen() {
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [isFilterOpen, setIsFilterOpen] = useState(false)
   return (
     <>
       <ScrollView
@@ -114,7 +114,7 @@ export default function InboxScreen() {
         />
       </Stack.Toolbar>
     </>
-  );
+  )
 }
 ```
 
@@ -210,7 +210,7 @@ export default function Page() {
       <ScrollView>{/* Screen content */}</ScrollView>
       <InboxHeader />
     </>
-  );
+  )
 }
 
 function InboxHeader() {
@@ -220,7 +220,7 @@ function InboxHeader() {
       <Stack.SearchBar placeholder="Search" onChangeText={() => {}} />
       <Stack.Toolbar placement="right">{/* Toolbar buttons */}</Stack.Toolbar>
     </>
-  );
+  )
 }
 ```
 
@@ -235,7 +235,7 @@ function Buttons() {
       <Stack.Toolbar.Button icon="star.fill" onPress={() => {}} />
       <Stack.Toolbar.Button onPress={() => {}}>Done</Stack.Toolbar.Button>
     </>
-  );
+  )
 }
 
 function Page() {
@@ -246,7 +246,7 @@ function Page() {
         <Buttons /> {/* ❌ This will NOT work */}
       </Stack.Toolbar>
     </>
-  );
+  )
 }
 ```
 
@@ -259,7 +259,7 @@ function ToolbarWithButtons() {
       <Stack.Toolbar.Button icon="star.fill" onPress={() => {}} />
       <Stack.Toolbar.Button onPress={() => {}}>Done</Stack.Toolbar.Button>
     </Stack.Toolbar>
-  );
+  )
 }
 
 function Page() {
@@ -268,7 +268,7 @@ function Page() {
       <ScrollView>{/* Screen content */}</ScrollView>
       <ToolbarWithButtons /> {/* ✅ This will work */}
     </>
-  );
+  )
 }
 ```
 

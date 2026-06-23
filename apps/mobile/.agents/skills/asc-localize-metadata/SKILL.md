@@ -19,6 +19,7 @@ Use this skill to pull English (or any source locale) App Store metadata, transl
 - Prefer deterministic ID-based operations. Do not "pick the first row" via `head -1` unless the user explicitly agrees.
 
 ## Preconditions
+
 - Auth configured (`asc auth login` or `ASC_*` env vars)
 - Know your app ID (`asc apps list` to find it)
 - At least one locale (typically en-US) already has metadata in App Store Connect
@@ -26,6 +27,7 @@ Use this skill to pull English (or any source locale) App Store metadata, transl
 ## Supported Locales
 
 App Store Connect locales for version and app-info localizations:
+
 ```
 ar-SA, ca, cs, da, de-DE, el, en-AU, en-CA, en-GB, en-US,
 es-ES, es-MX, fi, fr-CA, fr-FR, he, hi, hr, hu, id, it,
@@ -36,9 +38,11 @@ sv, th, tr, uk, vi, zh-Hans, zh-Hant
 ## Two Types of Metadata
 
 ### Version Localizations (per-release)
+
 Fields: `description`, `keywords`, `whatsNew`, `supportUrl`, `marketingUrl`, `promotionalText`
 
 ### App Info Localizations (app-level, persistent)
+
 Fields: `name`, `subtitle`, `privacyPolicyUrl`, `privacyChoicesUrl`, `privacyPolicyText`
 
 ## Workflow
@@ -59,6 +63,7 @@ asc apps info list --app "APP_ID" --output table
 ```
 
 Notes:
+
 - Version-localization fields (description, keywords, whatsNew, etc.) are per-version.
 - App-info fields (name, subtitle, privacy URLs/text) are app-level and use `--type app-info`.
 - If you only have names (app name, version string) and need IDs deterministically, use `asc-id-resolver`.
@@ -87,6 +92,7 @@ asc localizations list --version "VERSION_ID" --output table
 For each target locale, translate the source text. Follow these rules:
 
 #### Translation Guidelines
+
 - **Tone & Register**: Always use formal, polite language. Use formal "you" forms where the language distinguishes them (Russian: «вы», German: «Sie», French: «vous», Spanish: «usted», Dutch: «u», Italian: «Lei», Portuguese: «você» formal, etc.). App Store descriptions are professional marketing copy — never use casual or informal register.
 - **description**: Translate naturally, adapt tone to local market. Keep formatting (line breaks, bullet points, emoji). Stay within 4000 chars.
 - **keywords**: Do NOT literally translate. Research what users in that locale would search for. Comma-separated, max 100 chars total. No duplicates, no app name (Apple adds it automatically).
@@ -147,6 +153,7 @@ Version localization example:
 ```
 
 Then upload version localizations:
+
 ```bash
 asc localizations upload --version "VERSION_ID" --path "./localizations"
 ```
@@ -159,6 +166,7 @@ App-info localization example:
 ```
 
 Then upload app-info localizations:
+
 ```bash
 asc localizations upload --app "APP_ID" --type app-info --app-info "APP_INFO_ID" --path "./app-info-localizations"
 ```
@@ -175,6 +183,7 @@ asc apps info edit --app "APP_ID" --version-id "VERSION_ID" --locale "nl-NL" \
 ```
 
 For app-level fields:
+
 ```bash
 # Subtitle/name (app-info localization) is managed via app-info localizations.
 # Use the app-info localization .strings + upload flow; there is no app-infos localizations command.
@@ -198,14 +207,14 @@ asc localizations list --app "APP_ID" --type app-info --app-info "APP_INFO_ID" -
 
 ## Character Limits (enforce before upload!)
 
-| Field | Limit |
-|-------|-------|
-| Name | 30 |
-| Subtitle | 30 |
-| Keywords | 100 (comma-separated) |
-| Description | 4000 |
-| What's New | 4000 |
-| Promotional Text | 170 |
+| Field            | Limit                 |
+| ---------------- | --------------------- |
+| Name             | 30                    |
+| Subtitle         | 30                    |
+| Keywords         | 100 (comma-separated) |
+| Description      | 4000                  |
+| What's New       | 4000                  |
+| Promotional Text | 170                   |
 
 **Always validate** translated text fits within limits before uploading. Truncated text looks unprofessional. If translation exceeds the limit, shorten it — do not truncate mid-sentence.
 
@@ -256,6 +265,7 @@ asc localizations list --app "$APP_ID" --type app-info --app-info "$APP_INFO_ID"
 10. **For updates to existing localizations** — download current, show diff of what will change, get approval, then upload.
 
 ## Notes
+
 - Version localizations are tied to a specific version. Create the version first if it doesn't exist.
 - `promotionalText` can be updated anytime without a new version submission.
 - `whatsNew` is only relevant for updates, not the first version.

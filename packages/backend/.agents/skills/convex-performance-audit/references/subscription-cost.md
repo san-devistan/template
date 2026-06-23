@@ -152,15 +152,15 @@ are not ready.
 
 ```ts
 // Bad: subscribes with undefined args, wastes a subscription slot
-const profile = useQuery(api.users.getProfile, { userId: selectedId! });
+const profile = useQuery(api.users.getProfile, { userId: selectedId! })
 ```
 
 ```ts
 // Good: skip when there is nothing to fetch
 const profile = useQuery(
   api.users.getProfile,
-  selectedId ? { userId: selectedId } : "skip",
-);
+  selectedId ? { userId: selectedId } : "skip"
+)
 ```
 
 ### 4. Isolate frequently-updated fields into separate documents
@@ -176,7 +176,7 @@ const users = defineTable({
   name: v.string(),
   email: v.string(),
   lastSeen: v.number(),
-});
+})
 ```
 
 ```ts
@@ -185,11 +185,11 @@ const users = defineTable({
   name: v.string(),
   email: v.string(),
   heartbeatId: v.id("heartbeats"),
-});
+})
 
 const heartbeats = defineTable({
   lastSeen: v.number(),
-});
+})
 ```
 
 Queries that only need `name` and `email` no longer re-run on every heartbeat.
@@ -226,18 +226,18 @@ Queries that return less data and touch fewer documents invalidate less often.
 // Bad: returns all fields, invalidates on any field change
 export const list = query({
   handler: async (ctx) => {
-    return await ctx.db.query("projects").collect();
+    return await ctx.db.query("projects").collect()
   },
-});
+})
 ```
 
 ```ts
 // Good: use a digest table with only the fields the list needs
 export const listDigests = query({
   handler: async (ctx) => {
-    return await ctx.db.query("projectDigests").collect();
+    return await ctx.db.query("projectDigests").collect()
   },
-});
+})
 ```
 
 Writes to fields not in the digest table do not invalidate the digest query.
@@ -253,7 +253,7 @@ increases database work even when the underlying data has not changed.
 const releasedPosts = await ctx.db
   .query("posts")
   .withIndex("by_released_at", (q) => q.lte("releasedAt", Date.now()))
-  .take(100);
+  .take(100)
 ```
 
 ```ts
@@ -261,7 +261,7 @@ const releasedPosts = await ctx.db
 const releasedPosts = await ctx.db
   .query("posts")
   .withIndex("by_is_released", (q) => q.eq("isReleased", true))
-  .take(100);
+  .take(100)
 ```
 
 If the query must compare against a time value, pass it as an explicit argument

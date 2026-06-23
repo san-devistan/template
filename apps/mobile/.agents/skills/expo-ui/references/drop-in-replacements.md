@@ -6,16 +6,16 @@
 
 Every drop-in lives under `@expo/ui/community/<kebab-case-name>`. Note which are default vs named imports.
 
-| Replaces | Import |
-|----------|--------|
-| `@gorhom/bottom-sheet` | `import BottomSheet, { BottomSheetView } from '@expo/ui/community/bottom-sheet'` |
-| `@react-native-community/datetimepicker` | `import DateTimePicker from '@expo/ui/community/datetime-picker'` |
-| `@react-native-masked-view/masked-view` | `import { MaskedView } from '@expo/ui/community/masked-view'` |
-| `@react-native-menu/menu` | `import { MenuView } from '@expo/ui/community/menu'` |
-| `react-native-pager-view` | `import PagerView from '@expo/ui/community/pager-view'` |
-| `@react-native-picker/picker` | `import { Picker } from '@expo/ui/community/picker'` |
-| `@react-native-segmented-control/segmented-control` | `import SegmentedControl from '@expo/ui/community/segmented-control'` |
-| `@react-native-community/slider` | `import Slider from '@expo/ui/community/slider'` |
+| Replaces                                            | Import                                                                           |
+| --------------------------------------------------- | -------------------------------------------------------------------------------- |
+| `@gorhom/bottom-sheet`                              | `import BottomSheet, { BottomSheetView } from '@expo/ui/community/bottom-sheet'` |
+| `@react-native-community/datetimepicker`            | `import DateTimePicker from '@expo/ui/community/datetime-picker'`                |
+| `@react-native-masked-view/masked-view`             | `import { MaskedView } from '@expo/ui/community/masked-view'`                    |
+| `@react-native-menu/menu`                           | `import { MenuView } from '@expo/ui/community/menu'`                             |
+| `react-native-pager-view`                           | `import PagerView from '@expo/ui/community/pager-view'`                          |
+| `@react-native-picker/picker`                       | `import { Picker } from '@expo/ui/community/picker'`                             |
+| `@react-native-segmented-control/segmented-control` | `import SegmentedControl from '@expo/ui/community/segmented-control'`            |
+| `@react-native-community/slider`                    | `import Slider from '@expo/ui/community/slider'`                                 |
 
 ## Confirming the API
 

@@ -10,7 +10,7 @@ Use `@tanstack/react-router-ssr-query` to automatically handle SSR dehydration/h
 
 ```tsx
 // Manual dehydration - verbose and error-prone
-import { dehydrate, hydrate } from '@tanstack/react-query'
+import { dehydrate, hydrate } from "@tanstack/react-query"
 
 const router = createRouter({
   routeTree,
@@ -26,9 +26,7 @@ const router = createRouter({
   },
 
   Wrap: ({ children }) => (
-    <QueryClientProvider client={queryClient}>
-      {children}
-    </QueryClientProvider>
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   ),
 })
 ```
@@ -37,10 +35,10 @@ const router = createRouter({
 
 ```tsx
 // router.tsx
-import { QueryClient } from '@tanstack/react-query'
-import { createRouter } from '@tanstack/react-router'
-import { setupRouterSsrQueryIntegration } from '@tanstack/react-router-ssr-query'
-import { routeTree } from './routeTree.gen'
+import { QueryClient } from "@tanstack/react-query"
+import { createRouter } from "@tanstack/react-router"
+import { setupRouterSsrQueryIntegration } from "@tanstack/react-router-ssr-query"
+import { routeTree } from "./routeTree.gen"
 
 export function getRouter() {
   const queryClient = new QueryClient({
@@ -55,7 +53,7 @@ export function getRouter() {
   const router = createRouter({
     routeTree,
     context: { queryClient },
-    defaultPreload: 'intent',
+    defaultPreload: "intent",
     defaultPreloadStaleTime: 0, // Let Query manage cache freshness
     scrollRestoration: true,
     defaultStructuralSharing: true,
@@ -65,8 +63,8 @@ export function getRouter() {
   setupRouterSsrQueryIntegration({
     router,
     queryClient,
-    handleRedirects: true,  // Intercept redirects from queries/mutations
-    wrapQueryClient: true,  // Auto-wrap with QueryClientProvider
+    handleRedirects: true, // Intercept redirects from queries/mutations
+    wrapQueryClient: true, // Auto-wrap with QueryClientProvider
   })
 
   return router
@@ -76,8 +74,8 @@ export function getRouter() {
 ## Good Example: With Error and NotFound Components
 
 ```tsx
-import { DefaultCatchBoundary } from '@/components/DefaultCatchBoundary'
-import { DefaultNotFound } from '@/components/DefaultNotFound'
+import { DefaultCatchBoundary } from "@/components/DefaultCatchBoundary"
+import { DefaultNotFound } from "@/components/DefaultNotFound"
 
 export function getRouter() {
   const queryClient = new QueryClient({
@@ -92,7 +90,7 @@ export function getRouter() {
   const router = createRouter({
     routeTree,
     context: { queryClient, user: null },
-    defaultPreload: 'intent',
+    defaultPreload: "intent",
     defaultPreloadStaleTime: 0,
     defaultErrorComponent: DefaultCatchBoundary,
     defaultNotFoundComponent: DefaultNotFound,
@@ -115,7 +113,7 @@ export function getRouter() {
 
 ```tsx
 // If you need custom provider setup (e.g., for DevTools)
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 
 export function getRouter() {
   const queryClient = new QueryClient()
@@ -123,7 +121,7 @@ export function getRouter() {
   const router = createRouter({
     routeTree,
     context: { queryClient },
-    defaultPreload: 'intent',
+    defaultPreload: "intent",
     defaultPreloadStaleTime: 0,
     scrollRestoration: true,
   })
@@ -139,7 +137,7 @@ export function getRouter() {
   router.options.Wrap = ({ children }) => (
     <QueryClientProvider client={queryClient}>
       {children}
-      {process.env.NODE_ENV === 'development' && (
+      {process.env.NODE_ENV === "development" && (
         <ReactQueryDevtools initialIsOpen={false} />
       )}
     </QueryClientProvider>
@@ -159,7 +157,7 @@ import react from "@vitejs/plugin-react"
 
 export default defineConfig({
   plugins: [
-    tanstackStart(),  // Handles SSR entry points automatically
+    tanstackStart(), // Handles SSR entry points automatically
     react(),
   ],
 })
@@ -169,12 +167,12 @@ TanStack Start handles client hydration and SSR automatically via the Vite plugi
 
 ## setupRouterSsrQueryIntegration Options
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `router` | Router | Required | Your router instance |
-| `queryClient` | QueryClient | Required | Your QueryClient instance |
-| `handleRedirects` | boolean | `true` | Intercept and handle redirects from queries/mutations |
-| `wrapQueryClient` | boolean | `true` | Wrap router with QueryClientProvider automatically |
+| Option            | Type        | Default  | Description                                           |
+| ----------------- | ----------- | -------- | ----------------------------------------------------- |
+| `router`          | Router      | Required | Your router instance                                  |
+| `queryClient`     | QueryClient | Required | Your QueryClient instance                             |
+| `handleRedirects` | boolean     | `true`   | Intercept and handle redirects from queries/mutations |
+| `wrapQueryClient` | boolean     | `true`   | Wrap router with QueryClientProvider automatically    |
 
 ## SSR Data Flow
 

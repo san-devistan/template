@@ -13,9 +13,9 @@ If a single team owns both layers, is comfortable with React Native tooling and 
 
 ## What you produce
 
-| Platform | Artifact                                                                                                                                                                                            | Default location                                              |
-| -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
-| Android  | `{group}:{libraryName}:{version}` AAR                                                                                                                                                               | Local Maven (`~/.m2`) by default; remote Maven also supported |
+| Platform | Artifact                                                                                                                                                                                                                | Default location                                              |
+| -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| Android  | `{group}:{libraryName}:{version}` AAR                                                                                                                                                                                   | Local Maven (`~/.m2`) by default; remote Maven also supported |
 | iOS      | Set of `.xcframework`s — see [the iOS section below](#ios) for how `ios.buildReactNativeFromSource` (default `false` on SDK 56+) controls whether you get 5 frameworks or 2 — or a single Swift Package via `--package` | `./artifacts`                                                 |
 
 The JavaScript bundle is **embedded inside the artifact** in release builds, so the native app does not need Metro at runtime in production.
@@ -179,7 +179,10 @@ To force source builds on SDK 56+, add `expo-build-properties` to `app.json`:
 {
   "expo": {
     "plugins": [
-      ["expo-build-properties", { "ios": { "buildReactNativeFromSource": true } }],
+      [
+        "expo-build-properties",
+        { "ios": { "buildReactNativeFromSource": true } }
+      ],
       "expo-brownfield"
     ]
   }

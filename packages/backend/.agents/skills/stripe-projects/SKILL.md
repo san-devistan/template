@@ -20,7 +20,6 @@ allowed-tools:
   - Bash(brew upgrade stripe/stripe-cli/stripe)
   - Skill
   - Read
-
 ---
 
 ## Stripe Projects — Service Provisioning
