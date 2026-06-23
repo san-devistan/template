@@ -8,7 +8,6 @@ description: Track build processing, find latest builds, and clean up old builds
 Use this skill to manage build state, processing, and retention.
 
 ## Find the right build
-
 - Latest build:
   - `asc builds info --app "APP_ID" --latest --version "1.2.3" --platform IOS`
 - Next safe build number:
@@ -17,17 +16,14 @@ Use this skill to manage build state, processing, and retention.
   - `asc builds list --app "APP_ID" --sort -uploadedDate --limit 10`
 
 ## Inspect processing state
-
 - `asc builds info --build-id "BUILD_ID"`
 
 ## Distribution flows
-
 - Prefer end-to-end:
   - `asc publish testflight --app "APP_ID" --ipa "./app.ipa" --group "GROUP_ID" --wait`
   - `asc publish appstore --app "APP_ID" --ipa "./app.ipa" --version "1.2.3" --wait --submit --confirm`
 
 ## Cleanup
-
 - Preview expiration:
   - `asc builds expire-all --app "APP_ID" --older-than 90d --dry-run`
 - Apply expiration:
@@ -36,6 +32,5 @@ Use this skill to manage build state, processing, and retention.
   - `asc builds expire --build-id "BUILD_ID" --confirm`
 
 ## Notes
-
 - `asc builds upload` prepares upload operations only; use `asc publish` for end-to-end flows.
 - For long processing times, use `--wait`, `--poll-interval`, and `--timeout` where supported.

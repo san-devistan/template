@@ -15,7 +15,6 @@
 **Prefer the Resend Webhook API** to create webhooks programmatically instead of asking users to do it manually in the dashboard. This is faster, less error-prone, and gives you the signing secret directly in the response.
 
 The API endpoint is `POST https://api.resend.com/webhooks`. You need:
-
 - `endpoint` (string, required): Your full public webhook URL (e.g., `https://<your-tunnel-domain>/webhook`)
 - `events` (string[], required): Event types to subscribe to. For an agent inbox, use `["email.received"]`
 
@@ -24,23 +23,23 @@ The response includes a `signing_secret` (format: `whsec_xxxxxxxxxx`) — **stor
 ### Node.js
 
 ```typescript
-import { Resend } from "resend"
+import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 const { data, error } = await resend.webhooks.create({
-  endpoint: "https://<your-tunnel-domain>/webhook",
-  events: ["email.received"],
-})
+  endpoint: 'https://<your-tunnel-domain>/webhook',
+  events: ['email.received'],
+});
 
 if (error) {
-  console.error("Failed to create webhook:", error)
-  throw error
+  console.error('Failed to create webhook:', error);
+  throw error;
 }
 
 // IMPORTANT: Store the signing secret — you need it to verify incoming webhooks
 // Write it directly to .env, never log it
-console.log("Webhook created:", data.id)
+console.log('Webhook created:', data.id);
 ```
 
 ### Python
@@ -87,9 +86,9 @@ The `signing_secret` returned when you create a webhook is used to verify that i
 
 Every webhook request includes three headers:
 
-| Header           | Purpose                                  |
-| ---------------- | ---------------------------------------- |
-| `svix-id`        | Unique message identifier                |
+| Header | Purpose |
+|--------|---------|
+| `svix-id` | Unique message identifier |
 | `svix-timestamp` | Unix timestamp when the webhook was sent |
 | `svix-signature` | Cryptographic signature for verification |
 
@@ -104,29 +103,29 @@ npm install svix
 ```
 
 ```javascript
-import { Webhook } from "svix"
+import { Webhook } from 'svix';
 
-const wh = new Webhook(process.env.RESEND_WEBHOOK_SECRET)
+const wh = new Webhook(process.env.RESEND_WEBHOOK_SECRET);
 const event = wh.verify(payload, {
-  "svix-id": req.headers["svix-id"],
-  "svix-timestamp": req.headers["svix-timestamp"],
-  "svix-signature": req.headers["svix-signature"],
-})
+  'svix-id': req.headers['svix-id'],
+  'svix-timestamp': req.headers['svix-timestamp'],
+  'svix-signature': req.headers['svix-signature'],
+});
 ```
 
 ## Webhook Retry Behavior
 
 Resend automatically retries failed webhook deliveries with exponential backoff:
 
-| Attempt | Delay      |
-| ------- | ---------- |
-| 1       | Immediate  |
-| 2       | 5 seconds  |
-| 3       | 5 minutes  |
-| 4       | 30 minutes |
-| 5       | 2 hours    |
-| 6       | 5 hours    |
-| 7       | 10 hours   |
+| Attempt | Delay |
+|---------|-------|
+| 1 | Immediate |
+| 2 | 5 seconds |
+| 3 | 5 minutes |
+| 4 | 30 minutes |
+| 5 | 2 hours |
+| 6 | 5 hours |
+| 7 | 10 hours |
 
 - Your endpoint must return 2xx status to acknowledge receipt
 - If an endpoint is removed or disabled, retry attempts stop automatically
@@ -140,7 +139,6 @@ Your local server isn't accessible from the internet. Use tunneling to expose it
 > **Critical: Persistent URLs Required**
 >
 > Webhook URLs are registered with Resend via the API. If your tunnel URL changes (e.g., ngrok restart on the free tier), you must delete and recreate the webhook registration. For development, this is manageable. For anything persistent, you need either:
->
 > - A **permanent tunnel** with stable URLs (Tailscale Funnel, paid ngrok, Cloudflare named tunnels)
 > - **Production deployment** to a real server
 
@@ -149,7 +147,6 @@ Your local server isn't accessible from the internet. Use tunneling to expose it
 **Tailscale Funnel is the best solution for webhook development and persistent agent setups.** It provides a permanent, stable HTTPS URL with valid certificates — completely free, with no timeouts or session limits.
 
 **Why Tailscale Funnel is better than ngrok for webhooks:**
-
 - Permanent URL — Never changes, even across restarts
 - No timeouts — Free tier has no 8-hour session limits
 - Auto-reconnects — Survives machine reboots via systemd service
@@ -157,7 +154,6 @@ Your local server isn't accessible from the internet. Use tunneling to expose it
 - Free forever — No paid tier required
 
 **Quick setup:**
-
 ```bash
 # 1. Install Tailscale (one-time)
 curl -fsSL https://tailscale.com/install.sh | sh
@@ -173,7 +169,6 @@ sudo tailscale funnel 3000
 ```
 
 **Running in background:**
-
 ```bash
 # Tailscale Funnel runs as a systemd service automatically
 # It will survive reboots and reconnect automatically
@@ -186,7 +181,6 @@ sudo tailscale funnel off
 ```
 
 **Your webhook URL format:**
-
 ```
 https://<machine-name>.tail<hash>.ts.net/webhook
 ```
@@ -194,13 +188,11 @@ https://<machine-name>.tail<hash>.ts.net/webhook
 ### ngrok (Alternative)
 
 **Free tier limitations:**
-
 - URLs are random and change on every restart
 - Must delete and recreate the webhook via the API after each restart
 - Fine for initial testing, painful for ongoing development
 
 **Paid tier ($8/mo Personal plan):**
-
 - Static subdomain that persists across restarts
 - Recommended if using ngrok long-term
 
@@ -221,7 +213,6 @@ ngrok http --domain=myagent.ngrok.io 3000
 ### Cloudflare Tunnel (Alternative)
 
 **Named tunnel (persistent — recommended):**
-
 ```bash
 # Install
 brew install cloudflared  # macOS
@@ -277,18 +268,15 @@ For a reliable agent inbox, deploy your webhook endpoint to production infrastru
 ### Recommended Approaches
 
 **Option A: Deploy webhook handler to serverless**
-
 - Vercel, Netlify, or Cloudflare Workers
 - Zero server management, automatic HTTPS
 - Free tiers available for low volume
 
 **Option B: Deploy to a VPS/cloud instance**
-
 - Your webhook handler runs alongside your agent
 - Use nginx/caddy for HTTPS termination
 
 **Option C: Use your agent's existing infrastructure**
-
 - If your agent already runs on a server with a public IP
 - Add webhook route to existing web server
 
@@ -314,9 +302,9 @@ From: ${email.from}
 Subject: ${email.subject}
 
 ${email.body}
-  `.trim()
+  `.trim();
 
-  await sendToClawdbot(message)
+  await sendToClawdbot(message);
 }
 ```
 

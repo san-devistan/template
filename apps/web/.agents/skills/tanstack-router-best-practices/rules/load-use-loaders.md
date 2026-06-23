@@ -33,9 +33,9 @@ function PostsPage() {
 
 ```tsx
 // routes/posts.tsx
-import { createFileRoute } from "@tanstack/react-router"
+import { createFileRoute } from '@tanstack/react-router'
 
-export const Route = createFileRoute("/posts")({
+export const Route = createFileRoute('/posts')({
   loader: async () => {
     const posts = await fetchPosts()
     return { posts }
@@ -54,7 +54,7 @@ function PostsPage() {
 
 ```tsx
 // routes/posts/$postId.tsx
-export const Route = createFileRoute("/posts/$postId")({
+export const Route = createFileRoute('/posts/$postId')({
   loader: async ({ params }) => {
     // params are type-safe and guaranteed to exist
     const post = await fetchPost(params.postId)
@@ -82,15 +82,15 @@ function PostDetailPage() {
 
 ```tsx
 // routes/posts/$postId.tsx
-import { queryOptions } from "@tanstack/react-query"
+import { queryOptions } from '@tanstack/react-query'
 
 const postQueryOptions = (postId: string) =>
   queryOptions({
-    queryKey: ["posts", postId],
+    queryKey: ['posts', postId],
     queryFn: () => fetchPost(postId),
   })
 
-export const Route = createFileRoute("/posts/$postId")({
+export const Route = createFileRoute('/posts/$postId')({
   loader: async ({ params, context: { queryClient } }) => {
     // Ensure data is in cache before render
     await queryClient.ensureQueryData(postQueryOptions(params.postId))
@@ -110,17 +110,17 @@ function PostDetailPage() {
 ## Loader Context Properties
 
 ```tsx
-export const Route = createFileRoute("/posts")({
+export const Route = createFileRoute('/posts')({
   loader: async ({
-    params, // Route path parameters
-    context, // Route context (queryClient, auth, etc.)
+    params,       // Route path parameters
+    context,      // Route context (queryClient, auth, etc.)
     abortController, // For cancelling stale requests
-    cause, // 'enter' | 'preload' | 'stay'
-    deps, // Dependencies from loaderDeps
-    preload, // Boolean: true if preloading
+    cause,        // 'enter' | 'preload' | 'stay'
+    deps,         // Dependencies from loaderDeps
+    preload,      // Boolean: true if preloading
   }) => {
     // Use abortController for fetch cancellation
-    const response = await fetch("/api/posts", {
+    const response = await fetch('/api/posts', {
       signal: abortController.signal,
     })
 

@@ -16,7 +16,7 @@ function PostDetail() {
   // params: { postId?: string; userId?: string; categoryId?: string; ... }
 
   // TypeScript can't guarantee postId exists
-  console.log(params.postId) // postId: string | undefined
+  console.log(params.postId)  // postId: string | undefined
 }
 
 // Similarly for search params
@@ -31,27 +31,27 @@ function SearchResults() {
 ```tsx
 // With 'from' - exact types for this specific route
 function PostDetail() {
-  const params = useParams({ from: "/posts/$postId" })
+  const params = useParams({ from: '/posts/$postId' })
   // params: { postId: string } - exactly what this route provides
 
-  console.log(params.postId) // postId: string (guaranteed)
+  console.log(params.postId)  // postId: string (guaranteed)
 }
 
 // Full path matching
 function UserPost() {
-  const params = useParams({ from: "/users/$userId/posts/$postId" })
+  const params = useParams({ from: '/users/$userId/posts/$postId' })
   // params: { userId: string; postId: string }
 }
 
 // Search params with type narrowing
 function SearchResults() {
-  const search = useSearch({ from: "/search" })
+  const search = useSearch({ from: '/search' })
   // search: exactly the validated search params for /search route
 }
 
 // Loader data with type inference
 function PostPage() {
-  const { post, comments } = useLoaderData({ from: "/posts/$postId" })
+  const { post, comments } = useLoaderData({ from: '/posts/$postId' })
   // Exact types from your loader function
 }
 ```
@@ -60,9 +60,9 @@ function PostPage() {
 
 ```tsx
 // routes/posts/$postId.tsx
-import { createFileRoute } from "@tanstack/react-router"
+import { createFileRoute } from '@tanstack/react-router'
 
-export const Route = createFileRoute("/posts/$postId")({
+export const Route = createFileRoute('/posts/$postId')({
   loader: async ({ params }) => {
     const post = await fetchPost(params.postId)
     return { post }
@@ -85,10 +85,10 @@ function PostComponent() {
 
 ```tsx
 // components/PostDetail.tsx (separate file from route)
-import { getRouteApi } from "@tanstack/react-router"
+import { getRouteApi } from '@tanstack/react-router'
 
 // Get type-safe access without importing the route
-const postRoute = getRouteApi("/posts/$postId")
+const postRoute = getRouteApi('/posts/$postId')
 
 export function PostDetail() {
   const params = postRoute.useParams()

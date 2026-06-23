@@ -7,11 +7,9 @@ Use these examples as execution templates for realistic catalog synchronization 
 Goal: compare ASC and RevenueCat, produce a no-write reconciliation report.
 
 ### User request
-
 `Audit my ASC subscriptions and IAP catalog against RevenueCat and show what is missing on either side.`
 
 ### Expected behavior
-
 1. Read ASC:
    - `asc subscriptions groups list --app "APP_ID" --paginate --output json`
    - `asc iap list --app "APP_ID" --paginate --output json`
@@ -30,11 +28,9 @@ Goal: compare ASC and RevenueCat, produce a no-write reconciliation report.
 Goal: bootstrap both systems when store products are partially missing.
 
 ### User request
-
 `Ensure monthly and annual subscriptions exist in ASC for app APP_ID, then sync them to RevenueCat project PROJECT_ID under my iOS app.`
 
 ### Expected behavior
-
 1. Audit existing resources first.
 2. If missing in ASC:
    - create group:
@@ -55,11 +51,9 @@ Goal: bootstrap both systems when store products are partially missing.
 Goal: model recommended entitlement behavior by product type.
 
 ### User request
-
 `Sync my non-consumable lifetime IAP and consumable coin pack to RevenueCat.`
 
 ### Expected behavior
-
 1. Confirm product type mapping:
    - `NON_CONSUMABLE` -> `non_consumable`
    - `CONSUMABLE` -> `consumable`
@@ -77,11 +71,9 @@ Goal: model recommended entitlement behavior by product type.
 Goal: make apply mode safe and repeatable in team workflows.
 
 ### User request
-
 `Run a full sync and apply missing resources.`
 
 ### Expected behavior
-
 1. Run audit and print plan.
 2. Request explicit approval.
 3. Apply in deterministic order:
