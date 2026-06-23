@@ -9,7 +9,7 @@ function Switch({
   return (
     <SwitchPrimitives.Root
       className={cn(
-        "flex h-[1.15rem] w-8 shrink-0 flex-row items-center rounded-full border border-transparent shadow-sm shadow-black/5",
+        "shadow-xs flex h-[18.4px] w-[32px] shrink-0 flex-row items-center rounded-full border border-transparent",
         Platform.select({
           web: "focus-visible:border-ring focus-visible:ring-ring/50 peer inline-flex outline-none transition-all focus-visible:ring-[3px] disabled:cursor-not-allowed",
         }),

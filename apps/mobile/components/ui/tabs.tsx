@@ -10,7 +10,7 @@ function Tabs({
 }: React.ComponentProps<typeof TabsPrimitive.Root>) {
   return (
     <TabsPrimitive.Root
-      className={cn("flex flex-col gap-2", className)}
+      className={cn("data-horizontal:flex-col flex gap-2", className)}
       {...props}
     />
   )
@@ -38,21 +38,21 @@ function TabsTrigger({
 }: React.ComponentProps<typeof TabsPrimitive.Trigger>) {
   const { value } = TabsPrimitive.useRootContext()
   const textClassName = cn(
-    "text-sm font-medium text-foreground dark:text-muted-foreground",
-    value === props.value && "dark:text-foreground"
+    "text-sm font-medium text-foreground/60 dark:text-muted-foreground",
+    value === props.value && "text-foreground dark:text-foreground"
   )
 
   return (
     <TextClassContext.Provider value={textClassName}>
       <TabsPrimitive.Trigger
         className={cn(
-          "flex h-[calc(100%-1px)] flex-row items-center justify-center gap-1.5 rounded-md border border-transparent px-2 py-1 shadow-none shadow-black/5",
+          "relative flex h-[calc(100%-1px)] flex-1 flex-row items-center justify-center gap-1.5 rounded-md border border-transparent px-2 py-1 shadow-none",
           Platform.select({
             web: "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:outline-ring inline-flex cursor-default whitespace-nowrap transition-[color,box-shadow] focus-visible:outline-1 focus-visible:ring-[3px] disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0",
           }),
           props.disabled && "opacity-50",
           props.value === value &&
-            "bg-background dark:border-foreground/10 dark:bg-input/30",
+            "bg-background shadow-sm dark:border-input dark:bg-input/30",
           className
         )}
         {...props}
@@ -67,7 +67,11 @@ function TabsContent({
 }: React.ComponentProps<typeof TabsPrimitive.Content>) {
   return (
     <TabsPrimitive.Content
-      className={cn(Platform.select({ web: "flex-1 outline-none" }), className)}
+      className={cn(
+        "text-sm",
+        Platform.select({ web: "flex-1 outline-none" }),
+        className
+      )}
       {...props}
     />
   )

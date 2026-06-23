@@ -4,7 +4,7 @@ import { Platform } from "react-native"
 
 const badgeVariants = cva(
   cn(
-    "group shrink-0 flex-row items-center justify-center gap-1 overflow-hidden rounded-full border border-border px-2 py-0.5",
+    "group h-5 shrink-0 flex-row items-center justify-center gap-1 overflow-hidden rounded-4xl border border-transparent px-2 py-0.5",
     Platform.select({
       web: "focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive w-fit whitespace-nowrap transition-[color,box-shadow] focus-visible:ring-[3px] [&>svg]:pointer-events-none [&>svg]:size-3",
     })
@@ -24,9 +24,10 @@ const badgeVariants = cva(
           "border-transparent bg-destructive",
           Platform.select({ web: "[a&]:hover:bg-destructive/90" })
         ),
-        outline: Platform.select({
-          web: "[a&]:hover:bg-accent [a&]:hover:text-accent-foreground",
-        }),
+        outline:
+          Platform.select({
+            web: "[a&]:hover:bg-accent [a&]:hover:text-accent-foreground",
+          }) ?? "border-border",
       },
     },
     defaultVariants: {

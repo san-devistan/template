@@ -1,9 +1,9 @@
-import { IconLoader } from "@tabler/icons-react"
 import { cn } from "@workspace/ui/lib/utils"
+import { Loader2Icon } from "lucide-react"
 
 function Spinner({ className, ...props }: React.ComponentProps<"svg">) {
   return (
-    <IconLoader
+    <Loader2Icon
       data-slot="spinner"
       role="status"
       aria-label="Loading"

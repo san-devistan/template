@@ -11,7 +11,7 @@ function Textarea({
   ...props
 }: React.ComponentProps<typeof TextInput> & React.RefAttributes<TextInput>) {
   const resolvedClassName = cn(
-    "flex min-h-16 w-full flex-row rounded-md border border-input bg-transparent px-3 py-2 text-base text-foreground shadow-sm shadow-black/5 dark:bg-input/30 md:text-sm",
+    "shadow-xs flex min-h-16 w-full flex-row rounded-md border border-input bg-transparent px-2.5 py-2 text-base text-foreground dark:bg-input/30 md:text-sm",
     Platform.select({
       web: "placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive field-sizing-content resize-y outline-none transition-[color,box-shadow] focus-visible:ring-[3px] disabled:cursor-not-allowed",
     }),

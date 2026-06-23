@@ -30,7 +30,7 @@ function DialogOverlay({
     <FullWindowOverlay>
       <DialogPrimitive.Overlay
         className={cn(
-          "absolute bottom-0 left-0 right-0 top-0 flex items-center justify-center bg-black/50 p-2",
+          "absolute bottom-0 left-0 right-0 top-0 flex items-center justify-center bg-black/10 p-2",
           Platform.select({
             web: "animate-in fade-in-0 fixed cursor-default [&>*]:cursor-auto",
           }),
@@ -67,7 +67,7 @@ function DialogContent({
       <DialogOverlay>
         <DialogPrimitive.Content
           className={cn(
-            "z-50 mx-auto flex w-full max-w-[calc(100%-2rem)] flex-col gap-4 rounded-lg border border-border bg-background p-6 shadow-lg shadow-black/5 sm:max-w-lg",
+            "z-50 mx-auto flex w-full max-w-[calc(100%-2rem)] flex-col gap-6 rounded-xl bg-popover p-6 text-popover-foreground ring-1 ring-foreground/10 sm:max-w-md",
             Platform.select({
               web: "animate-in fade-in-0 zoom-in-95 duration-200",
             }),
@@ -78,7 +78,7 @@ function DialogContent({
           <>{children}</>
           <DialogPrimitive.Close
             className={cn(
-              "absolute right-4 top-4 rounded opacity-70 active:opacity-100",
+              "absolute right-4 top-4 rounded-md opacity-70 active:opacity-100",
               Platform.select({
                 web: "ring-offset-background focus:ring-ring data-[state=open]:bg-accent transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-offset-2",
               })
@@ -126,10 +126,7 @@ function DialogTitle({
 }: React.ComponentProps<typeof DialogPrimitive.Title>) {
   return (
     <DialogPrimitive.Title
-      className={cn(
-        "text-lg font-semibold leading-none text-foreground",
-        className
-      )}
+      className={cn("font-heading font-medium leading-none", className)}
       {...props}
     />
   )

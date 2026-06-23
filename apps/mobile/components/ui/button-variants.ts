@@ -13,24 +13,26 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default: cn(
-          "bg-primary shadow-sm shadow-black/5 active:bg-primary/90",
-          Platform.select({ web: "hover:bg-primary/90" })
+          "shadow-xs bg-primary active:bg-primary/80",
+          Platform.select({ web: "hover:bg-primary/80" })
         ),
         destructive: cn(
-          "bg-destructive shadow-sm shadow-black/5 active:bg-destructive/90 dark:bg-destructive/60",
+          "shadow-xs bg-destructive active:bg-destructive/90 dark:bg-destructive/60",
           Platform.select({
             web: "hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40",
           })
         ),
         outline: cn(
-          "border border-border bg-background shadow-sm shadow-black/5 active:bg-accent dark:border-input dark:bg-input/30 dark:active:bg-input/50",
+          "shadow-xs border border-border bg-background active:bg-muted dark:border-input dark:bg-input/30 dark:active:bg-input/50",
           Platform.select({
-            web: "hover:bg-accent dark:hover:bg-input/50",
+            web: "hover:bg-muted hover:text-foreground dark:hover:bg-input/50",
           })
         ),
         secondary: cn(
-          "bg-secondary shadow-sm shadow-black/5 active:bg-secondary/80",
-          Platform.select({ web: "hover:bg-secondary/80" })
+          "shadow-xs bg-secondary active:bg-secondary/80",
+          Platform.select({
+            web: "hover:bg-[color-mix(in_oklch,var(--secondary),var(--foreground)_5%)]",
+          })
         ),
         ghost: cn(
           "active:bg-accent dark:active:bg-accent/50",
@@ -40,18 +42,33 @@ const buttonVariants = cva(
       },
       size: {
         default: cn(
-          "h-10 px-4 py-2 sm:h-9",
-          Platform.select({ web: "has-[>svg]:px-3" })
+          "h-9 px-2.5",
+          Platform.select({
+            web: "has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2",
+          })
+        ),
+        xs: cn(
+          "h-6 gap-1 rounded-[min(var(--radius-md),8px)] px-2",
+          Platform.select({
+            web: "has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3",
+          })
         ),
         sm: cn(
-          "h-9 gap-1.5 rounded-md px-3 sm:h-8",
-          Platform.select({ web: "has-[>svg]:px-2.5" })
+          "h-8 gap-1 rounded-[min(var(--radius-md),10px)] px-2.5",
+          Platform.select({
+            web: "has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5",
+          })
         ),
         lg: cn(
-          "h-11 rounded-md px-6 sm:h-10",
-          Platform.select({ web: "has-[>svg]:px-4" })
+          "h-10 gap-1.5 px-2.5",
+          Platform.select({
+            web: "has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2",
+          })
         ),
-        icon: "h-10 w-10 sm:h-9 sm:w-9",
+        icon: "size-9",
+        "icon-xs": "size-6 rounded-[min(var(--radius-md),8px)]",
+        "icon-sm": "size-8 rounded-[min(var(--radius-md),10px)]",
+        "icon-lg": "size-10",
       },
     },
     defaultVariants: {
@@ -86,9 +103,13 @@ const buttonTextVariants = cva(
       },
       size: {
         default: "",
+        xs: "text-xs",
         sm: "",
         lg: "",
         icon: "",
+        "icon-xs": "",
+        "icon-sm": "",
+        "icon-lg": "",
       },
     },
     defaultVariants: {
