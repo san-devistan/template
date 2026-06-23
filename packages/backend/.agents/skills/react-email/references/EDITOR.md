@@ -184,6 +184,7 @@ Insert content blocks by typing `/` in the editor.
 
 ```tsx
 import { defaultSlashCommands, SlashCommand } from "@react-email/editor/ui"
+
 ;<EditorProvider extensions={extensions} content={content}>
   <SlashCommand items={defaultSlashCommands} />
 </EditorProvider>
@@ -210,6 +211,7 @@ Cherry-pick individual commands:
 
 ```tsx
 import { BUTTON, H1, H2, TEXT } from "@react-email/editor/ui"
+
 ;<SlashCommand items={[TEXT, H1, H2, BUTTON]} />
 ```
 

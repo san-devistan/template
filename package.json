@@ -5,9 +5,8 @@
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
-    "deps:update": "pnpm update -r",
-    "deps:update:latest": "pnpm update -r --latest",
     "fix": "bash scripts/fix.sh",
+    "deps:update": "pnpm update -r",
     "sync:shadcn": "npx shadcn@latest diff -c packages/ui",
     "sync:mobile-theme": "node scripts/sync-mobile-theme.mjs"
   },

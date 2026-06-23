@@ -95,7 +95,7 @@
       "source": "resend/resend-skills",
       "sourceType": "github",
       "skillPath": "skills/resend-cli/SKILL.md",
-      "computedHash": "d3514da9f8e21c77697afcf4a499150e327d0277fb8c7b25b74340f98a4118a9"
+      "computedHash": "1855c106e196ebefa8b98c5990ba501bd94c85be48bfc8a36fc3b1d86b93bf42"
     },
     "stripe-best-practices": {
       "source": "stripe/ai",

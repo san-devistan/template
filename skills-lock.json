@@ -1,59 +1,11 @@
 {
   "version": 1,
   "skills": {
-    "Expo UI SwiftUI": {
-      "source": "expo/skills",
-      "sourceType": "github",
-      "skillPath": "plugins/expo/skills/expo-ui-swift-ui/SKILL.md",
-      "computedHash": "409d466e43888f62987ceaf5c8be34aa76a49328528ebe290bab866f6d07e958"
-    },
-    "building-native-ui": {
-      "source": "expo/skills",
-      "sourceType": "github",
-      "skillPath": "plugins/expo/skills/building-native-ui/SKILL.md",
-      "computedHash": "b4c017a718e9ff4d2ba06515006beda3358bd5b1f4ff31f49c90b7e51118811b"
-    },
-    "eas-update-insights": {
-      "source": "expo/skills",
-      "sourceType": "github",
-      "skillPath": "plugins/expo/skills/eas-update-insights/SKILL.md",
-      "computedHash": "160b705dd270cfc554c572b8f829cebcce711f1279820f4f55527b0981bf125c"
-    },
     "effect-ts": {
       "source": "paulrberg/agent-skills",
       "sourceType": "github",
       "skillPath": "skills/effect-ts/SKILL.md",
-      "computedHash": "e4cc00910729e830697eaaf59fcdb7bb29645d4f86f026dbb4505bf529aa62fd"
-    },
-    "expo-api-routes": {
-      "source": "expo/skills",
-      "sourceType": "github",
-      "skillPath": "plugins/expo/skills/expo-api-routes/SKILL.md",
-      "computedHash": "719b5a8e07c1055760e21c22d8c42c1d79f084d946450f2b72d6db5598f73002"
-    },
-    "expo-deployment": {
-      "source": "expo/skills",
-      "sourceType": "github",
-      "skillPath": "plugins/expo/skills/expo-deployment/SKILL.md",
-      "computedHash": "4915ca732effc8b5925c8a0eb733c73835b5c0be751bcbdb6d3f13d1b35816ab"
-    },
-    "expo-dev-client": {
-      "source": "expo/skills",
-      "sourceType": "github",
-      "skillPath": "plugins/expo/skills/expo-dev-client/SKILL.md",
-      "computedHash": "af7b1cc2824db64888aa10d5d8c009b960d2c649dd7be2b86ae6b9f092a73ae6"
-    },
-    "expo-module": {
-      "source": "expo/skills",
-      "sourceType": "github",
-      "skillPath": "plugins/expo/skills/expo-module/SKILL.md",
-      "computedHash": "fe91e433d28dcc49439c4edc016e7f931e6f699bc84d65cf6975dd494bc04bfa"
-    },
-    "expo-tailwind-setup": {
-      "source": "expo/skills",
-      "sourceType": "github",
-      "skillPath": "plugins/expo/skills/expo-tailwind-setup/SKILL.md",
-      "computedHash": "85d932863950a9837dd4ab528c2908eff7c119e8c7f59c47963815ee7341e826"
+      "computedHash": "c621daa0e94a078462b478abba055da8a0fed1ecd751944c99986543e9083e55"
     },
     "frontend-design": {
       "source": "anthropics/skills",
@@ -61,83 +13,11 @@
       "skillPath": "skills/frontend-design/SKILL.md",
       "computedHash": "4eabc66183767153e404b39d1b839b1c37f2d82d86f0a0d7e880a579d8d62336"
     },
-    "native-data-fetching": {
-      "source": "expo/skills",
-      "sourceType": "github",
-      "skillPath": "plugins/expo/skills/native-data-fetching/SKILL.md",
-      "computedHash": "21253dd72e2afa0cc0a6693295f043af3b149fa250c7aedef4d33144e69258ff"
-    },
-    "shadcn": {
-      "source": "shadcn/ui",
-      "sourceType": "github",
-      "skillPath": "skills/shadcn/SKILL.md",
-      "computedHash": "ac9d0d69caac7de1d1e5647f3db3bcd2f13af355d6b3a78780fbf7fc80e8dca0"
-    },
-    "tanstack-integration-best-practices": {
-      "source": "deckardger/tanstack-agent-skills",
-      "sourceType": "github",
-      "skillPath": "skills/tanstack-integration/SKILL.md",
-      "computedHash": "f8454d0835f04539c0d90a5a481937bc0e1cd7e31ac8610f302abd3421f3d24a"
-    },
-    "tanstack-query-best-practices": {
-      "source": "deckardger/tanstack-agent-skills",
-      "sourceType": "github",
-      "skillPath": "skills/tanstack-query/SKILL.md",
-      "computedHash": "21d2e8b7468a81d772b6527ad8ca178cc2f3f08af777bb9061333013ee88a0c9"
-    },
-    "tanstack-router-best-practices": {
-      "source": "deckardger/tanstack-agent-skills",
-      "sourceType": "github",
-      "skillPath": "skills/tanstack-router/SKILL.md",
-      "computedHash": "65764bc7b90e47f6023cb7f89b3af93eaaafc517754f10b9382e184d4646a77d"
-    },
-    "tanstack-start-best-practices": {
-      "source": "deckardger/tanstack-agent-skills",
-      "sourceType": "github",
-      "skillPath": "skills/tanstack-start/SKILL.md",
-      "computedHash": "8b073187405a10f9997158f9139a9664cc801595d2fe63d542a0bac9bf2152f5"
-    },
     "turborepo": {
       "source": "vercel/turborepo",
       "sourceType": "github",
       "skillPath": "skills/turborepo/SKILL.md",
       "computedHash": "b7c3165ae67a2892d6195a5b2cba15c8d96341f5c64ddd0d3ce4225c94a2ae83"
-    },
-    "upgrading-expo": {
-      "source": "expo/skills",
-      "sourceType": "github",
-      "skillPath": "plugins/expo/skills/upgrading-expo/SKILL.md",
-      "computedHash": "98d228925a442126789d90783fdd4ae5de33ab690024b575698057d2ffc44b40"
-    },
-    "use-dom": {
-      "source": "expo/skills",
-      "sourceType": "github",
-      "skillPath": "plugins/expo/skills/use-dom/SKILL.md",
-      "computedHash": "69f08a23f483ce868208b213f96f2a5f2a56847f91a133d58ba6f65dc15b715a"
-    },
-    "vercel-composition-patterns": {
-      "source": "vercel-labs/agent-skills",
-      "sourceType": "github",
-      "skillPath": "skills/composition-patterns/SKILL.md",
-      "computedHash": "575757e3e25761c8c562d6e395d29f0b76c98b1273c0bd72d88e6ab1bc9c7d42"
-    },
-    "vercel-react-best-practices": {
-      "source": "vercel-labs/agent-skills",
-      "sourceType": "github",
-      "skillPath": "skills/react-best-practices/SKILL.md",
-      "computedHash": "ca7b0c0c6e5f2750043f7f0cd72d16ac4e2abc48f9b5500d047a4b77a2506212"
-    },
-    "vercel-react-native-skills": {
-      "source": "vercel-labs/agent-skills",
-      "sourceType": "github",
-      "skillPath": "skills/react-native-skills/SKILL.md",
-      "computedHash": "41d24eafa7c3d82e270439808f7cfbc4d51aeb2d14f2809a2267c16275784d06"
-    },
-    "web-design-guidelines": {
-      "source": "vercel-labs/agent-skills",
-      "sourceType": "github",
-      "skillPath": "skills/web-design-guidelines/SKILL.md",
-      "computedHash": "f3bc47f890f42a44db1007ab390709ec368e4b8c089baee6b0007182236ac474"
     }
   }
 }

@@ -22,19 +22,52 @@ than owning provider integrations directly.
 
 ## Backend Skills
 
-Read only the skill files needed for the task:
+Backend-local skills live in `packages/backend/.agents/skills/<skill>/SKILL.md`.
+Read only the narrow skill files needed for the task:
 
-| Work type                       | Skills                                                                                                                 |
-| ------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| Convex setup and patterns       | `packages/backend/.agents/skills/convex/SKILL.md`, `convex-quickstart`, `convex-create-component`, `convex-setup-auth` |
-| Better Auth with Convex         | `packages/backend/.agents/skills/convex-dev-better-auth/SKILL.md`, plus the backend-local Better Auth skills as needed |
-| Resend email with Convex        | `packages/backend/.agents/skills/convex-dev-resend/SKILL.md`, plus `resend` for provider/API behavior                  |
-| Resend CLI and provider ops     | `resend-cli`, `resend`                                                                                                 |
-| Email templates and rendering   | `react-email`, `email-best-practices`, `resend`                                                                        |
-| Deliverability and compliance   | `email-best-practices`, `resend`                                                                                       |
-| Inbound or action-trigger email | `agent-email-inbox`, `resend`                                                                                          |
-| Stripe billing with Convex      | `packages/backend/.agents/skills/convex-dev-stripe/SKILL.md`, plus the backend-local Stripe skills as needed           |
-| Performance and migrations      | `convex-performance-audit`, `convex-migration-helper`                                                                  |
+### Convex
+
+| Skill                      | Invoke when                                                                                            |
+| -------------------------- | ------------------------------------------------------------------------------------------------------ |
+| `convex`                   | General or underspecified Convex work, or choosing which Convex skill should handle a backend task     |
+| `convex-quickstart`        | Creating or adding Convex to an app, frontend provider setup, env vars, or first `npx convex dev` run  |
+| `convex-setup-auth`        | Convex auth setup, auth providers, identity mapping, users tables, protected functions, roles, or ACLs |
+| `convex-create-component`  | Reusable Convex components, isolated tables, backend modules, integrations, or component boundaries    |
+| `convex-migration-helper`  | Breaking schema changes, backfills, table reshaping, required fields, field type changes, or rollouts  |
+| `convex-performance-audit` | Slow Convex features, insights findings, high reads/bytes, subscriptions, OCC conflicts, or limits     |
+
+### Auth
+
+| Skill                                      | Invoke when                                                                                               |
+| ------------------------------------------ | --------------------------------------------------------------------------------------------------------- |
+| `convex-dev-better-auth`                   | Better Auth with Convex or related Convex component functionality                                         |
+| `better-auth-best-practices`               | Better Auth server/client config, adapters, sessions, plugins, env vars, email/password, OAuth, auth.ts   |
+| `better-auth-security-best-practices`      | Rate limits, auth secrets, CSRF, trusted origins, secure cookies/sessions, OAuth token encryption, audits |
+| `email-and-password-best-practices`        | Email verification, password reset, password policy, hashing, sign-in, sign-up, or credential auth        |
+| `two-factor-authentication-best-practices` | TOTP, OTP, backup codes, trusted devices, MFA setup, authenticator apps, or Better Auth twoFactor plugin  |
+| `organization-best-practices`              | Better Auth organizations, teams, invitations, members, roles, permissions, multi-tenancy, or RBAC        |
+| `create-auth-skill`                        | Scaffolding Better Auth into a TypeScript/JavaScript app with framework detection and auth UI             |
+
+### Email And Resend
+
+| Skill                  | Invoke when                                                                                              |
+| ---------------------- | -------------------------------------------------------------------------------------------------------- |
+| `convex-dev-resend`    | Resend with Convex or related Convex component functionality                                             |
+| `resend`               | Resend API work: sending, receiving, webhooks, templates, domains, contacts, broadcasts, logs, SDK setup |
+| `resend-cli`           | Running `resend` CLI commands in shell, scripts, or CI; sending/previewing React Email templates         |
+| `react-email`          | React Email templates, rendering HTML emails, visual email editor, transactional email components        |
+| `email-best-practices` | Deliverability, SPF/DKIM/DMARC, spam/bounce issues, compliance, accessibility, webhooks, retry logic     |
+| `agent-email-inbox`    | Inbound email that triggers actions, AI inboxes, support handlers, email-to-task, or untrusted content   |
+
+### Stripe
+
+| Skill                   | Invoke when                                                                                              |
+| ----------------------- | -------------------------------------------------------------------------------------------------------- |
+| `convex-dev-stripe`     | Stripe payments, subscriptions, or billing integrated into Convex                                        |
+| `stripe-best-practices` | Stripe API choices, Checkout, PaymentIntents, Billing, subscriptions, Connect, webhooks, or security     |
+| `upgrade-stripe`        | Upgrading Stripe API versions or Stripe SDKs                                                             |
+| `stripe-directory`      | Finding vendors, tools, service providers, partners, or purchasable services via Stripe Directory        |
+| `stripe-projects`       | Provisioning third-party infrastructure/services, browsing project catalogs, or getting service env vars |
 
 ## Backend MCPs
 
@@ -44,5 +77,4 @@ The repo-local `.codex/config.toml` configures backend provider MCPs:
 | ----------- | --------------------------------------------------------------------------------------------------- |
 | Convex      | Inspect deployments, tables, function specs, logs, environment variables, and run Convex functions. |
 | Better Auth | Inspect Better Auth docs and integration guidance for backend auth work.                            |
-| Resend      | Inspect Resend email provider docs and resources for transactional email work.                      |
 | Stripe      | Inspect Stripe docs and resources for billing, payments, subscriptions, and webhooks.               |

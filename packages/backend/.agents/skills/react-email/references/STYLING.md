@@ -8,6 +8,7 @@ Use the `Tailwind` component for styling if the project uses Tailwind CSS. Other
 
 ```tsx
 import { Tailwind, pixelBasedPreset } from "react-email"
+
 ;<Tailwind
   config={{
     presets: [pixelBasedPreset],
@@ -259,6 +260,7 @@ Import the shared config in every email template:
 
 ```tsx
 import tailwindConfig, { brandAssets } from "./tailwind.config"
+
 ;<Tailwind config={tailwindConfig}>
   <Body className="bg-gray-100 font-sans">
     <Container className="bg-white p-6">

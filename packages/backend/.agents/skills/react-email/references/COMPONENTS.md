@@ -107,6 +107,7 @@ Root wrapper for the email. Always use as the outermost component.
 
 ```tsx
 import { Html, Tailwind, pixelBasedPreset } from "react-email"
+
 ;<Html lang="en" dir="ltr">
   <Tailwind config={{ presets: [pixelBasedPreset] }}>
     {/* email content */}
@@ -125,6 +126,7 @@ Contains head components, related to the document such as style and meta element
 
 ```tsx
 import { Head } from "react-email"
+
 ;<Head>
   <title>Email Title</title>
 </Head>
@@ -136,6 +138,7 @@ A React component to wrap emails.
 
 ```tsx
 import { Body } from "react-email"
+
 ;<Body className="bg-gray-100 font-sans">{/* email content */}</Body>
 ```
 
@@ -145,6 +148,7 @@ A layout component that centers your content horizontally on a breaking point. H
 
 ```tsx
 import { Container } from "react-email"
+
 ;<Container className="max-w-xl mx-auto p-5">
   {/* centered content */}
 </Container>
@@ -156,6 +160,7 @@ Display a section that can also be formatted using rows and columns.
 
 ```tsx
 import { Section } from "react-email"
+
 ;<Section className="p-5 bg-white">{/* section content */}</Section>
 ```
 
@@ -165,6 +170,7 @@ Row displays content areas horizontally, Column displays content areas verticall
 
 ```tsx
 import { Section, Row, Column } from "react-email"
+
 ;<Section>
   <Row>
     <Column className="w-1/2 p-2 align-top">Left column content</Column>
@@ -187,6 +193,7 @@ A preview text that will be displayed in the inbox of the recipient.
 
 ```tsx
 import { Preview } from "react-email"
+
 ;<Preview>Welcome to our platform - Get started today!</Preview>
 ```
 
@@ -222,6 +229,7 @@ A block of text separated by blank spaces.
 
 ```tsx
 import { Text } from "react-email"
+
 ;<Text className="text-base leading-6 text-gray-800 my-4">
   Your paragraph content here.
 </Text>
@@ -233,6 +241,7 @@ A link that is styled to look like a button. Has workaround for padding issues i
 
 ```tsx
 import { Button } from "react-email"
+
 ;<Button
   href="https://example.com/verify"
   target="_blank"
@@ -259,6 +268,7 @@ A hyperlink to web pages, email addresses, or anything else a URL can address.
 
 ```tsx
 import { Link } from "react-email"
+
 ;<Link
   href="https://example.com"
   target="_blank"
@@ -279,6 +289,7 @@ Display an image in your email.
 
 ```tsx
 import { Img } from "react-email"
+
 ;<Img
   src="https://example.com/logo.png"
   alt="Company Logo"
@@ -308,6 +319,7 @@ Display a divider that separates content areas in your email.
 
 ```tsx
 import { Hr } from "react-email"
+
 ;<Hr className="border-solid border-gray-200 my-5" />
 ```
 
@@ -364,6 +376,7 @@ Display a predictable inline code HTML element that works on all email clients.
 
 ```tsx
 import { Text, CodeInline } from "react-email"
+
 ;<Text className="text-base text-gray-800">
   Run <CodeInline className="bg-gray-100 px-1 rounded">npm install</CodeInline>{" "}
   to get started.
@@ -412,6 +425,7 @@ A React Font component to set your fonts.
 
 ```tsx
 import { Head, Font } from "react-email"
+
 ;<Head>
   <Font
     fontFamily="Roboto"
