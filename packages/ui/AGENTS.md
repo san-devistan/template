@@ -17,6 +17,20 @@ Generated style files are derived from the token source. Do not edit
 `packages/ui/src/tokens/design-tokens.json`, then run
 `pnpm sync:design-system`.
 
+After applying a shadcn preset, run the sync once from the repo root:
+
+```sh
+pnpm dlx shadcn@latest apply <preset> --cwd apps/web
+pnpm sync:design-system
+```
+
+`pnpm sync:design-system` detects the applied CSS variables when
+`packages/ui/src/styles/globals.css` is changed and
+`packages/ui/src/tokens/design-tokens.json` is clean. It imports those values
+into the token source, then regenerates web and mobile theme artifacts. If the
+token file already has changes, the token file remains the source of truth; pass
+`--import-applied-css` only when the applied CSS should overwrite the tokens.
+
 ## Skills
 
 UI-local skills live in `packages/ui/.agents/skills/<skill>/SKILL.md`. The
@@ -40,11 +54,11 @@ work:
 
 ## Tools
 
-Run shadcn CLI commands from `packages/ui`, where `components.json` points at
-the shared component and token source.
+Run shadcn preset application from `apps/web` with `--cwd apps/web`; the CLI
+needs a supported framework workspace. Web app `components.json` points its
+`ui` alias at `@workspace/ui/components`, so the preset still updates shared
+component and token files in `packages/ui`.
 
-Do not add shared design-system components from `apps/web`. Web app
-`components.json` points its `ui` alias at `@workspace/ui/components`, so
-design-system additions and updates belong here.
+Do not hand-create shared design-system components inside `apps/web`.
 
 The local typecheck command is `pnpm --filter @workspace/ui typecheck`.

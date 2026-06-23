@@ -32,7 +32,7 @@ type CarouselContextProps = {
 const CarouselContext = React.createContext<CarouselContextProps | null>(null)
 
 function useCarousel() {
-  const context = React.use(CarouselContext)
+  const context = React.useContext(CarouselContext)
 
   if (!context) {
     throw new Error("useCarousel must be used within a <Carousel />")
@@ -49,25 +49,22 @@ function Carousel({
   className,
   children,
   ...props
-}: React.ComponentProps<"section"> & CarouselProps) {
-  const carouselOptions = React.useMemo(
-    () => ({
+}: React.ComponentProps<"div"> & CarouselProps) {
+  const [carouselRef, api] = useEmblaCarousel(
+    {
       ...opts,
       axis: orientation === "horizontal" ? "x" : "y",
-    }),
-    [opts, orientation]
+    },
+    plugins
   )
-  const [carouselRef, api] = useEmblaCarousel(carouselOptions, plugins)
   const [canScrollPrev, setCanScrollPrev] = React.useState(false)
   const [canScrollNext, setCanScrollNext] = React.useState(false)
 
-  const onSelect = React.useCallback((carouselApi: CarouselApi) => {
-    if (!carouselApi) return
-    setCanScrollPrev(carouselApi.canScrollPrev())
-    setCanScrollNext(carouselApi.canScrollNext())
+  const onSelect = React.useCallback((api: CarouselApi) => {
+    if (!api) return
+    setCanScrollPrev(api.canScrollPrev())
+    setCanScrollNext(api.canScrollNext())
   }, [])
-  const onSelectRef = React.useRef(onSelect)
-  onSelectRef.current = onSelect
 
   const scrollPrev = React.useCallback(() => {
     api?.scrollPrev()
@@ -91,61 +88,45 @@ function Carousel({
   )
 
   React.useEffect(() => {
-    if (!api || !setApi) return undefined
-    // react-doctor-disable-next-line react-doctor/no-prop-callback-in-effect, react-doctor/no-pass-data-to-parent -- setApi is the public escape hatch for Embla's imperative API.
+    if (!api || !setApi) return
     setApi(api)
-    return undefined
   }, [api, setApi])
 
   React.useEffect(() => {
-    if (!api) return undefined
-    const handleSelect = (carouselApi: CarouselApi) => {
-      onSelectRef.current(carouselApi)
-    }
-
-    handleSelect(api)
-    api.on("reInit", handleSelect)
-    api.on("select", handleSelect)
+    if (!api) return
+    onSelect(api)
+    api.on("reInit", onSelect)
+    api.on("select", onSelect)
 
     return () => {
-      api.off("reInit", handleSelect)
-      api.off("select", handleSelect)
+      api?.off("select", onSelect)
     }
-  }, [api])
-  const contextValue = React.useMemo(
-    () => ({
-      carouselRef,
-      api,
-      opts,
-      orientation,
-      scrollPrev,
-      scrollNext,
-      canScrollPrev,
-      canScrollNext,
-    }),
-    [
-      api,
-      canScrollNext,
-      canScrollPrev,
-      carouselRef,
-      opts,
-      orientation,
-      scrollNext,
-      scrollPrev,
-    ]
-  )
+  }, [api, onSelect])
 
   return (
-    <CarouselContext.Provider value={contextValue}>
-      <section
+    <CarouselContext.Provider
+      value={{
+        carouselRef,
+        api: api,
+        opts,
+        orientation:
+          orientation || (opts?.axis === "y" ? "vertical" : "horizontal"),
+        scrollPrev,
+        scrollNext,
+        canScrollPrev,
+        canScrollNext,
+      }}
+    >
+      <div
         onKeyDownCapture={handleKeyDown}
         className={cn("relative", className)}
+        role="region"
         aria-roledescription="carousel"
         data-slot="carousel"
         {...props}
       >
         {children}
-      </section>
+      </div>
     </CarouselContext.Provider>
   )
 }
@@ -171,14 +152,12 @@ function CarouselContent({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
-function CarouselItem({
-  className,
-  ...props
-}: React.ComponentProps<"section">) {
+function CarouselItem({ className, ...props }: React.ComponentProps<"div">) {
   const { orientation } = useCarousel()
 
   return (
-    <section
+    <div
+      role="group"
       aria-roledescription="slide"
       data-slot="carousel-item"
       className={cn(
@@ -207,7 +186,7 @@ function CarouselPrevious({
       className={cn(
         "absolute touch-manipulation rounded-full",
         orientation === "horizontal"
-          ? "top-1/2 -left-12 -translate-y-1/2"
+          ? "inset-y-0 -left-12 my-auto"
           : "-top-12 left-1/2 -translate-x-1/2 rotate-90",
         className
       )}
@@ -237,7 +216,7 @@ function CarouselNext({
       className={cn(
         "absolute touch-manipulation rounded-full",
         orientation === "horizontal"
-          ? "top-1/2 -right-12 -translate-y-1/2"
+          ? "inset-y-0 -right-12 my-auto"
           : "-bottom-12 left-1/2 -translate-x-1/2 rotate-90",
         className
       )}

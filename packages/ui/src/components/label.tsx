@@ -5,7 +5,6 @@ import * as React from "react"
 
 function Label({ className, ...props }: React.ComponentProps<"label">) {
   return (
-    // oxlint-disable-next-line jsx-a11y/label-has-associated-control, react-doctor/label-has-associated-control -- Callers provide htmlFor or wrap the associated control.
     <label
       data-slot="label"
       className={cn(
