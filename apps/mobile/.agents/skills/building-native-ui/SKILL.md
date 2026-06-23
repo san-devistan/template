@@ -178,9 +178,9 @@ Set the page title in Stack.Screen options:
 Add long press context menus to Link components:
 
 ```tsx
-import { Link } from "expo-router";
+import { Link } from "expo-router"
 
-<Link href="/settings" asChild>
+;<Link href="/settings" asChild>
   <Link.Trigger>
     <Pressable>
       <Card />
@@ -208,7 +208,7 @@ import { Link } from "expo-router";
       />
     </Link.Menu>
   </Link.Menu>
-</Link>;
+</Link>
 ```
 
 ## Link Previews
@@ -271,8 +271,8 @@ app/
 
 ```tsx
 // app/_layout.tsx
-import { NativeTabs, Icon, Label } from "expo-router/unstable-native-tabs";
-import { Theme } from "../components/theme";
+import { NativeTabs, Icon, Label } from "expo-router/unstable-native-tabs"
+import { Theme } from "../components/theme"
 
 export default function Layout() {
   return (
@@ -285,7 +285,7 @@ export default function Layout() {
         <NativeTabs.Trigger name="(search)" role="search" />
       </NativeTabs>
     </Theme>
-  );
+  )
 }
 ```
 
@@ -293,12 +293,12 @@ Create a shared group route so both tabs can push common screens:
 
 ```tsx
 // app/(index,search)/_layout.tsx
-import { Stack } from "expo-router/stack";
-import { PlatformColor } from "react-native";
+import { Stack } from "expo-router/stack"
+import { PlatformColor } from "react-native"
 
 export default function Layout({ segment }) {
-  const screen = segment.match(/\((.*)\)/)?.[1]!;
-  const titles: Record<string, string> = { index: "Items", search: "Search" };
+  const screen = segment.match(/\((.*)\)/)?.[1]!
+  const titles: Record<string, string> = { index: "Items", search: "Search" }
 
   return (
     <Stack
@@ -316,6 +316,6 @@ export default function Layout({ segment }) {
       <Stack.Screen name={screen} options={{ title: titles[screen] }} />
       <Stack.Screen name="i/[id]" options={{ headerLargeTitle: false }} />
     </Stack>
-  );
+  )
 }
 ```

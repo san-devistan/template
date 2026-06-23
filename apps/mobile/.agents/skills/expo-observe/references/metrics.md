@@ -8,25 +8,25 @@ All durations are in seconds. Data is retained for 90 days. All durations are in
 
 ## Target thresholds
 
-| Metric | Full name | Target | Auto-collected? |
-|---|---|---|---|
-| Cold launch | `expo.app_startup.cold_launch_time` | **< 1.5s** | Yes (native-only — JS code does not affect it) |
-| Warm launch | `expo.app_startup.warm_launch_time` | **< 0.5s** | Yes (OS decides when warm vs cold happens) |
-| Bundle load | `expo.app_startup.bundle_load_time` | **< 0.3s** | Yes (JS load + evaluation, before `runApplication`) |
-| Time to first render (TTR) | `expo.app_startup.ttr` | **< 2s** incl. cold launch | Yes when root is wrapped with `AppMetricsRoot` (SDK 55) / `ObserveRoot` (SDK 56+) |
-| Time to interactive (TTI) | `expo.app_startup.tti` | **< 3s** incl. cold launch | **No** — call `markInteractive()` once the screen is genuinely usable |
+| Metric                     | Full name                           | Target                     | Auto-collected?                                                                   |
+| -------------------------- | ----------------------------------- | -------------------------- | --------------------------------------------------------------------------------- |
+| Cold launch                | `expo.app_startup.cold_launch_time` | **< 1.5s**                 | Yes (native-only — JS code does not affect it)                                    |
+| Warm launch                | `expo.app_startup.warm_launch_time` | **< 0.5s**                 | Yes (OS decides when warm vs cold happens)                                        |
+| Bundle load                | `expo.app_startup.bundle_load_time` | **< 0.3s**                 | Yes (JS load + evaluation, before `runApplication`)                               |
+| Time to first render (TTR) | `expo.app_startup.ttr`              | **< 2s** incl. cold launch | Yes when root is wrapped with `AppMetricsRoot` (SDK 55) / `ObserveRoot` (SDK 56+) |
+| Time to interactive (TTI)  | `expo.app_startup.tti`              | **< 3s** incl. cold launch | **No** — call `markInteractive()` once the screen is genuinely usable             |
 
-Both TTR and TTI are measured *from native launch* through the React render, so the cold-launch portion counts against them.
+Both TTR and TTI are measured _from native launch_ through the React render, so the cold-launch portion counts against them.
 
 ## Interpreting TTI events (frameRate params)
 
-Every TTI event carries three frame-rate params. The pattern of high/low values across them tells you *what kind* of slowness you're seeing.
+Every TTI event carries three frame-rate params. The pattern of high/low values across them tells you _what kind_ of slowness you're seeing.
 
-| Param | Definition | What it indicates |
-|---|---|---|
-| `expo.frameRate.slowFrames` | Count of frames ≥ 17ms | Main thread consistently busy during launch (heavy layout, sync bridge calls, too many components rendering) |
-| `expo.frameRate.frozenFrames` | Count of frames ≥ 700ms | Hard freezes. Even one during startup is a serious issue (sync I/O, large JSON parsing, blocking network) |
-| `expo.frameRate.totalDelay` | Total accumulated time (seconds) frames exceeded their target duration | Best single "smoothness" number — compare to TTI |
+| Param                         | Definition                                                             | What it indicates                                                                                            |
+| ----------------------------- | ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `expo.frameRate.slowFrames`   | Count of frames ≥ 17ms                                                 | Main thread consistently busy during launch (heavy layout, sync bridge calls, too many components rendering) |
+| `expo.frameRate.frozenFrames` | Count of frames ≥ 700ms                                                | Hard freezes. Even one during startup is a serious issue (sync I/O, large JSON parsing, blocking network)    |
+| `expo.frameRate.totalDelay`   | Total accumulated time (seconds) frames exceeded their target duration | Best single "smoothness" number — compare to TTI                                                             |
 
 **Diagnostic patterns:**
 

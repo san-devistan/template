@@ -16,7 +16,7 @@ during scroll—expensive items cause jank.
 ```tsx
 function ProductRow({ id }: { id: string }) {
   // Bad: query inside list item
-  const { data: product } = useQuery(['product', id], () => fetchProduct(id))
+  const { data: product } = useQuery(["product", id], () => fetchProduct(id))
   // Bad: multiple context accesses
   const theme = useContext(ThemeContext)
   const user = useContext(UserContext)
@@ -51,7 +51,7 @@ function ProductRow({ name, price, imageUrl }: Props) {
 ```tsx
 // Parent fetches all data once
 function ProductList() {
-  const { data: products } = useQuery(['products'], fetchProducts)
+  const { data: products } = useQuery(["products"], fetchProducts)
 
   return (
     <LegendList

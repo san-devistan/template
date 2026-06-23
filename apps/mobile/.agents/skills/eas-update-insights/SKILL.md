@@ -35,12 +35,12 @@ Don't use when the user needs per-user crash detail or device-level reporting; t
 
 ## Commands at a glance
 
-| Command | Purpose |
-|---|---|
-| `eas update:list` | Discover recent update groups, their `group` IDs, and branch names |
-| `eas update:insights <groupId>` | Per-platform launches, failed launches, crash rate, unique users, payload size, daily breakdown |
-| `eas update:view <groupId> --insights` | Update group details + the same metrics appended |
-| `eas channel:insights --channel <name> --runtime-version <version>` | Embedded/OTA user counts, most popular updates, cumulative metrics for a channel + runtime |
+| Command                                                             | Purpose                                                                                         |
+| ------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| `eas update:list`                                                   | Discover recent update groups, their `group` IDs, and branch names                              |
+| `eas update:insights <groupId>`                                     | Per-platform launches, failed launches, crash rate, unique users, payload size, daily breakdown |
+| `eas update:view <groupId> --insights`                              | Update group details + the same metrics appended                                                |
+| `eas channel:insights --channel <name> --runtime-version <version>` | Embedded/OTA user counts, most popular updates, cumulative metrics for a channel + runtime      |
 
 All of these support `--json --non-interactive` for programmatic parsing.
 
@@ -89,13 +89,13 @@ eas update:insights 03d5dfcf-736c-475a-8730-af039c3f4d06
 
 ### Flags
 
-| Flag | Description |
-|---|---|
-| `--days <N>` | Look back N days. Default: **7**. Mutually exclusive with `--start`/`--end`. |
-| `--start <iso-date>` / `--end <iso-date>` | Explicit time range, e.g. `--start 2026-04-01 --end 2026-04-15`. |
-| `--platform <ios\|android>` | Filter to a single platform. Omit to see all platforms in the group. |
-| `--json` | Machine-readable output. Implies `--non-interactive`. |
-| `--non-interactive` | Required when scripting. |
+| Flag                                      | Description                                                                  |
+| ----------------------------------------- | ---------------------------------------------------------------------------- |
+| `--days <N>`                              | Look back N days. Default: **7**. Mutually exclusive with `--start`/`--end`. |
+| `--start <iso-date>` / `--end <iso-date>` | Explicit time range, e.g. `--start 2026-04-01 --end 2026-04-15`.             |
+| `--platform <ios\|android>`               | Filter to a single platform. Omit to see all platforms in the group.         |
+| `--json`                                  | Machine-readable output. Implies `--non-interactive`.                        |
+| `--non-interactive`                       | Required when scripting.                                                     |
 
 ### JSON output shape
 
@@ -142,13 +142,13 @@ eas channel:insights --channel production --runtime-version 1.0.6
 
 ### Flags
 
-| Flag | Description |
-|---|---|
-| `--channel <name>` | **Required.** The channel name (e.g. `production`, `staging`). |
-| `--runtime-version <version>` | **Required.** Match exactly what was published. Check `runtimeVersion` values in `update:list`. |
-| `--days <N>` | Look back N days. Default: **7**. |
-| `--start` / `--end` | Explicit time range, like `update:insights`. |
-| `--json` / `--non-interactive` | Machine-readable output. |
+| Flag                           | Description                                                                                     |
+| ------------------------------ | ----------------------------------------------------------------------------------------------- |
+| `--channel <name>`             | **Required.** The channel name (e.g. `production`, `staging`).                                  |
+| `--runtime-version <version>`  | **Required.** Match exactly what was published. Check `runtimeVersion` values in `update:list`. |
+| `--days <N>`                   | Look back N days. Default: **7**.                                                               |
+| `--start` / `--end`            | Explicit time range, like `update:insights`.                                                    |
+| `--json` / `--non-interactive` | Machine-readable output.                                                                        |
 
 ### JSON output shape
 
@@ -224,5 +224,5 @@ Human-readable group details plus 30 days of launches/failures per platform — 
 
 - **Unique users across platforms** may double-count users who run the same publish on both iOS and Android. The same caveat applies to `otaTotalUniqueUsers` in channel insights, which is a sum over `mostPopularUpdates`.
 - **Fresh publishes** may show zeros for a short period while the metrics pipeline catches up.
-- **Installs are downloads, not launches**: the `installs` / "Launches" field counts users who downloaded the manifest and launch asset. A confirmed run only registers on the user's *next* update check (typically up to 24h later, depending on the app's update policy). So metrics lag the real-world state slightly.
+- **Installs are downloads, not launches**: the `installs` / "Launches" field counts users who downloaded the manifest and launch asset. A confirmed run only registers on the user's _next_ update check (typically up to 24h later, depending on the app's update policy). So metrics lag the real-world state slightly.
 - **Crashes are self-reported**: `failedInstalls` / "Crashes" counts updates that errored during install/launch and were reported on the next update check. Crashes that don't trigger an update request (e.g. process kill before recovery) won't appear.

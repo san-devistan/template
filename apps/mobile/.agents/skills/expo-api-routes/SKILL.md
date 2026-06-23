@@ -47,7 +47,7 @@ app/
 ```ts
 // app/api/hello+api.ts
 export function GET(request: Request) {
-  return Response.json({ message: "Hello from Expo!" });
+  return Response.json({ message: "Hello from Expo!" })
 }
 ```
 
@@ -58,21 +58,21 @@ Export named functions for each HTTP method:
 ```ts
 // app/api/items+api.ts
 export function GET(request: Request) {
-  return Response.json({ items: [] });
+  return Response.json({ items: [] })
 }
 
 export async function POST(request: Request) {
-  const body = await request.json();
-  return Response.json({ created: body }, { status: 201 });
+  const body = await request.json()
+  return Response.json({ created: body }, { status: 201 })
 }
 
 export async function PUT(request: Request) {
-  const body = await request.json();
-  return Response.json({ updated: body });
+  const body = await request.json()
+  return Response.json({ updated: body })
 }
 
 export async function DELETE(request: Request) {
-  return new Response(null, { status: 204 });
+  return new Response(null, { status: 204 })
 }
 ```
 
@@ -81,7 +81,7 @@ export async function DELETE(request: Request) {
 ```ts
 // app/api/users/[id]+api.ts
 export function GET(request: Request, { id }: { id: string }) {
-  return Response.json({ userId: id });
+  return Response.json({ userId: id })
 }
 ```
 
@@ -91,11 +91,11 @@ export function GET(request: Request, { id }: { id: string }) {
 
 ```ts
 export function GET(request: Request) {
-  const url = new URL(request.url);
-  const page = url.searchParams.get("page") ?? "1";
-  const limit = url.searchParams.get("limit") ?? "10";
+  const url = new URL(request.url)
+  const page = url.searchParams.get("page") ?? "1"
+  const limit = url.searchParams.get("limit") ?? "10"
 
-  return Response.json({ page, limit });
+  return Response.json({ page, limit })
 }
 ```
 
@@ -103,13 +103,13 @@ export function GET(request: Request) {
 
 ```ts
 export function GET(request: Request) {
-  const auth = request.headers.get("Authorization");
+  const auth = request.headers.get("Authorization")
 
   if (!auth) {
-    return Response.json({ error: "Unauthorized" }, { status: 401 });
+    return Response.json({ error: "Unauthorized" }, { status: 401 })
   }
 
-  return Response.json({ authenticated: true });
+  return Response.json({ authenticated: true })
 }
 ```
 
@@ -117,13 +117,13 @@ export function GET(request: Request) {
 
 ```ts
 export async function POST(request: Request) {
-  const { email, password } = await request.json();
+  const { email, password } = await request.json()
 
   if (!email || !password) {
-    return Response.json({ error: "Missing fields" }, { status: 400 });
+    return Response.json({ error: "Missing fields" }, { status: 400 })
   }
 
-  return Response.json({ success: true });
+  return Response.json({ success: true })
 }
 ```
 
@@ -134,7 +134,7 @@ Use `process.env` for server-side secrets:
 ```ts
 // app/api/ai+api.ts
 export async function POST(request: Request) {
-  const { prompt } = await request.json();
+  const { prompt } = await request.json()
 
   const response = await fetch("https://api.openai.com/v1/chat/completions", {
     method: "POST",
@@ -146,10 +146,10 @@ export async function POST(request: Request) {
       model: "gpt-4",
       messages: [{ role: "user", content: prompt }],
     }),
-  });
+  })
 
-  const data = await response.json();
-  return Response.json(data);
+  const data = await response.json()
+  return Response.json(data)
 }
 ```
 
@@ -167,14 +167,14 @@ const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
   "Access-Control-Allow-Headers": "Content-Type, Authorization",
-};
+}
 
 export function OPTIONS() {
-  return new Response(null, { headers: corsHeaders });
+  return new Response(null, { headers: corsHeaders })
 }
 
 export function GET() {
-  return Response.json({ data: "value" }, { headers: corsHeaders });
+  return Response.json({ data: "value" }, { headers: corsHeaders })
 }
 ```
 
@@ -183,12 +183,12 @@ export function GET() {
 ```ts
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
+    const body = await request.json()
     // Process...
-    return Response.json({ success: true });
+    return Response.json({ success: true })
   } catch (error) {
-    console.error("API error:", error);
-    return Response.json({ error: "Internal server error" }, { status: 500 });
+    console.error("API error:", error)
+    return Response.json({ error: "Internal server error" }, { status: 500 })
   }
 }
 ```
@@ -259,15 +259,15 @@ API routes run on Cloudflare Workers. Key limitations:
 const hash = await crypto.subtle.digest(
   "SHA-256",
   new TextEncoder().encode("data")
-);
+)
 
 // Use fetch instead of node-fetch
-const response = await fetch("https://api.example.com");
+const response = await fetch("https://api.example.com")
 
 // Use Response/Request (already available)
 return new Response(JSON.stringify(data), {
   headers: { "Content-Type": "application/json" },
-});
+})
 ```
 
 ### Database Options
@@ -284,16 +284,16 @@ Example with Turso:
 
 ```ts
 // app/api/users+api.ts
-import { createClient } from "@libsql/client/web";
+import { createClient } from "@libsql/client/web"
 
 const db = createClient({
   url: process.env.TURSO_URL!,
   authToken: process.env.TURSO_AUTH_TOKEN!,
-});
+})
 
 export async function GET() {
-  const result = await db.execute("SELECT * FROM users");
-  return Response.json(result.rows);
+  const result = await db.execute("SELECT * FROM users")
+  return Response.json(result.rows)
 }
 ```
 
@@ -301,15 +301,15 @@ export async function GET() {
 
 ```ts
 // From React Native components
-const response = await fetch("/api/hello");
-const data = await response.json();
+const response = await fetch("/api/hello")
+const data = await response.json()
 
 // With body
 const response = await fetch("/api/users", {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify({ name: "John" }),
-});
+})
 ```
 
 ## Common Patterns
@@ -319,25 +319,25 @@ const response = await fetch("/api/users", {
 ```ts
 // utils/auth.ts
 export async function requireAuth(request: Request) {
-  const token = request.headers.get("Authorization")?.replace("Bearer ", "");
+  const token = request.headers.get("Authorization")?.replace("Bearer ", "")
 
   if (!token) {
     throw new Response(JSON.stringify({ error: "Unauthorized" }), {
       status: 401,
       headers: { "Content-Type": "application/json" },
-    });
+    })
   }
 
   // Verify token...
-  return { userId: "123" };
+  return { userId: "123" }
 }
 
 // app/api/protected+api.ts
-import { requireAuth } from "../../utils/auth";
+import { requireAuth } from "../../utils/auth"
 
 export async function GET(request: Request) {
-  const { userId } = await requireAuth(request);
-  return Response.json({ userId });
+  const { userId } = await requireAuth(request)
+  return Response.json({ userId })
 }
 ```
 
@@ -346,14 +346,14 @@ export async function GET(request: Request) {
 ```ts
 // app/api/weather+api.ts
 export async function GET(request: Request) {
-  const url = new URL(request.url);
-  const city = url.searchParams.get("city");
+  const url = new URL(request.url)
+  const city = url.searchParams.get("city")
 
   const response = await fetch(
     `https://api.weather.com/v1/current?city=${city}&key=${process.env.WEATHER_API_KEY}`
-  );
+  )
 
-  return Response.json(await response.json());
+  return Response.json(await response.json())
 }
 ```
 

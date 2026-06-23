@@ -13,9 +13,9 @@ Pass the QueryClient instance through TanStack Router's context system rather th
 export const queryClient = new QueryClient()
 
 // routes/posts.tsx - Importing global
-import { queryClient } from '@/lib/query-client'
+import { queryClient } from "@/lib/query-client"
 
-export const Route = createFileRoute('/posts')({
+export const Route = createFileRoute("/posts")({
   loader: async () => {
     // Using global - breaks SSR, harder to test
     return queryClient.fetchQuery(postQueries.list())
@@ -27,8 +27,8 @@ export const Route = createFileRoute('/posts')({
 
 ```tsx
 // routes/__root.tsx
-import { createRootRouteWithContext } from '@tanstack/react-router'
-import { QueryClient } from '@tanstack/react-query'
+import { createRootRouteWithContext } from "@tanstack/react-router"
+import { QueryClient } from "@tanstack/react-query"
 
 interface RouterContext {
   queryClient: QueryClient
@@ -39,10 +39,10 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 })
 
 // router.tsx
-import { QueryClient } from '@tanstack/react-query'
-import { createRouter } from '@tanstack/react-router'
-import { setupRouterSsrQueryIntegration } from '@tanstack/react-router-ssr-query'
-import { routeTree } from './routeTree.gen'
+import { QueryClient } from "@tanstack/react-query"
+import { createRouter } from "@tanstack/react-router"
+import { setupRouterSsrQueryIntegration } from "@tanstack/react-router-ssr-query"
+import { routeTree } from "./routeTree.gen"
 
 export function getRouter() {
   const queryClient = new QueryClient({
@@ -57,7 +57,7 @@ export function getRouter() {
   const router = createRouter({
     routeTree,
     context: { queryClient },
-    defaultPreload: 'intent',
+    defaultPreload: "intent",
     defaultPreloadStaleTime: 0,
     scrollRestoration: true,
   })
@@ -70,14 +70,14 @@ export function getRouter() {
   return router
 }
 
-declare module '@tanstack/react-router' {
+declare module "@tanstack/react-router" {
   interface Register {
     router: ReturnType<typeof getRouter>
   }
 }
 
 // routes/posts.tsx - Access from context
-export const Route = createFileRoute('/posts')({
+export const Route = createFileRoute("/posts")({
   loader: async ({ context: { queryClient } }) => {
     // Type-safe access to queryClient from context
     await queryClient.ensureQueryData(postQueries.list())
@@ -89,8 +89,13 @@ export const Route = createFileRoute('/posts')({
 
 ```tsx
 // routes/__root.tsx
-import { createRootRouteWithContext, Outlet, HeadContent, Scripts } from '@tanstack/react-router'
-import { QueryClient } from '@tanstack/react-query'
+import {
+  createRootRouteWithContext,
+  Outlet,
+  HeadContent,
+  Scripts,
+} from "@tanstack/react-router"
+import { QueryClient } from "@tanstack/react-query"
 
 interface RouterContext {
   queryClient: QueryClient
@@ -126,9 +131,9 @@ TanStack Start handles SSR and hydration automatically via the Vite plugin. No s
 
 ```tsx
 // tests/posts.test.tsx
-import { createRouter, RouterProvider } from '@tanstack/react-router'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { render } from '@testing-library/react'
+import { createRouter, RouterProvider } from "@tanstack/react-router"
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import { render } from "@testing-library/react"
 
 function renderWithProviders(route: string) {
   const queryClient = new QueryClient({
@@ -141,9 +146,7 @@ function renderWithProviders(route: string) {
     routeTree,
     context: { queryClient },
     Wrap: ({ children }) => (
-      <QueryClientProvider client={queryClient}>
-        {children}
-      </QueryClientProvider>
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
     ),
   })
 
@@ -153,11 +156,11 @@ function renderWithProviders(route: string) {
   }
 }
 
-test('loads posts', async () => {
-  const { queryClient } = renderWithProviders('/posts')
+test("loads posts", async () => {
+  const { queryClient } = renderWithProviders("/posts")
 
   // Pre-populate cache for testing
-  queryClient.setQueryData(['posts'], mockPosts)
+  queryClient.setQueryData(["posts"], mockPosts)
 
   // ... assertions
 })

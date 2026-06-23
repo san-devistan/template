@@ -12,15 +12,18 @@ Use this layer only when the universal `@expo/ui` components don't cover what yo
 - Every Jetpack Compose tree must be wrapped in `Host`. Use `<Host matchContents>` for intrinsic sizing, or `<Host style={{ flex: 1 }}>` when you need explicit size (e.g. as a parent of `LazyColumn`). Example:
 
 ```jsx
-import { Host, Column, Button, Text } from "@expo/ui/jetpack-compose";
-import { fillMaxWidth, paddingAll } from "@expo/ui/jetpack-compose/modifiers";
+import { Host, Column, Button, Text } from "@expo/ui/jetpack-compose"
+import { fillMaxWidth, paddingAll } from "@expo/ui/jetpack-compose/modifiers"
 
-<Host matchContents>
-  <Column verticalArrangement={{ spacedBy: 8 }} modifiers={[fillMaxWidth(), paddingAll(16)]}>
+;<Host matchContents>
+  <Column
+    verticalArrangement={{ spacedBy: 8 }}
+    modifiers={[fillMaxWidth(), paddingAll(16)]}
+  >
     <Text style={{ typography: "titleLarge" }}>Hello</Text>
     <Button onPress={() => alert("Pressed!")}>Press me</Button>
   </Column>
-</Host>;
+</Host>
 ```
 
 - `RNHostView` embeds React Native components inside a Jetpack Compose tree (the same concept as in `@expo/ui/swift-ui`) — wrap any RN child in `<RNHostView>`.

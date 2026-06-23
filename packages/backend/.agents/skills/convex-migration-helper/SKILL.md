@@ -65,13 +65,13 @@ it existed.
 // Before
 users: defineTable({
   name: v.string(),
-});
+})
 
 // After - safe, new field is optional
 users: defineTable({
   name: v.string(),
   bio: v.optional(v.string()),
-});
+})
 ```
 
 ### Adding New Table
@@ -80,7 +80,7 @@ users: defineTable({
 posts: defineTable({
   userId: v.id("users"),
   title: v.string(),
-}).index("by_user", ["userId"]);
+}).index("by_user", ["userId"])
 ```
 
 ### Adding Index
@@ -89,7 +89,7 @@ posts: defineTable({
 users: defineTable({
   name: v.string(),
   email: v.string(),
-}).index("by_email", ["email"]);
+}).index("by_email", ["email"])
 ```
 
 ## Breaking Changes: The Deployment Workflow

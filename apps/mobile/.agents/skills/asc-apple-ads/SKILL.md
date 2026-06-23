@@ -8,6 +8,7 @@ description: Use when managing Apple Ads with asc, including auth, org lookup, c
 Use this skill when a task involves Apple Ads or `asc ads`.
 
 ## Ground Rules
+
 - Run `asc ads --help` or the specific subgroup help before scripting a command.
 - Apple Ads auth is separate from App Store Connect auth. `asc auth login` does not configure `asc ads`.
 - Use JSON output for automation: `--output json`.

@@ -8,11 +8,13 @@ description: Set up bundle IDs, capabilities, signing certificates, provisioning
 Use this skill when you need to create or renew signing assets for iOS/macOS apps.
 
 ## Preconditions
+
 - Auth is configured (`asc auth login` or `ASC_*` env vars).
 - You know the bundle identifier and target platform.
 - You have a CSR file for certificate creation, or you will let `asc certificates create --generate-csr` create one.
 
 ## Workflow
+
 1. Create or find the bundle ID:
    - `asc bundle-ids list --paginate`
    - `asc bundle-ids create --identifier "com.example.app" --name "Example" --platform IOS`
@@ -39,6 +41,7 @@ Use this skill when you need to create or renew signing assets for iOS/macOS app
    - `asc profiles local list --output table`
 
 ## Rotation and cleanup
+
 - Revoke old certificates:
   - `asc certificates revoke --id "CERT_ID" --confirm`
 - Audit remote provisioning profiles before deleting or rotating:
@@ -51,6 +54,7 @@ Use this skill when you need to create or renew signing assets for iOS/macOS app
   - `asc profiles local clean --expired --confirm`
 
 ## Shared team storage with `asc signing sync`
+
 Use this when you want a lightweight, non-interactive alternative to fastlane match for encrypted git-backed certificate/profile storage.
 
 ```bash
@@ -69,11 +73,13 @@ asc signing sync pull \
 ```
 
 Notes:
+
 - `--password` falls back to `ASC_MATCH_PASSWORD`.
 - The encrypted repo follows a familiar match-style git layout for certs and profiles.
 - `pull` writes files to disk; keychain import or profile installation is a separate step.
 
 ## Notes
+
 - Always check `--help` for the exact enum values (certificate types, profile types).
 - Use `--paginate` for large accounts.
 - `--certificate` accepts comma-separated IDs when multiple certificates are required.

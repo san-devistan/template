@@ -11,8 +11,8 @@ description: Configure TOTP authenticator apps, send OTP codes via email/SMS, ma
 4. Verify: check that `twoFactorSecret` column exists on user table
 
 ```ts
-import { betterAuth } from "better-auth";
-import { twoFactor } from "better-auth/plugins";
+import { betterAuth } from "better-auth"
+import { twoFactor } from "better-auth/plugins"
 
 export const auth = betterAuth({
   appName: "My App",
@@ -21,24 +21,24 @@ export const auth = betterAuth({
       issuer: "My App",
     }),
   ],
-});
+})
 ```
 
 ### Client-Side Setup
 
 ```ts
-import { createAuthClient } from "better-auth/client";
-import { twoFactorClient } from "better-auth/client/plugins";
+import { createAuthClient } from "better-auth/client"
+import { twoFactorClient } from "better-auth/client/plugins"
 
 export const authClient = createAuthClient({
   plugins: [
     twoFactorClient({
       onTwoFactorRedirect() {
-        window.location.href = "/2fa";
+        window.location.href = "/2fa"
       },
     }),
   ],
-});
+})
 ```
 
 ## Enabling 2FA for Users
@@ -49,13 +49,13 @@ Requires password verification. Returns TOTP URI (for QR code) and backup codes.
 const enable2FA = async (password: string) => {
   const { data, error } = await authClient.twoFactor.enable({
     password,
-  });
+  })
 
   if (data) {
     // data.totpURI — generate a QR code from this
     // data.backupCodes — display to user
   }
-};
+}
 ```
 
 `twoFactorEnabled` is not set to `true` until first TOTP verification succeeds. Override with `skipVerificationOnEnable: true` (not recommended).
@@ -65,11 +65,11 @@ const enable2FA = async (password: string) => {
 ### Displaying the QR Code
 
 ```tsx
-import QRCode from "react-qr-code";
+import QRCode from "react-qr-code"
 
 const TotpSetup = ({ totpURI }: { totpURI: string }) => {
-  return <QRCode value={totpURI} />;
-};
+  return <QRCode value={totpURI} />
+}
 ```
 
 ### Verifying TOTP Codes
@@ -81,8 +81,8 @@ const verifyTotp = async (code: string) => {
   const { data, error } = await authClient.twoFactor.verifyTotp({
     code,
     trustDevice: true,
-  });
-};
+  })
+}
 ```
 
 ### TOTP Configuration Options
@@ -93,7 +93,7 @@ twoFactor({
     digits: 6, // 6 or 8 digits (default: 6)
     period: 30, // Code validity period in seconds (default: 30)
   },
-});
+})
 ```
 
 ## OTP (Email/SMS)
@@ -101,9 +101,9 @@ twoFactor({
 ### Configuring OTP Delivery
 
 ```ts
-import { betterAuth } from "better-auth";
-import { twoFactor } from "better-auth/plugins";
-import { sendEmail } from "./email";
+import { betterAuth } from "better-auth"
+import { twoFactor } from "better-auth/plugins"
+import { sendEmail } from "./email"
 
 export const auth = betterAuth({
   plugins: [
@@ -114,7 +114,7 @@ export const auth = betterAuth({
             to: user.email,
             subject: "Your verification code",
             text: `Your code is: ${otp}`,
-          });
+          })
         },
         period: 5, // Code validity in minutes (default: 3)
         digits: 6, // Number of digits (default: 6)
@@ -122,7 +122,7 @@ export const auth = betterAuth({
       },
     }),
   ],
-});
+})
 ```
 
 ### Sending and Verifying OTP
@@ -138,7 +138,7 @@ twoFactor({
   otpOptions: {
     storeOTP: "encrypted", // Options: "plain", "encrypted", "hashed"
   },
-});
+})
 ```
 
 For custom encryption:
@@ -151,7 +151,7 @@ twoFactor({
       decrypt: async (token) => myDecrypt(token),
     },
   },
-});
+})
 ```
 
 ## Backup Codes
@@ -171,8 +171,8 @@ const BackupCodes = ({ codes }: { codes: string[] }) => {
         ))}
       </ul>
     </div>
-  );
-};
+  )
+}
 ```
 
 ### Regenerating Backup Codes
@@ -183,9 +183,9 @@ Invalidates all previous codes:
 const regenerateBackupCodes = async (password: string) => {
   const { data, error } = await authClient.twoFactor.generateBackupCodes({
     password,
-  });
+  })
   // data.backupCodes contains the new codes
-};
+}
 ```
 
 ### Using Backup Codes for Recovery
@@ -195,8 +195,8 @@ const verifyBackupCode = async (code: string) => {
   const { data, error } = await authClient.twoFactor.verifyBackupCode({
     code,
     trustDevice: true,
-  });
-};
+  })
+}
 ```
 
 ### Backup Code Configuration
@@ -208,7 +208,7 @@ twoFactor({
     length: 10, // Length of each code (default: 10)
     storeBackupCodes: "encrypted", // Options: "plain", "encrypted"
   },
-});
+})
 ```
 
 ## Handling 2FA During Sign-In
@@ -230,12 +230,12 @@ const signIn = async (email: string, password: string) => {
     {
       onSuccess(context) {
         if (context.data.twoFactorRedirect) {
-          window.location.href = "/2fa";
+          window.location.href = "/2fa"
         }
       },
     }
-  );
-};
+  )
+}
 ```
 
 Server-side: check `"twoFactorRedirect" in response` when using `auth.api.signInEmail`.
@@ -253,7 +253,7 @@ Flow: credentials → session removed → temporary 2FA cookie (10 min default) 
 ```ts
 twoFactor({
   twoFactorCookieMaxAge: 600, // 10 minutes in seconds (default)
-});
+})
 ```
 
 ### Rate Limiting
@@ -265,7 +265,7 @@ twoFactor({
   otpOptions: {
     allowedAttempts: 5, // Max attempts per OTP code (default: 5)
   },
-});
+})
 ```
 
 ### Encryption at Rest
@@ -282,16 +282,16 @@ Requires password confirmation. Revokes trusted device records:
 const disable2FA = async (password: string) => {
   const { data, error } = await authClient.twoFactor.disable({
     password,
-  });
-};
+  })
+}
 ```
 
 ## Complete Configuration Example
 
 ```ts
-import { betterAuth } from "better-auth";
-import { twoFactor } from "better-auth/plugins";
-import { sendEmail } from "./email";
+import { betterAuth } from "better-auth"
+import { twoFactor } from "better-auth/plugins"
+import { sendEmail } from "./email"
 
 export const auth = betterAuth({
   appName: "My App",
@@ -310,7 +310,7 @@ export const auth = betterAuth({
             to: user.email,
             subject: "Your verification code",
             text: `Your code is: ${otp}`,
-          });
+          })
         },
         period: 5,
         allowedAttempts: 5,
@@ -327,5 +327,5 @@ export const auth = betterAuth({
       trustDeviceMaxAge: 30 * 24 * 60 * 60, // 30 days
     }),
   ],
-});
+})
 ```

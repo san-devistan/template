@@ -15,7 +15,7 @@ By default, TanStack Router serializes search params as JSON. For cleaner URLs o
 // Or manually parsing/serializing inconsistently
 function ProductList() {
   const searchParams = new URLSearchParams(window.location.search)
-  const filters = JSON.parse(searchParams.get('filters') || '{}')
+  const filters = JSON.parse(searchParams.get("filters") || "{}")
   // Inconsistent with router's handling
 }
 ```
@@ -23,8 +23,8 @@ function ProductList() {
 ## Good Example: Using JSURL for Compact URLs
 
 ```tsx
-import { createRouter } from '@tanstack/react-router'
-import JSURL from 'jsurl2'
+import { createRouter } from "@tanstack/react-router"
+import JSURL from "jsurl2"
 
 const router = createRouter({
   routeTree,
@@ -42,20 +42,20 @@ const router = createRouter({
 ## Good Example: Using query-string for Flat Params
 
 ```tsx
-import { createRouter } from '@tanstack/react-router'
-import queryString from 'query-string'
+import { createRouter } from "@tanstack/react-router"
+import queryString from "query-string"
 
 const router = createRouter({
   routeTree,
   search: {
     serialize: (search) =>
       queryString.stringify(search, {
-        arrayFormat: 'bracket',
+        arrayFormat: "bracket",
         skipNull: true,
       }),
     parse: (searchString) =>
       queryString.parse(searchString, {
-        arrayFormat: 'bracket',
+        arrayFormat: "bracket",
         parseBooleans: true,
         parseNumbers: true,
       }),
@@ -69,8 +69,8 @@ const router = createRouter({
 ## Good Example: Using qs for Nested Objects
 
 ```tsx
-import { createRouter } from '@tanstack/react-router'
-import qs from 'qs'
+import { createRouter } from "@tanstack/react-router"
+import qs from "qs"
 
 const router = createRouter({
   routeTree,
@@ -78,15 +78,15 @@ const router = createRouter({
     serialize: (search) =>
       qs.stringify(search, {
         encodeValuesOnly: true,
-        arrayFormat: 'brackets',
+        arrayFormat: "brackets",
       }),
     parse: (searchString) =>
       qs.parse(searchString, {
         ignoreQueryPrefix: true,
         decoder(value) {
           // Parse booleans and numbers
-          if (value === 'true') return true
-          if (value === 'false') return false
+          if (value === "true") return true
+          if (value === "false") return false
           if (/^-?\d+$/.test(value)) return parseInt(value, 10)
           return value
         },
@@ -100,20 +100,20 @@ const router = createRouter({
 ## Good Example: Base64 for Complex State
 
 ```tsx
-import { createRouter } from '@tanstack/react-router'
+import { createRouter } from "@tanstack/react-router"
 
 const router = createRouter({
   routeTree,
   search: {
     serialize: (search) => {
-      if (Object.keys(search).length === 0) return ''
+      if (Object.keys(search).length === 0) return ""
       const json = JSON.stringify(search)
-      return btoa(json)  // Base64 encode
+      return btoa(json) // Base64 encode
     },
     parse: (searchString) => {
       if (!searchString) return {}
       try {
-        return JSON.parse(atob(searchString))  // Base64 decode
+        return JSON.parse(atob(searchString)) // Base64 decode
       } catch {
         return {}
       }
@@ -129,7 +129,7 @@ const router = createRouter({
 
 ```tsx
 // Some params as regular query, complex ones as JSON
-import { createRouter } from '@tanstack/react-router'
+import { createRouter } from "@tanstack/react-router"
 
 const router = createRouter({
   routeTree,
@@ -147,7 +147,7 @@ const router = createRouter({
 
       // Complex filters as JSON
       if (filters && Object.keys(filters).length > 0) {
-        params.set('filters', JSON.stringify(filters))
+        params.set("filters", JSON.stringify(filters))
       }
 
       return params.toString()
@@ -157,11 +157,11 @@ const router = createRouter({
       const result: Record<string, unknown> = {}
 
       params.forEach((value, key) => {
-        if (key === 'filters') {
+        if (key === "filters") {
           result.filters = JSON.parse(value)
-        } else if (value === 'true') {
+        } else if (value === "true") {
           result[key] = true
-        } else if (value === 'false') {
+        } else if (value === "false") {
           result[key] = false
         } else if (/^-?\d+$/.test(value)) {
           result[key] = parseInt(value, 10)
@@ -180,13 +180,13 @@ const router = createRouter({
 
 ## Serializer Comparison
 
-| Library | URL Style | Best For |
-|---------|-----------|----------|
-| Default (JSON) | `?data=%7B...%7D` | TypeScript safety |
-| jsurl2 | `?~(key~'value)` | Compact, readable |
-| query-string | `?key=value&arr[]=1` | Traditional APIs |
-| qs | `?obj[nested]=value` | Deep nesting |
-| Base64 | `?eyJrZXkiOiJ2YWx1ZSJ9` | Opaque, compact |
+| Library        | URL Style               | Best For          |
+| -------------- | ----------------------- | ----------------- |
+| Default (JSON) | `?data=%7B...%7D`       | TypeScript safety |
+| jsurl2         | `?~(key~'value)`        | Compact, readable |
+| query-string   | `?key=value&arr[]=1`    | Traditional APIs  |
+| qs             | `?obj[nested]=value`    | Deep nesting      |
+| Base64         | `?eyJrZXkiOiJ2YWx1ZSJ9` | Opaque, compact   |
 
 ## Context
 

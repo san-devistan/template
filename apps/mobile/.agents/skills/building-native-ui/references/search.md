@@ -58,12 +58,12 @@ headerSearchBarOptions: {
 Reusable hook for search state management:
 
 ```tsx
-import { useEffect, useState } from "react";
-import { useNavigation } from "expo-router";
+import { useEffect, useState } from "react"
+import { useNavigation } from "expo-router"
 
 export function useSearch(options: any = {}) {
-  const [search, setSearch] = useState("");
-  const navigation = useNavigation();
+  const [search, setSearch] = useState("")
+  const navigation = useNavigation()
 
   useEffect(() => {
     navigation.setOptions({
@@ -71,22 +71,22 @@ export function useSearch(options: any = {}) {
       headerSearchBarOptions: {
         ...options,
         onChangeText(e: any) {
-          setSearch(e.nativeEvent.text);
-          options.onChangeText?.(e);
+          setSearch(e.nativeEvent.text)
+          options.onChangeText?.(e)
         },
         onSearchButtonPress(e: any) {
-          setSearch(e.nativeEvent.text);
-          options.onSearchButtonPress?.(e);
+          setSearch(e.nativeEvent.text)
+          options.onSearchButtonPress?.(e)
         },
         onCancelButtonPress(e: any) {
-          setSearch("");
-          options.onCancelButtonPress?.(e);
+          setSearch("")
+          options.onCancelButtonPress?.(e)
         },
       },
-    });
-  }, [options, navigation]);
+    })
+  }, [options, navigation])
 
-  return search;
+  return search
 }
 ```
 
@@ -94,18 +94,18 @@ export function useSearch(options: any = {}) {
 
 ```tsx
 function SearchScreen() {
-  const search = useSearch({ placeholder: "Search items..." });
+  const search = useSearch({ placeholder: "Search items..." })
 
-  const filteredItems = items.filter(item =>
+  const filteredItems = items.filter((item) =>
     item.name.toLowerCase().includes(search.toLowerCase())
-  );
+  )
 
   return (
     <FlatList
       data={filteredItems}
       renderItem={({ item }) => <ItemRow item={item} />}
     />
-  );
+  )
 }
 ```
 
@@ -114,22 +114,22 @@ function SearchScreen() {
 ### Simple Text Filter
 
 ```tsx
-const filtered = items.filter(item =>
+const filtered = items.filter((item) =>
   item.name.toLowerCase().includes(search.toLowerCase())
-);
+)
 ```
 
 ### Multiple Fields
 
 ```tsx
-const filtered = items.filter(item => {
-  const query = search.toLowerCase();
+const filtered = items.filter((item) => {
+  const query = search.toLowerCase()
   return (
     item.name.toLowerCase().includes(query) ||
     item.description.toLowerCase().includes(query) ||
-    item.tags.some(tag => tag.toLowerCase().includes(query))
-  );
-});
+    item.tags.some((tag) => tag.toLowerCase().includes(query))
+  )
+})
 ```
 
 ### Debounced Search
@@ -137,31 +137,32 @@ const filtered = items.filter(item => {
 For expensive filtering or API calls:
 
 ```tsx
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react"
 
 function useDebounce<T>(value: T, delay: number): T {
-  const [debounced, setDebounced] = useState(value);
+  const [debounced, setDebounced] = useState(value)
 
   useEffect(() => {
-    const timer = setTimeout(() => setDebounced(value), delay);
-    return () => clearTimeout(timer);
-  }, [value, delay]);
+    const timer = setTimeout(() => setDebounced(value), delay)
+    return () => clearTimeout(timer)
+  }, [value, delay])
 
-  return debounced;
+  return debounced
 }
 
 function SearchScreen() {
-  const search = useSearch();
-  const debouncedSearch = useDebounce(search, 300);
+  const search = useSearch()
+  const debouncedSearch = useDebounce(search, 300)
 
-  const filteredItems = useMemo(() =>
-    items.filter(item =>
-      item.name.toLowerCase().includes(debouncedSearch.toLowerCase())
-    ),
+  const filteredItems = useMemo(
+    () =>
+      items.filter((item) =>
+        item.name.toLowerCase().includes(debouncedSearch.toLowerCase())
+      ),
     [debouncedSearch]
-  );
+  )
 
-  return <FlatList data={filteredItems} />;
+  return <FlatList data={filteredItems} />
 }
 ```
 
@@ -203,7 +204,7 @@ Show appropriate UI when search returns no results:
 
 ```tsx
 function SearchResults({ search, items }) {
-  const filtered = items.filter(/* ... */);
+  const filtered = items.filter(/* ... */)
 
   if (search && filtered.length === 0) {
     return (
@@ -212,10 +213,10 @@ function SearchResults({ search, items }) {
           No results for "{search}"
         </Text>
       </View>
-    );
+    )
   }
 
-  return <FlatList data={filtered} />;
+  return <FlatList data={filtered} />
 }
 ```
 

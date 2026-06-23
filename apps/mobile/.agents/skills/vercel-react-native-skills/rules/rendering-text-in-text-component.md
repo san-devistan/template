@@ -13,7 +13,7 @@ direct child of `<View>`.
 **Incorrect (crashes):**
 
 ```tsx
-import { View } from 'react-native'
+import { View } from "react-native"
 
 function Greeting({ name }: { name: string }) {
   return <View>Hello, {name}!</View>
@@ -24,7 +24,7 @@ function Greeting({ name }: { name: string }) {
 **Correct:**
 
 ```tsx
-import { View, Text } from 'react-native'
+import { View, Text } from "react-native"
 
 function Greeting({ name }: { name: string }) {
   return (

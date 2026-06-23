@@ -22,24 +22,30 @@ Complete JSON output shape returned by `eas channel:insights --channel <name> --
     { "id": "...", "label": "Embedded update", "data": 12345 },
     { "id": "...", "label": "Embedded update failed installs", "data": 0 }
   ],
-  "uniqueUsersOverTime": { "labels": ["..."], "datasets": [ { "id": "...", "label": "...", "data": [100, 200] } ] },
-  "cumulativeMetricsOverTime": { "labels": ["..."], "datasets": [ { "id": "...", "label": "...", "data": [10, 20] } ] }
+  "uniqueUsersOverTime": {
+    "labels": ["..."],
+    "datasets": [{ "id": "...", "label": "...", "data": [100, 200] }]
+  },
+  "cumulativeMetricsOverTime": {
+    "labels": ["..."],
+    "datasets": [{ "id": "...", "label": "...", "data": [10, 20] }]
+  }
 }
 ```
 
 ## Field reference
 
-| Path | Meaning |
-|---|---|
-| `channel` | The channel queried. |
-| `runtimeVersion` | The runtime version filter used. Channel insights are always scoped to a single runtime. |
-| `timespan.start` / `.end` / `.daysBack` | Window bounds (UTC ISO) and size in days. |
-| `embeddedUpdateTotalUniqueUsers` | Distinct users running the embedded (binary-bundled) build in the window. |
-| `otaTotalUniqueUsers` | Sum of `totalUniqueUsers` across `mostPopularUpdates`. May undercount if more than top-N updates are active (see caveat below). |
-| `mostPopularUpdates[]` | Top-N updates ranked by `totalUniqueUsers`. Each entry has `rank`, `groupId`, `message`, `platform`, `totalUniqueUsers`. |
-| `cumulativeMetricsAtLastTimestamp[]` | Snapshot totals at the end of the window, labelled (e.g., "Embedded update", "Embedded update failed installs"). |
-| `uniqueUsersOverTime` | Chart-shaped object with `labels` (dates) and `datasets` for plotting unique users over time. |
-| `cumulativeMetricsOverTime` | Chart-shaped object for plotting cumulative metrics over time. |
+| Path                                    | Meaning                                                                                                                         |
+| --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `channel`                               | The channel queried.                                                                                                            |
+| `runtimeVersion`                        | The runtime version filter used. Channel insights are always scoped to a single runtime.                                        |
+| `timespan.start` / `.end` / `.daysBack` | Window bounds (UTC ISO) and size in days.                                                                                       |
+| `embeddedUpdateTotalUniqueUsers`        | Distinct users running the embedded (binary-bundled) build in the window.                                                       |
+| `otaTotalUniqueUsers`                   | Sum of `totalUniqueUsers` across `mostPopularUpdates`. May undercount if more than top-N updates are active (see caveat below). |
+| `mostPopularUpdates[]`                  | Top-N updates ranked by `totalUniqueUsers`. Each entry has `rank`, `groupId`, `message`, `platform`, `totalUniqueUsers`.        |
+| `cumulativeMetricsAtLastTimestamp[]`    | Snapshot totals at the end of the window, labelled (e.g., "Embedded update", "Embedded update failed installs").                |
+| `uniqueUsersOverTime`                   | Chart-shaped object with `labels` (dates) and `datasets` for plotting unique users over time.                                   |
+| `cumulativeMetricsOverTime`             | Chart-shaped object for plotting cumulative metrics over time.                                                                  |
 
 ## Caveats
 

@@ -4,10 +4,10 @@ View API request logs programmatically. Useful for debugging, auditing API usage
 
 ## SDK Methods
 
-| Operation | Node.js | Python |
-|-----------|---------|--------|
-| List | `resend.logs.list(params)` | Not yet available |
-| Get | `resend.logs.get(id)` | Not yet available |
+| Operation | Node.js                    | Python            |
+| --------- | -------------------------- | ----------------- |
+| List      | `resend.logs.list(params)` | Not yet available |
+| Get       | `resend.logs.get(id)`      | Not yet available |
 
 > **SDK availability:** Logs are currently only available in the Node.js SDK and via cURL. Other SDKs (Python, Go, Ruby, PHP, Rust, Java, .NET) do not yet support logs — use cURL as a fallback.
 
@@ -17,36 +17,36 @@ View API request logs programmatically. Useful for debugging, auditing API usage
 
 ### Parameters
 
-| Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|
-| `limit` | number | Yes | 20 | Number of logs to return. Min 1, max 100. |
-| `after` | string | No | — | Log ID to paginate forward from. Cannot combine with `before`. |
-| `before` | string | No | — | Log ID to paginate backward from. Cannot combine with `after`. |
+| Parameter | Type   | Required | Default | Description                                                    |
+| --------- | ------ | -------- | ------- | -------------------------------------------------------------- |
+| `limit`   | number | Yes      | 20      | Number of logs to return. Min 1, max 100.                      |
+| `after`   | string | No       | —       | Log ID to paginate forward from. Cannot combine with `before`. |
+| `before`  | string | No       | —       | Log ID to paginate backward from. Cannot combine with `after`. |
 
 ### Node.js
 
 ```typescript
-import { Resend } from 'resend';
-const resend = new Resend(process.env.RESEND_API_KEY);
+import { Resend } from "resend"
+const resend = new Resend(process.env.RESEND_API_KEY)
 
 // List recent logs
-const { data, error } = await resend.logs.list({ limit: 20 });
+const { data, error } = await resend.logs.list({ limit: 20 })
 
 if (error) {
-  console.error(error);
-  return;
+  console.error(error)
+  return
 }
 
-console.log(data.has_more); // true if more pages exist
+console.log(data.has_more) // true if more pages exist
 for (const log of data.data) {
-  console.log(`${log.method} ${log.endpoint} → ${log.response_status}`);
+  console.log(`${log.method} ${log.endpoint} → ${log.response_status}`)
 }
 
 // Paginate forward
 const { data: nextPage } = await resend.logs.list({
   limit: 20,
   after: data.data[data.data.length - 1].id,
-});
+})
 ```
 
 ### cURL
@@ -85,16 +85,18 @@ Returns a single log with full request and response bodies.
 ### Node.js
 
 ```typescript
-const { data, error } = await resend.logs.get('37e4414c-5e25-4dbc-a071-43552a4bd53b');
+const { data, error } = await resend.logs.get(
+  "37e4414c-5e25-4dbc-a071-43552a4bd53b"
+)
 
 if (error) {
-  console.error(error);
-  return;
+  console.error(error)
+  return
 }
 
-console.log(data.request_body);   // original request payload
-console.log(data.response_body);  // original response payload
-console.log(data.response_status); // HTTP status code
+console.log(data.request_body) // original request payload
+console.log(data.response_body) // original response payload
+console.log(data.response_status) // HTTP status code
 ```
 
 ### cURL
@@ -129,16 +131,16 @@ curl -s "https://api.resend.com/logs/37e4414c-5e25-4dbc-a071-43552a4bd53b" \
 
 ## Response Fields
 
-| Field | In List | In Get | Description |
-|-------|---------|--------|-------------|
-| `id` | Yes | Yes | Log UUID |
-| `created_at` | Yes | Yes | Timestamp with timezone |
-| `endpoint` | Yes | Yes | API path called (e.g., `/emails`, `/domains`) |
-| `method` | Yes | Yes | HTTP method (GET, POST, DELETE, etc.) |
-| `response_status` | Yes | Yes | HTTP response status code |
-| `user_agent` | Yes | Yes | Client user agent (includes SDK name/version) |
-| `request_body` | No | Yes | Original request payload |
-| `response_body` | No | Yes | Original response payload |
+| Field             | In List | In Get | Description                                   |
+| ----------------- | ------- | ------ | --------------------------------------------- |
+| `id`              | Yes     | Yes    | Log UUID                                      |
+| `created_at`      | Yes     | Yes    | Timestamp with timezone                       |
+| `endpoint`        | Yes     | Yes    | API path called (e.g., `/emails`, `/domains`) |
+| `method`          | Yes     | Yes    | HTTP method (GET, POST, DELETE, etc.)         |
+| `response_status` | Yes     | Yes    | HTTP response status code                     |
+| `user_agent`      | Yes     | Yes    | Client user agent (includes SDK name/version) |
+| `request_body`    | No      | Yes    | Original request payload                      |
+| `response_body`   | No      | Yes    | Original response payload                     |
 
 ## Pagination
 
@@ -151,11 +153,11 @@ Cursor-based using `after` and `before` parameters:
 
 ## Common Mistakes
 
-| Mistake | Fix |
-|---------|-----|
+| Mistake                                                   | Fix                                                                                              |
+| --------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
 | Expecting `request_body`/`response_body` in list response | These fields are only returned by the get endpoint — call `resend.logs.get(id)` for full details |
-| Using both `after` and `before` together | Pick one — they are mutually exclusive (returns 422) |
-| Using Python/Go/Ruby SDK for logs | Logs are only in the Node.js SDK currently — use cURL for other languages |
-| Not passing `limit` | `limit` is required — set it explicitly (1–100, default 20) |
-| Calling `.delete()` or `.remove()` | Logs are read-only — there are no create, update, or delete operations |
-| Missing `User-Agent` header in cURL | Resend API requires a `User-Agent` header — omitting it returns 403 |
+| Using both `after` and `before` together                  | Pick one — they are mutually exclusive (returns 422)                                             |
+| Using Python/Go/Ruby SDK for logs                         | Logs are only in the Node.js SDK currently — use cURL for other languages                        |
+| Not passing `limit`                                       | `limit` is required — set it explicitly (1–100, default 20)                                      |
+| Calling `.delete()` or `.remove()`                        | Logs are read-only — there are no create, update, or delete operations                           |
+| Missing `User-Agent` header in cURL                       | Resend API requires a `User-Agent` header — omitting it returns 403                              |

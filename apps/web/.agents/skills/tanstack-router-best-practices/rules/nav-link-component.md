@@ -15,7 +15,9 @@ function PostCard({ post }: { post: Post }) {
 
   return (
     <div
-      onClick={() => navigate({ to: '/posts/$postId', params: { postId: post.id } })}
+      onClick={() =>
+        navigate({ to: "/posts/$postId", params: { postId: post.id } })
+      }
       className="post-card"
     >
       <h2>{post.title}</h2>
@@ -33,7 +35,7 @@ function PostCard({ post }: { post: Post }) {
 ## Good Example
 
 ```tsx
-import { Link } from '@tanstack/react-router'
+import { Link } from "@tanstack/react-router"
 
 function PostCard({ post }: { post: Post }) {
   return (
@@ -60,23 +62,20 @@ function PostCard({ post }: { post: Post }) {
 ```tsx
 function FilteredLink() {
   return (
-    <Link
-      to="/products"
-      search={{ category: 'electronics', sort: 'price' }}
-    >
+    <Link to="/products" search={{ category: "electronics", sort: "price" }}>
       View Electronics
     </Link>
   )
 }
 
 // Preserving existing search params
-function SortLink({ sort }: { sort: 'asc' | 'desc' }) {
+function SortLink({ sort }: { sort: "asc" | "desc" }) {
   return (
     <Link
-      to="."  // Current route
+      to="." // Current route
       search={(prev) => ({ ...prev, sort })}
     >
-      Sort {sort === 'asc' ? 'Ascending' : 'Descending'}
+      Sort {sort === "asc" ? "Ascending" : "Descending"}
     </Link>
   )
 }
@@ -90,14 +89,14 @@ function NavLink({ to, children }: { to: string; children: React.ReactNode }) {
     <Link
       to={to}
       activeProps={{
-        className: 'nav-link-active',
-        'aria-current': 'page',
+        className: "nav-link-active",
+        "aria-current": "page",
       }}
       inactiveProps={{
-        className: 'nav-link',
+        className: "nav-link",
       }}
       activeOptions={{
-        exact: true,  // Only active on exact match
+        exact: true, // Only active on exact match
       }}
     >
       {children}
@@ -106,11 +105,19 @@ function NavLink({ to, children }: { to: string; children: React.ReactNode }) {
 }
 
 // Or use render props for more control
-function CustomNavLink({ to, children }: { to: string; children: React.ReactNode }) {
+function CustomNavLink({
+  to,
+  children,
+}: {
+  to: string
+  children: React.ReactNode
+}) {
   return (
     <Link to={to}>
       {({ isActive }) => (
-        <span className={isActive ? 'text-blue-600 font-bold' : 'text-gray-600'}>
+        <span
+          className={isActive ? "text-blue-600 font-bold" : "text-gray-600"}
+        >
           {children}
           {isActive && <CheckIcon className="ml-2" />}
         </span>
@@ -126,13 +133,13 @@ function CustomNavLink({ to, children }: { to: string; children: React.ReactNode
 function PostList({ posts }: { posts: Post[] }) {
   return (
     <ul>
-      {posts.map(post => (
+      {posts.map((post) => (
         <li key={post.id}>
           <Link
             to="/posts/$postId"
             params={{ postId: post.id }}
-            preload="intent"      // Preload on hover/focus
-            preloadDelay={100}    // Wait 100ms before preloading
+            preload="intent" // Preload on hover/focus
+            preloadDelay={100} // Wait 100ms before preloading
           >
             {post.title}
           </Link>
@@ -150,20 +157,20 @@ function PostList({ posts }: { posts: Post[] }) {
 const createPost = useMutation({
   mutationFn: submitPost,
   onSuccess: (data) => {
-    navigate({ to: '/posts/$postId', params: { postId: data.id } })
+    navigate({ to: "/posts/$postId", params: { postId: data.id } })
   },
 })
 
 // 2. After authentication
 async function handleLogin(credentials: Credentials) {
   await login(credentials)
-  navigate({ to: '/dashboard' })
+  navigate({ to: "/dashboard" })
 }
 
 // 3. Programmatic redirects
 useEffect(() => {
   if (!isAuthenticated) {
-    navigate({ to: '/login', search: { redirect: location.pathname } })
+    navigate({ to: "/login", search: { redirect: location.pathname } })
   }
 }, [isAuthenticated])
 ```

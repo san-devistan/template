@@ -10,23 +10,22 @@ Server function errors cross the network boundary. Handle them gracefully with a
 
 ```tsx
 // Throwing raw errors - exposes internals
-export const createUser = createServerFn({ method: 'POST' })
+export const createUser = createServerFn({ method: "POST" })
   .validator(createUserSchema)
   .handler(async ({ data }) => {
-    const user = await db.users.create({ data })  // May throw DB error
+    const user = await db.users.create({ data }) // May throw DB error
     return user
     // Prisma error with stack trace sent to client
   })
 
 // Generic error handling - no useful info for client
-export const getPost = createServerFn()
-  .handler(async ({ data }) => {
-    try {
-      return await fetchPost(data.id)
-    } catch (e) {
-      throw new Error('Something went wrong')  // Too vague
-    }
-  })
+export const getPost = createServerFn().handler(async ({ data }) => {
+  try {
+    return await fetchPost(data.id)
+  } catch (e) {
+    throw new Error("Something went wrong") // Too vague
+  }
+})
 ```
 
 ## Good Example: Structured Error Handling
@@ -40,25 +39,28 @@ export class AppError extends Error {
     public status: number = 400
   ) {
     super(message)
-    this.name = 'AppError'
+    this.name = "AppError"
   }
 }
 
 export class NotFoundError extends AppError {
   constructor(resource: string) {
-    super(`${resource} not found`, 'NOT_FOUND', 404)
+    super(`${resource} not found`, "NOT_FOUND", 404)
   }
 }
 
 export class UnauthorizedError extends AppError {
-  constructor(message = 'Unauthorized') {
-    super(message, 'UNAUTHORIZED', 401)
+  constructor(message = "Unauthorized") {
+    super(message, "UNAUTHORIZED", 401)
   }
 }
 
 export class ValidationError extends AppError {
-  constructor(message: string, public fields?: Record<string, string>) {
-    super(message, 'VALIDATION_ERROR', 400)
+  constructor(
+    message: string,
+    public fields?: Record<string, string>
+  ) {
+    super(message, "VALIDATION_ERROR", 400)
   }
 }
 ```
@@ -66,8 +68,8 @@ export class ValidationError extends AppError {
 ## Good Example: Server Function with Error Handling
 
 ```tsx
-import { createServerFn, notFound } from '@tanstack/react-start'
-import { setResponseStatus } from '@tanstack/react-start/server'
+import { createServerFn, notFound } from "@tanstack/react-start"
+import { setResponseStatus } from "@tanstack/react-start/server"
 
 export const getPost = createServerFn()
   .validator(z.object({ id: z.string() }))
@@ -84,7 +86,7 @@ export const getPost = createServerFn()
     return post
   })
 
-export const createPost = createServerFn({ method: 'POST' })
+export const createPost = createServerFn({ method: "POST" })
   .validator(createPostSchema)
   .handler(async ({ data }) => {
     try {
@@ -92,19 +94,23 @@ export const createPost = createServerFn({ method: 'POST' })
       return post
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
-        if (error.code === 'P2002') {
+        if (error.code === "P2002") {
           // Unique constraint violation
           setResponseStatus(409)
-          throw new AppError('A post with this title already exists', 'DUPLICATE', 409)
+          throw new AppError(
+            "A post with this title already exists",
+            "DUPLICATE",
+            409
+          )
         }
       }
 
       // Log full error server-side
-      console.error('Failed to create post:', error)
+      console.error("Failed to create post:", error)
 
       // Return sanitized error to client
       setResponseStatus(500)
-      throw new AppError('Failed to create post', 'INTERNAL_ERROR', 500)
+      throw new AppError("Failed to create post", "INTERNAL_ERROR", 500)
     }
   })
 ```
@@ -126,11 +132,11 @@ function CreatePostForm() {
           form.setError(field, { message })
         })
       } else {
-        setError('An unexpected error occurred')
+        setError("An unexpected error occurred")
       }
     },
     onSuccess: (post) => {
-      navigate({ to: '/posts/$postId', params: { postId: post.id } })
+      navigate({ to: "/posts/$postId", params: { postId: post.id } })
     },
   })
 
@@ -146,7 +152,7 @@ function CreatePostForm() {
 ## Good Example: Using Redirects for Auth Errors
 
 ```tsx
-export const updateProfile = createServerFn({ method: 'POST' })
+export const updateProfile = createServerFn({ method: "POST" })
   .validator(updateProfileSchema)
   .handler(async ({ data }) => {
     const session = await getSessionData()
@@ -154,8 +160,8 @@ export const updateProfile = createServerFn({ method: 'POST' })
     if (!session) {
       // Redirect to login for auth errors
       throw redirect({
-        to: '/login',
-        search: { redirect: '/settings' },
+        to: "/login",
+        search: { redirect: "/settings" },
       })
     }
 
@@ -168,14 +174,14 @@ export const updateProfile = createServerFn({ method: 'POST' })
 
 ## Error Response Best Practices
 
-| Scenario | HTTP Status | Response |
-|----------|-------------|----------|
-| Validation failed | 400 | Field-specific errors |
-| Not authenticated | 401 | Redirect to login |
-| Not authorized | 403 | Generic forbidden message |
-| Resource not found | 404 | Use `notFound()` |
-| Conflict (duplicate) | 409 | Specific conflict message |
-| Server error | 500 | Generic message, log details |
+| Scenario             | HTTP Status | Response                     |
+| -------------------- | ----------- | ---------------------------- |
+| Validation failed    | 400         | Field-specific errors        |
+| Not authenticated    | 401         | Redirect to login            |
+| Not authorized       | 403         | Generic forbidden message    |
+| Resource not found   | 404         | Use `notFound()`             |
+| Conflict (duplicate) | 409         | Specific conflict message    |
+| Server error         | 500         | Generic message, log details |
 
 ## Context
 

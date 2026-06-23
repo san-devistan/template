@@ -15,7 +15,7 @@ for side effects, not derivations.
 **Incorrect (useAnimatedReaction for derivation):**
 
 ```tsx
-import { useSharedValue, useAnimatedReaction } from 'react-native-reanimated'
+import { useSharedValue, useAnimatedReaction } from "react-native-reanimated"
 
 function MyComponent() {
   const progress = useSharedValue(0)
@@ -35,7 +35,7 @@ function MyComponent() {
 **Correct (useDerivedValue):**
 
 ```tsx
-import { useSharedValue, useDerivedValue } from 'react-native-reanimated'
+import { useSharedValue, useDerivedValue } from "react-native-reanimated"
 
 function MyComponent() {
   const progress = useSharedValue(0)

@@ -41,6 +41,7 @@ Example:  "quran" appears in subtitle AND keywords — remove from keywords to f
 ```
 
 How to check:
+
 1. Read `metadata/app-info/{locale}.json` for `subtitle` (and `name` if present)
 2. Read `metadata/version/{latest-version}/{locale}.json` for `keywords`
 3. Tokenize subtitle (+ name):
@@ -60,6 +61,7 @@ asc app-tags view --app "APP_ID" --id "TAG_ID" --output json
 ```
 
 Use tags as context only:
+
 - If visible tags reinforce the subtitle/keyword strategy, note the alignment.
 - If tags point to an unintended category or use case, recommend metadata/category changes that may improve future classification.
 - Do not promise that changing metadata will immediately change Apple-generated tags.
@@ -68,10 +70,10 @@ Use tags as context only:
 
 Flag fields using less than their recommended minimum:
 
-| Field | Minimum | Limit | Rationale |
-|-------|---------|-------|-----------|
-| Keywords | 90 chars | 100 | 90%+ usage maximizes indexing |
-| Subtitle | 20 chars | 30 | 65%+ usage recommended |
+| Field    | Minimum  | Limit | Rationale                     |
+| -------- | -------- | ----- | ----------------------------- |
+| Keywords | 90 chars | 100   | 90%+ usage maximizes indexing |
+| Subtitle | 20 chars | 30    | 65%+ usage recommended        |
 
 ```
 Severity: ⚠️ Warning
@@ -92,6 +94,7 @@ Example:  subtitle is empty for locale en-US
 ### 4. Bad Keyword Separators
 
 Check the `keywords` field for formatting issues:
+
 - Spaces after commas (`quran, recitation`)
 - Semicolons instead of commas (`quran;recitation`)
 - Pipes instead of commas (`quran|recitation`)
@@ -111,6 +114,7 @@ Example:  ar keywords identical to en-US — likely not localized for Arabic mar
 ```
 
 How to check:
+
 1. Load keywords for all locales
 2. Compare each non-primary locale against the primary
 3. Flag exact matches (case-insensitive)
@@ -125,6 +129,7 @@ Example:  3 of 16 keywords not found in description: namaz, tarteel, adhan
 ```
 
 How to check:
+
 1. Load `keywords` and `description` for each locale
 2. For each keyword, check if it appears as a substring in the description (case-insensitive)
 3. Account for inflected forms: Arabic root matches, verb conjugations (e.g., "memorizar" ≈ "memorices"), and case declensions (e.g., Russian "сура" ≈ "суры")
@@ -154,6 +159,7 @@ If Astro MCP is available and the app is tracked, run keyword gap analysis. **Ru
 ### Cross-Field Combo Strategy
 
 When recommending keyword additions, consider how single words combine across indexed fields (title + subtitle + keywords). For example:
+
 - Adding "namaz" to keywords when "vakti" is already present enables matching the search "namaz vakti" (66 popularity)
 - Adding "holy" to keywords when "Quran" is in the subtitle enables matching "holy quran" (58 popularity)
 

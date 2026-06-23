@@ -15,12 +15,12 @@ JS thread round-trip for press animations.
 **Incorrect (Pressable with JS thread callbacks):**
 
 ```tsx
-import { Pressable } from 'react-native'
+import { Pressable } from "react-native"
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withTiming,
-} from 'react-native-reanimated'
+} from "react-native-reanimated"
 
 function AnimatedButton({ onPress }: { onPress: () => void }) {
   const scale = useSharedValue(1)
@@ -46,14 +46,14 @@ function AnimatedButton({ onPress }: { onPress: () => void }) {
 **Correct (GestureDetector with UI thread worklets):**
 
 ```tsx
-import { Gesture, GestureDetector } from 'react-native-gesture-handler'
+import { Gesture, GestureDetector } from "react-native-gesture-handler"
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withTiming,
   interpolate,
   runOnJS,
-} from 'react-native-reanimated'
+} from "react-native-reanimated"
 
 function AnimatedButton({ onPress }: { onPress: () => void }) {
   // Store the press STATE (0 = not pressed, 1 = pressed)

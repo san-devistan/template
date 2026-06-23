@@ -8,6 +8,7 @@ description: Orchestrate iOS screenshot automation with xcodebuild/simctl for bu
 Use this skill for agent-driven screenshot workflows where the app is built and launched with Xcode CLI tools, UI is driven with AXe, and screenshots are uploaded with `asc`.
 
 ## Current scope
+
 - Implemented now: build/run, AXe plan capture, frame composition, and upload.
 - Device discovery is built-in via `asc screenshots list-frame-devices`.
 - Local screenshot automation commands are experimental in asc cli.
@@ -15,6 +16,7 @@ Use this skill for agent-driven screenshot workflows where the app is built and 
 - Feedback/issues: https://github.com/rorkai/App-Store-Connect-CLI/issues/new/choose
 
 ## Defaults
+
 - Settings file: `.asc/shots.settings.json`
 - Capture plan: `.asc/screenshots.json`
 - Raw screenshots dir: `./screenshots/raw`
@@ -52,6 +54,7 @@ Create or update `.asc/shots.settings.json`:
 ```
 
 If you intentionally skip framing, set:
+
 - `"frame_enabled": false`
 - `"upload.source_dir": "./screenshots/raw"`
 
@@ -140,6 +143,7 @@ asc screenshots frame \
 ```
 
 Supported `--device` values:
+
 - `iphone-air` (default)
 - `iphone-17-pro`
 - `iphone-17-pro-max`
@@ -182,6 +186,7 @@ asc screenshots list --version-localization "LOC_ID" --output table
 ```
 
 ## Agent behavior
+
 - Always confirm exact flags with `--help` before running commands.
 - Re-check command paths with `asc screenshots --help` because screenshot commands are evolving quickly.
 - Keep outputs deterministic: default to JSON for machine steps.

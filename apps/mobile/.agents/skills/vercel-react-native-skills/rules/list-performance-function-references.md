@@ -60,7 +60,7 @@ function DomainSearch() {
 function DomainItem({ tld }: { tld: Tld }) {
   // good: transform within items, and don't pass the dynamic data as a prop
   // good: use a selector function from zustand to receive a stable string back
-  const domain = useKeywordZustandState((s) => s.keyword + '.' + tld.name)
+  const domain = useKeywordZustandState((s) => s.keyword + "." + tld.name)
   return <Text>{domain}</Text>
 }
 ```
@@ -84,7 +84,7 @@ references are stable.
 **With zustand for dynamic data (avoids parent re-renders):**
 
 ```tsx
-const useSearchStore = create<{ keyword: string }>(() => ({ keyword: '' }))
+const useSearchStore = create<{ keyword: string }>(() => ({ keyword: "" }))
 
 function DomainSearch() {
   const { data: tlds } = useTlds()

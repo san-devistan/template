@@ -14,7 +14,7 @@ property access—explicit methods ensure correct behavior.
 **Incorrect (breaks with React Compiler):**
 
 ```tsx
-import { useSharedValue } from 'react-native-reanimated'
+import { useSharedValue } from "react-native-reanimated"
 
 function Counter() {
   const count = useSharedValue(0)
@@ -30,7 +30,7 @@ function Counter() {
 **Correct (React Compiler compatible):**
 
 ```tsx
-import { useSharedValue } from 'react-native-reanimated'
+import { useSharedValue } from "react-native-reanimated"
 
 function Counter() {
   const count = useSharedValue(0)
