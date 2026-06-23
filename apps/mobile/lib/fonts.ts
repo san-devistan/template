@@ -1,3 +1,4 @@
+import { FONT_FAMILY, TYPOGRAPHY } from "@/lib/theme"
 import {
   Inter_400Regular,
   Inter_400Regular_Italic,
@@ -17,22 +18,13 @@ export const interFonts = {
   Inter_800ExtraBold,
 }
 
-const INTER_FONT_FAMILY = {
-  regular: "Inter_400Regular",
-  regularItalic: "Inter_400Regular_Italic",
-  medium: "Inter_500Medium",
-  semibold: "Inter_600SemiBold",
-  bold: "Inter_700Bold",
-  extrabold: "Inter_800ExtraBold",
-} as const
-
 const INTER_TEXT_STYLES = {
-  regular: { fontFamily: INTER_FONT_FAMILY.regular },
-  regularItalic: { fontFamily: INTER_FONT_FAMILY.regularItalic },
-  medium: { fontFamily: INTER_FONT_FAMILY.medium },
-  semibold: { fontFamily: INTER_FONT_FAMILY.semibold },
-  bold: { fontFamily: INTER_FONT_FAMILY.bold },
-  extrabold: { fontFamily: INTER_FONT_FAMILY.extrabold },
+  regular: { fontFamily: TYPOGRAPHY.body.fontFamily },
+  regularItalic: { fontFamily: FONT_FAMILY.regularItalic },
+  medium: { fontFamily: TYPOGRAPHY.label.fontFamily },
+  semibold: { fontFamily: TYPOGRAPHY["heading-sm"].fontFamily },
+  bold: { fontFamily: FONT_FAMILY.bold },
+  extrabold: { fontFamily: TYPOGRAPHY["heading-lg"].fontFamily },
 } satisfies Record<string, TextStyle>
 
 const INTER_WEIGHT_CLASSES = [

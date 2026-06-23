@@ -15,10 +15,10 @@ before introducing new patterns.
 
 ## Design System Ownership
 
-`packages/ui` owns the canonical web design system, web tokens, and shadcn-style
-components. `apps/web` consumes those components through `@workspace/ui`.
-`apps/mobile` owns native UI components that track the shared design language
-without importing web React components.
+`packages/ui` owns the canonical web design system, shared design tokens, and
+shadcn-style components. `apps/web` consumes those components through
+`@workspace/ui`. `apps/mobile` owns native UI components that track the shared
+design language without importing web React components.
 
 For implementation details, read the local workspace guide before editing UI:
 
@@ -26,8 +26,8 @@ For implementation details, read the local workspace guide before editing UI:
 - Mobile app: `apps/mobile/AGENTS.md`
 - Web UI system: `packages/ui/AGENTS.md`
 
-Do not hand-edit generated mobile theme files. Change token sources in
-`packages/ui`, then run `pnpm sync:mobile-theme`.
+Token generation, generated theme files, and mobile native counterpart rules
+are documented in the UI and mobile workspace guides.
 
 ## File Naming
 

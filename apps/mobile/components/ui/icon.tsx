@@ -1,4 +1,5 @@
 import { TextClassContext } from "@/components/ui/text"
+import { COMPONENT_TOKENS } from "@/lib/theme"
 import { cn } from "@/lib/utils"
 import type { LucideIcon, LucideProps } from "lucide-react-native"
 import { cssInterop } from "nativewind"
@@ -39,13 +40,13 @@ cssInterop(IconImpl, {
  *
  * @param {LucideIcon} as - The Lucide icon component to render.
  * @param {string} className - Utility classes to style the icon using Nativewind.
- * @param {number} size - Icon size (defaults to 14).
+ * @param {number} size - Icon size (defaults to the shared small icon token).
  * @param {...LucideProps} ...props - Additional Lucide icon props passed to the "as" icon.
  */
 function Icon({
   as: IconComponent,
   className,
-  size = 14,
+  size = COMPONENT_TOKENS.iconSize.sm,
   ...props
 }: IconProps) {
   const textClass = React.use(TextClassContext)

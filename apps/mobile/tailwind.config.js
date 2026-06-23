@@ -1,4 +1,11 @@
+const path = require("node:path")
 const { hairlineWidth } = require("nativewind/theme")
+const designTokens = require(
+  path.resolve(__dirname, "../../packages/ui/src/tokens/design-tokens.json")
+)
+
+const mobileFonts = designTokens.fonts.mobile
+const motion = designTokens.motion
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -77,8 +84,8 @@ module.exports = {
         hairline: hairlineWidth(),
       },
       fontFamily: {
-        heading: ["Inter_600SemiBold"],
-        sans: ["Inter_400Regular"],
+        heading: [mobileFonts.heading],
+        sans: [mobileFonts.sans],
       },
       keyframes: {
         "accordion-down": {
@@ -91,8 +98,8 @@ module.exports = {
         },
       },
       animation: {
-        "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out",
+        "accordion-down": `accordion-down ${motion.durationMs.base}ms ${motion.easing.standard}`,
+        "accordion-up": `accordion-up ${motion.durationMs.base}ms ${motion.easing.standard}`,
       },
     },
   },

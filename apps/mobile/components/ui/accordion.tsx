@@ -1,5 +1,6 @@
 import { Icon } from "@/components/ui/icon"
 import { TextClassContext } from "@/components/ui/text"
+import { MOTION } from "@/lib/theme"
 import { cn } from "@/lib/utils"
 import * as AccordionPrimitive from "@rn-primitives/accordion"
 import { ChevronDown } from "lucide-react-native"
@@ -20,11 +21,19 @@ type DistributiveOmit<T, K extends PropertyKey> = T extends unknown
 
 type AccordionProps = DistributiveOmit<AccordionPrimitive.RootProps, "asChild">
 
+const accordionDuration = MOTION.durationMs.base
+const accordionSlowDuration = MOTION.durationMs.slow
+const accordionLayoutTransition = LinearTransition.duration(accordionDuration)
+const accordionNativeLayoutTransition = Platform.select({
+  native: accordionLayoutTransition,
+})
+const accordionNativeExitTransition = Platform.select({
+  native: FadeOutUp.duration(accordionDuration),
+})
+
 function Accordion({ children, ...props }: AccordionProps) {
   const root = (
-    <Animated.View layout={LinearTransition.duration(200)}>
-      {children}
-    </Animated.View>
+    <Animated.View layout={accordionLayoutTransition}>{children}</Animated.View>
   )
 
   if (props.type === "multiple") {
@@ -65,7 +74,7 @@ function AccordionItem({
     >
       <Animated.View
         className="native:overflow-hidden"
-        layout={Platform.select({ native: LinearTransition.duration(200) })}
+        layout={accordionNativeLayoutTransition}
       >
         {children}
       </Animated.View>
@@ -91,8 +100,8 @@ function AccordionTrigger({
   const progress = useDerivedValue(
     () =>
       isExpanded
-        ? withTiming(1, { duration: 250 })
-        : withTiming(0, { duration: 200 }),
+        ? withTiming(1, { duration: accordionSlowDuration })
+        : withTiming(0, { duration: accordionDuration }),
     [isExpanded]
   )
   const chevronStyle = useAnimatedStyle(
@@ -153,7 +162,7 @@ function AccordionContent({
         {...props}
       >
         <Animated.View
-          exiting={Platform.select({ native: FadeOutUp.duration(200) })}
+          exiting={accordionNativeExitTransition}
           className={cn("pb-4", className)}
         >
           {children}

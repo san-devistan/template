@@ -11,7 +11,9 @@ system components, wrappers, or token definitions when the shared UI package can
 cover the need.
 
 For shared component changes, token changes, or shadcn work, switch to
-`packages/ui/AGENTS.md`. The shadcn skill lives in `packages/ui`, not in this
+`packages/ui/AGENTS.md`. Shared token changes start in
+`packages/ui/src/tokens/design-tokens.json` and are generated into the web and
+mobile style artifacts. The shadcn skill lives in `packages/ui`, not in this
 workspace.
 
 ## Skills

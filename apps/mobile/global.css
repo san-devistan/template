@@ -1,4 +1,4 @@
-/* Generated from packages/ui/src/styles/globals.css. Do not edit by hand. */
+/* Generated from packages/ui/src/tokens/design-tokens.json. Do not edit by hand. */
 
 @tailwind base;
 @tailwind components;
@@ -46,6 +46,33 @@
     --radius-2xl: calc(var(--radius) * 1.8);
     --radius-3xl: calc(var(--radius) * 2.2);
     --radius-4xl: calc(var(--radius) * 2.6);
+    --font-heading: var(--font-sans);
+    --font-sans: "Inter Variable", sans-serif;
+    --duration-fast: 150ms;
+    --duration-base: 200ms;
+    --duration-slow: 250ms;
+    --ease-standard: ease-out;
+    --shadow-elevation-sm: 0 1px 2px oklch(0 0 0 / 5%);
+    --shadow-elevation-md: 0 4px 12px oklch(0 0 0 / 8%);
+    --shadow-elevation-lg: 0 12px 32px oklch(0 0 0 / 12%);
+    --text-body-size: 1rem;
+    --text-body-line-height: 1.5rem;
+    --text-body-font-weight: 400;
+    --text-small-size: 0.875rem;
+    --text-small-line-height: 1.25rem;
+    --text-small-font-weight: 400;
+    --text-label-size: 0.875rem;
+    --text-label-line-height: 1.25rem;
+    --text-label-font-weight: 500;
+    --text-heading-sm-size: 1.125rem;
+    --text-heading-sm-line-height: 1.5rem;
+    --text-heading-sm-font-weight: 600;
+    --text-heading-md-size: 1.5rem;
+    --text-heading-md-line-height: 2rem;
+    --text-heading-md-font-weight: 600;
+    --text-heading-lg-size: 2.25rem;
+    --text-heading-lg-line-height: 2.5rem;
+    --text-heading-lg-font-weight: 800;
   }
 
   .dark {

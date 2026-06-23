@@ -1,5 +1,73 @@
-// Generated from packages/ui/src/styles/globals.css. Do not edit by hand.
+// Generated from packages/ui/src/tokens/design-tokens.json. Do not edit by hand.
 import { DarkTheme, DefaultTheme, type Theme } from "@react-navigation/native"
+
+export const FONT_FAMILY = {
+  regular: "Inter_400Regular",
+  regularItalic: "Inter_400Regular_Italic",
+  medium: "Inter_500Medium",
+  semibold: "Inter_600SemiBold",
+  bold: "Inter_700Bold",
+  extrabold: "Inter_800ExtraBold",
+  sans: "Inter_400Regular",
+  heading: "Inter_600SemiBold",
+} as const
+
+export const TYPOGRAPHY = {
+  body: {
+    fontSize: 16,
+    lineHeight: 24,
+    fontFamily: FONT_FAMILY.regular,
+  },
+  small: {
+    fontSize: 14,
+    lineHeight: 20,
+    fontFamily: FONT_FAMILY.regular,
+  },
+  label: {
+    fontSize: 14,
+    lineHeight: 20,
+    fontFamily: FONT_FAMILY.medium,
+  },
+  "heading-sm": {
+    fontSize: 18,
+    lineHeight: 24,
+    fontFamily: FONT_FAMILY.semibold,
+  },
+  "heading-md": {
+    fontSize: 24,
+    lineHeight: 32,
+    fontFamily: FONT_FAMILY.semibold,
+  },
+  "heading-lg": {
+    fontSize: 36,
+    lineHeight: 40,
+    fontFamily: FONT_FAMILY.extrabold,
+  },
+} as const
+
+export const MOTION = {
+  durationMs: {
+    fast: 150,
+    base: 200,
+    slow: 250,
+  },
+  easing: {
+    standard: "ease-out",
+  },
+} as const
+
+export const COMPONENT_TOKENS = {
+  controlHeight: {
+    compact: 32,
+    default: 40,
+    large: 44,
+  },
+  iconSize: {
+    sm: 14,
+    md: 16,
+    lg: 20,
+  },
+} as const
 
 export const THEME = {
   light: {

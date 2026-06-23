@@ -9,7 +9,7 @@
     "android": "pnpm run sync:theme && expo start --android",
     "ios": "pnpm run sync:theme && expo start --ios",
     "lint": "cd ../.. && oxlint apps/mobile",
-    "sync:theme": "node ../../scripts/sync-mobile-theme.mjs",
+    "sync:theme": "node ../../scripts/sync-design-system.mjs",
     "web": "pnpm run sync:theme && expo start --web",
     "typecheck": "tsc --noEmit"
   },

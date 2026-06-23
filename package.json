@@ -8,8 +8,8 @@
     "fix": "bash scripts/fix.sh",
     "update:deps": "pnpm update -r",
     "update:skills": "npx --yes skills update --project --yes && pnpm -r --workspace-concurrency=1 exec npx --yes skills update --project --yes",
-    "sync:shadcn": "npx shadcn@latest diff -c packages/ui",
-    "sync:mobile-theme": "node scripts/sync-mobile-theme.mjs"
+    "sync:design-system": "node scripts/sync-design-system.mjs",
+    "sync:shadcn": "npx shadcn@latest diff -c packages/ui"
   },
   "devDependencies": {
     "oxc-parser": "^0.129.0",

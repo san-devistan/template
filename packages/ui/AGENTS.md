@@ -1,18 +1,21 @@
 # UI Package Guide
 
-`packages/ui` is the canonical web design system. It owns web tokens, global
-styles, shared React components, web hooks, and shadcn-style component source
-used by `apps/web`.
+`packages/ui` is the canonical web design system. It owns shared design tokens,
+generated web global styles, shared React components, web hooks, and
+shadcn-style component source used by `apps/web`.
 
 ## Ownership
 
-Treat `packages/ui/src/styles/globals.css` and
-`packages/ui/src/components` as the source of truth for web tokens, component
-anatomy, variants, naming, and interaction patterns.
+Treat `packages/ui/src/tokens/design-tokens.json` as the source of truth for
+colors, radius, fonts, typography roles, motion, shadows, and shared sizing
+primitives. Treat `packages/ui/src/components` as the source of truth for web
+component anatomy, variants, naming, and interaction patterns.
 
-Mobile theme files are generated from this package's token source. Do not edit
-`apps/mobile/global.css` or `apps/mobile/lib/theme.ts` directly; update
-`packages/ui/src/styles/globals.css`, then run `pnpm sync:mobile-theme`.
+Generated style files are derived from the token source. Do not edit
+`packages/ui/src/styles/globals.css`, `apps/mobile/global.css`, or
+`apps/mobile/lib/theme.ts` directly; update
+`packages/ui/src/tokens/design-tokens.json`, then run
+`pnpm sync:design-system`.
 
 ## Skills
 

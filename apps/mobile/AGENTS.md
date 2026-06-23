@@ -10,12 +10,21 @@ Compose screens from `apps/mobile/components/ui` first. The mobile app does not
 import web React components from `packages/ui`; it mirrors the shared design
 language with native primitives and generated theme values.
 
+Shared token changes belong in `packages/ui/src/tokens/design-tokens.json`.
+Run `pnpm sync:design-system` after changing those tokens.
+
+Mobile UI components are native counterparts to shared design-system concepts,
+not wrappers around web components. When a web component is added or changed,
+add or update a mobile component only if a mobile workflow needs the same
+concept. Use React Native primitives, `@rn-primitives/*` where appropriate,
+NativeWind class names, and generated token names such as `bg-background`,
+`text-foreground`, `border-border`, `bg-primary`, and
+`text-primary-foreground`.
+
 Do not hand-edit generated theme files:
 
 - `apps/mobile/global.css`
 - `apps/mobile/lib/theme.ts`
-
-Change token sources in `packages/ui`, then run `pnpm sync:mobile-theme`.
 
 ## Skills
 
