@@ -13,6 +13,12 @@
       "skillPath": "skills/frontend-design/SKILL.md",
       "computedHash": "4eabc66183767153e404b39d1b839b1c37f2d82d86f0a0d7e880a579d8d62336"
     },
+    "security-audit": {
+      "source": "cloudflare/security-audit-skill",
+      "sourceType": "github",
+      "skillPath": "SKILL.md",
+      "computedHash": "112f44eb3c7990a87b3218a5d70e24619131dee42699066a71fca935b18745d1"
+    },
     "turborepo": {
       "source": "vercel/turborepo",
       "sourceType": "github",
