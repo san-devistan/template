@@ -8,7 +8,6 @@ description: Bulk-localize subscription and in-app purchase display names across
 Use this skill to bulk-create or bulk-update display names (and descriptions) for subscriptions, subscription groups, and in-app purchases across all App Store Connect locales. This eliminates the tedious manual process of clicking through each language in App Store Connect to set the same display name.
 
 ## Preconditions
-
 - Auth configured (`asc auth login` or `ASC_*` env vars).
 - Know your app ID (`ASC_APP_ID` or `--app`).
 - Subscription groups and subscriptions already exist.
@@ -186,19 +185,16 @@ asc iap localizations list --iap-id "IAP_ID" --paginate --output table
 To change the display name for existing localizations:
 
 ### Subscriptions
-
 ```bash
 asc subscriptions localizations update --id "LOC_ID" --name "New Name"
 ```
 
 ### Subscription Groups
-
 ```bash
 asc subscriptions groups localizations update --id "LOC_ID" --name "New Group Name"
 ```
 
 ### In-App Purchases
-
 ```bash
 asc iap localizations update --localization-id "LOC_ID" --name "New Name"
 ```
@@ -237,7 +233,6 @@ asc subscriptions list --group-id "GROUP_ID" --paginate
 - If a create call fails for a locale, log the locale and error, then continue with the remaining locales. After the batch completes, report all failures together so the user can address them.
 
 ## Notes
-
 - Subscription display names are what users see on the subscription management sheet and in purchase dialogs.
 - Creating a localization for a locale that already exists will fail; always check first.
 - There is no bulk API; each locale requires a separate create call.

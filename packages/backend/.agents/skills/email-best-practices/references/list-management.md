@@ -8,28 +8,28 @@ A suppression list prevents sending to addresses that should never receive email
 
 ### What to Suppress
 
-| Reason           | Action              | Can Unsuppress?        |
-| ---------------- | ------------------- | ---------------------- |
-| Hard bounce      | Add immediately     | No (address invalid)   |
-| Complaint (spam) | Add immediately     | No (legal requirement) |
-| Soft bounce (3x) | Add after threshold | Yes, after 30-90 days  |
-| Manual removal   | Add on request      | Only if user requests  |
+| Reason | Action | Can Unsuppress? |
+|--------|--------|-----------------|
+| Hard bounce | Add immediately | No (address invalid) |
+| Complaint (spam) | Add immediately | No (legal requirement) |
+| Soft bounce (3x) | Add after threshold | Yes, after 30-90 days |
+| Manual removal | Add on request | Only if user requests |
 
 ### Implementation
 
 ```typescript
 // Suppression list schema
 interface SuppressionEntry {
-  email: string
-  reason: "hard_bounce" | "complaint" | "unsubscribe" | "soft_bounce" | "manual"
-  created_at: Date
-  source_email_id?: string // Which email triggered this
+  email: string;
+  reason: 'hard_bounce' | 'complaint' | 'unsubscribe' | 'soft_bounce' | 'manual';
+  created_at: Date;
+  source_email_id?: string; // Which email triggered this
 }
 
 // Check before every send
 async function canSendTo(email: string): Promise<boolean> {
-  const suppressed = await db.suppressions.findOne({ email })
-  return !suppressed
+  const suppressed = await db.suppressions.findOne({ email });
+  return !suppressed;
 }
 
 // Add to suppression list
@@ -39,7 +39,7 @@ async function suppressEmail(email: string, reason: string, sourceId?: string) {
     reason,
     created_at: new Date(),
     source_email_id: sourceId,
-  })
+  });
 }
 ```
 
@@ -49,12 +49,12 @@ async function suppressEmail(email: string, reason: string, sourceId?: string) {
 
 ```typescript
 async function sendEmail(to: string, emailData: EmailData) {
-  if (!(await canSendTo(to))) {
-    console.log(`Skipping suppressed email: ${to}`)
-    return { skipped: true, reason: "suppressed" }
+  if (!await canSendTo(to)) {
+    console.log(`Skipping suppressed email: ${to}`);
+    return { skipped: true, reason: 'suppressed' };
   }
 
-  return await resend.emails.send({ to, ...emailData })
+  return await resend.emails.send({ to, ...emailData });
 }
 ```
 
@@ -64,13 +64,13 @@ Regular maintenance to keep lists healthy.
 
 ### Automated Cleanup
 
-| Task                 | Frequency               | Action                      |
-| -------------------- | ----------------------- | --------------------------- |
-| Remove hard bounces  | Real-time (via webhook) | Immediate suppression       |
-| Remove complaints    | Real-time (via webhook) | Immediate suppression       |
-| Process unsubscribes | Real-time               | Remove from marketing lists |
-| Review soft bounces  | Daily                   | Suppress after 3 failures   |
-| Remove inactive      | Monthly                 | Re-engagement → remove      |
+| Task | Frequency | Action |
+|------|-----------|--------|
+| Remove hard bounces | Real-time (via webhook) | Immediate suppression |
+| Remove complaints | Real-time (via webhook) | Immediate suppression |
+| Process unsubscribes | Real-time | Remove from marketing lists |
+| Review soft bounces | Daily | Suppress after 3 failures |
+| Remove inactive | Monthly | Re-engagement → remove |
 
 Learn more: https://resend.com/docs/knowledge-base/audience-hygiene
 
@@ -85,14 +85,14 @@ Before removing inactive subscribers:
 
 ```typescript
 async function runReengagement() {
-  const inactive = await getInactiveSubscribers(90) // 90 days
+  const inactive = await getInactiveSubscribers(90); // 90 days
 
   for (const subscriber of inactive) {
     if (!subscriber.reengagement_sent) {
-      await sendReengagementEmail(subscriber)
-      await markReengagementSent(subscriber.email)
+      await sendReengagementEmail(subscriber);
+      await markReengagementSent(subscriber.email);
     } else if (daysSince(subscriber.reengagement_sent) > 30) {
-      await removeFromMarketingLists(subscriber.email)
+      await removeFromMarketingLists(subscriber.email);
     }
   }
 }
@@ -102,31 +102,31 @@ async function runReengagement() {
 
 ### Email Logs
 
-| Data Type               | Recommended Retention | Notes                 |
-| ----------------------- | --------------------- | --------------------- |
-| Send attempts           | 90 days               | Debugging, analytics  |
-| Delivery status         | 90 days               | Compliance, reporting |
-| Bounce/complaint events | 3 years               | Required for CASL     |
-| Suppression list        | Indefinite            | Never delete          |
-| Email content           | 30 days               | Storage costs         |
-| Consent records         | 3 years after expiry  | Legal requirement     |
+| Data Type | Recommended Retention | Notes |
+|-----------|----------------------|-------|
+| Send attempts | 90 days | Debugging, analytics |
+| Delivery status | 90 days | Compliance, reporting |
+| Bounce/complaint events | 3 years | Required for CASL |
+| Suppression list | Indefinite | Never delete |
+| Email content | 30 days | Storage costs |
+| Consent records | 3 years after expiry | Legal requirement |
 
 ### Retention Policy Implementation
 
 ```typescript
 // Daily cleanup job
 async function cleanupOldData() {
-  const now = new Date()
+  const now = new Date();
 
   // Delete old email logs (keep 90 days)
   await db.emailLogs.deleteMany({
-    created_at: { $lt: subDays(now, 90) },
-  })
+    created_at: { $lt: subDays(now, 90) }
+  });
 
   // Delete old email content (keep 30 days)
   await db.emailContent.deleteMany({
-    created_at: { $lt: subDays(now, 30) },
-  })
+    created_at: { $lt: subDays(now, 30) }
+  });
 
   // Never delete: suppressions, consent records
 }
@@ -134,16 +134,15 @@ async function cleanupOldData() {
 
 ## Metrics to Monitor
 
-| Metric                  | Target | Alert Threshold |
-| ----------------------- | ------ | --------------- |
-| Bounce rate             | <2%    | >2%             |
-| Complaint rate          | <0.05% | >0.05%          |
-| Suppression list growth | Stable | Sudden spike    |
+| Metric | Target | Alert Threshold |
+|--------|--------|-----------------|
+| Bounce rate | <2% | >2% |
+| Complaint rate | <0.05% | >0.05% |
+| Suppression list growth | Stable | Sudden spike |
 
 ## Transactional vs Marketing Lists
 
 **Keep separate:**
-
 - Transactional: Can send to anyone with account relationship
 - Marketing: Only opted-in subscribers
 

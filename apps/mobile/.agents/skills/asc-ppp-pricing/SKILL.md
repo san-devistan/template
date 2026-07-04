@@ -8,13 +8,11 @@ description: Set territory-specific pricing for subscriptions and in-app purchas
 Use this skill to create or update localized pricing across territories based on purchasing power parity (PPP) or your own regional pricing strategy.
 
 Prefer the current high-level flows:
-
 - `asc subscriptions setup` and `asc iap setup` when you are creating a new product
 - `asc subscriptions pricing ...` for subscription pricing changes
 - `asc iap pricing summary` and `asc iap pricing schedules ...` for IAP pricing changes
 
 ## Preconditions
-
 - Ensure credentials are set (`asc auth login` or `ASC_*` env vars).
 - Prefer `ASC_APP_ID` or pass `--app` explicitly.
 - Decide your base territory (usually `USA`) and baseline price.
@@ -23,7 +21,6 @@ Prefer the current high-level flows:
 ## Subscription PPP workflow
 
 ### New subscription: bootstrap with `setup`
-
 Use `setup` when you are creating a new subscription and want to create the group, subscription, first localization, initial price, and availability in one verified flow.
 
 ```bash
@@ -43,13 +40,11 @@ asc subscriptions setup \
 ```
 
 Notes:
-
 - `setup` verifies the created state by default.
 - Use `--no-verify` only when you explicitly want speed over readback verification.
 - Use `--tier` or `--price-point-id` instead of `--price` when your workflow is tier-driven.
 
 ### Inspect current subscription pricing before changes
-
 Use the summary view first when you want a compact current-state snapshot.
 
 ```bash
@@ -61,7 +56,6 @@ asc subscriptions pricing prices list --subscription-id "SUB_ID" --paginate
 Use `summary` for quick before/after spot checks and `prices list` when you need raw price records.
 
 ### Preferred bulk PPP update: import a CSV with dry run
-
 For broad PPP rollouts, prefer the subscription pricing import command instead of manually adding territory prices one by one.
 
 Example CSV:
@@ -94,7 +88,6 @@ asc subscriptions pricing prices import \
 ```
 
 Notes:
-
 - `--dry-run` validates rows and resolves price points without creating prices.
 - `--continue-on-error=false` gives you a fail-fast mode.
 - CSV required columns: `territory`, `price`
@@ -103,7 +96,6 @@ Notes:
 - Territory inputs in import can be 3-letter IDs, 2-letter codes, or common territory names that map cleanly.
 
 ### One-off subscription territory changes
-
 For a small number of manual overrides, use the canonical `set` command.
 
 ```bash
@@ -113,13 +105,11 @@ asc subscriptions pricing prices set --subscription-id "SUB_ID" --price-point "P
 ```
 
 Notes:
-
 - Add `--start-date "YYYY-MM-DD"` to schedule a future change.
 - Add `--preserved` when you want to preserve the current price relationship.
 - The command handles both initial pricing and later price changes.
 
 ### Discover raw price points only when you need them
-
 Use price-point lookup and equalizations when you want to inspect Apple's localized ladder directly or pin exact price point IDs.
 
 ```bash
@@ -128,7 +118,6 @@ asc subscriptions pricing price-points equalizations --price-point-id "PRICE_POI
 ```
 
 ### Verify after apply
-
 Re-run the summary and raw list views after changes.
 
 ```bash
@@ -140,7 +129,6 @@ asc subscriptions pricing prices list --subscription-id "SUB_ID" --paginate
 If the subscription was newly created, you can also use `asc subscriptions setup` with verification enabled instead of stitching together separate create and pricing steps.
 
 ### Subscription availability
-
 If you need to explicitly enable territories for an existing subscription, use the pricing availability family.
 
 ```bash
@@ -151,7 +139,6 @@ asc subscriptions pricing availability view --subscription-id "SUB_ID"
 ## IAP PPP workflow
 
 ### New IAP: bootstrap with `setup`
-
 Use `setup` when you are creating a new IAP and want to create the product, first localization, and initial price schedule in one verified flow.
 
 ```bash
@@ -169,13 +156,11 @@ asc iap setup \
 ```
 
 Notes:
-
 - `setup` verifies the created IAP, localization, and price schedule by default.
 - Use `--start-date` for scheduled pricing.
 - Use `--tier` or `--price-point-id` when you want deterministic tier- or ID-based setup.
 
 ### Inspect current IAP pricing before changes
-
 Use `asc iap pricing summary` as the main current-state summary for PPP work.
 
 ```bash
@@ -186,7 +171,6 @@ asc iap pricing summary --iap-id "IAP_ID" --territory "IND"
 This returns the base territory, current price, estimated proceeds, and scheduled changes for the requested territory.
 
 ### Discover candidate IAP price points
-
 Use price-point lookup when you want to inspect or pin exact price point IDs.
 
 ```bash
@@ -195,7 +179,6 @@ asc iap pricing price-points equalizations --id "PRICE_POINT_ID"
 ```
 
 ### Create or update an IAP price schedule
-
 For manual PPP updates, create a price schedule directly.
 
 ```bash
@@ -213,7 +196,6 @@ asc iap pricing schedules automatic-prices --schedule-id "SCHEDULE_ID" --paginat
 ```
 
 ### Verify after apply
-
 Use the summary command again after scheduling or applying pricing changes.
 
 ```bash
@@ -226,19 +208,16 @@ For future-dated schedules, expect scheduled changes rather than an immediately 
 ## Common PPP strategy patterns
 
 ### Base territory first
-
 - Pick one baseline territory, usually `USA`.
 - Set the baseline price there first.
 - Derive lower or higher territory targets from that baseline.
 
 ### Tiered regional pricing
-
 - High-income markets stay close to baseline.
 - Mid-income markets get moderate discounts.
 - Lower-income markets get stronger PPP adjustments.
 
 ### Spreadsheet-driven rollout
-
 - Build the target territory list in a CSV.
 - Dry-run the import.
 - Fix any resolution failures.
@@ -246,7 +225,6 @@ For future-dated schedules, expect scheduled changes rather than an immediately 
 - Re-run summary checks for the most important territories.
 
 ## Notes
-
 - Prefer canonical commands in docs and automation: `asc subscriptions pricing ...`
 - Older `asc subscriptions prices ...` paths still exist, but the canonical pricing family is clearer.
 - Prefer canonical IAP commands in docs and automation: `asc iap pricing ...`

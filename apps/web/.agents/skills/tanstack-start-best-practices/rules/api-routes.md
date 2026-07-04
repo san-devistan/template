@@ -10,18 +10,18 @@ While server functions are ideal for internal RPC, server routes provide traditi
 
 ```tsx
 // Using server functions for webhook endpoints
-export const stripeWebhook = createServerFn({ method: "POST" }).handler(
-  async ({ request }) => {
+export const stripeWebhook = createServerFn({ method: 'POST' })
+  .handler(async ({ request }) => {
     // Server functions aren't designed for raw request handling
     // No easy access to raw body for signature verification
     // Response format is JSON by default
-  }
-)
+  })
 
 // Or exposing internal functions to external consumers
-export const getUsers = createServerFn().handler(async () => {
-  return db.users.findMany()
-})
+export const getUsers = createServerFn()
+  .handler(async () => {
+    return db.users.findMany()
+  })
 // No versioning, no standard REST semantics
 ```
 
@@ -29,10 +29,10 @@ export const getUsers = createServerFn().handler(async () => {
 
 ```tsx
 // routes/api/users.ts
-import { createFileRoute } from "@tanstack/react-router"
-import { json } from "@tanstack/react-start"
+import { createFileRoute } from '@tanstack/react-router'
+import { json } from '@tanstack/react-start'
 
-export const Route = createFileRoute("/api/users")({
+export const Route = createFileRoute('/api/users')({
   server: {
     handlers: {
       GET: async ({ request }) => {
@@ -42,7 +42,7 @@ export const Route = createFileRoute("/api/users")({
 
         return json(users, {
           headers: {
-            "Cache-Control": "public, max-age=60",
+            'Cache-Control': 'public, max-age=60',
           },
         })
       },
@@ -68,18 +68,18 @@ export const Route = createFileRoute("/api/users")({
 
 ```tsx
 // routes/api/webhooks/stripe.ts
-import { createFileRoute } from "@tanstack/react-router"
-import Stripe from "stripe"
+import { createFileRoute } from '@tanstack/react-router'
+import Stripe from 'stripe'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
-export const Route = createFileRoute("/api/webhooks/stripe")({
+export const Route = createFileRoute('/api/webhooks/stripe')({
   server: {
     handlers: {
       POST: async ({ request }) => {
-        const signature = request.headers.get("stripe-signature")
+        const signature = request.headers.get('stripe-signature')
         if (!signature) {
-          return new Response("Missing signature", { status: 400 })
+          return new Response('Missing signature', { status: 400 })
         }
 
         // Get raw body for signature verification
@@ -93,23 +93,23 @@ export const Route = createFileRoute("/api/webhooks/stripe")({
             process.env.STRIPE_WEBHOOK_SECRET!
           )
         } catch (err) {
-          console.error("Webhook signature verification failed:", err)
-          return new Response("Invalid signature", { status: 400 })
+          console.error('Webhook signature verification failed:', err)
+          return new Response('Invalid signature', { status: 400 })
         }
 
         // Handle the event
         switch (event.type) {
-          case "checkout.session.completed":
+          case 'checkout.session.completed':
             await handleCheckoutComplete(event.data.object)
             break
-          case "customer.subscription.updated":
+          case 'customer.subscription.updated':
             await handleSubscriptionUpdate(event.data.object)
             break
           default:
             console.log(`Unhandled event type: ${event.type}`)
         }
 
-        return new Response("OK", { status: 200 })
+        return new Response('OK', { status: 200 })
       },
     },
   },
@@ -120,10 +120,10 @@ export const Route = createFileRoute("/api/webhooks/stripe")({
 
 ```tsx
 // routes/api/posts/$postId.ts
-import { createFileRoute } from "@tanstack/react-router"
-import { json } from "@tanstack/react-start"
+import { createFileRoute } from '@tanstack/react-router'
+import { json } from '@tanstack/react-start'
 
-export const Route = createFileRoute("/api/posts/$postId")({
+export const Route = createFileRoute('/api/posts/$postId')({
   server: {
     handlers: {
       GET: async ({ params }) => {
@@ -132,7 +132,7 @@ export const Route = createFileRoute("/api/posts/$postId")({
         })
 
         if (!post) {
-          return json({ error: "Post not found" }, { status: 404 })
+          return json({ error: 'Post not found' }, { status: 404 })
         }
 
         return json(post)
@@ -167,11 +167,11 @@ export const Route = createFileRoute("/api/posts/$postId")({
 
 ```tsx
 // routes/api/protected/data.ts
-import { createFileRoute } from "@tanstack/react-router"
-import { json } from "@tanstack/react-start"
-import { apiKeyMiddleware } from "@/lib/middleware"
+import { createFileRoute } from '@tanstack/react-router'
+import { json } from '@tanstack/react-start'
+import { apiKeyMiddleware } from '@/lib/middleware'
 
-export const Route = createFileRoute("/api/protected/data")({
+export const Route = createFileRoute('/api/protected/data')({
   server: {
     // Middleware applies to all handlers in this route
     middleware: [apiKeyMiddleware],
@@ -190,12 +190,12 @@ export const Route = createFileRoute("/api/protected/data")({
 
 ```tsx
 // routes/api/admin/users.ts
-import { createFileRoute } from "@tanstack/react-router"
-import { json } from "@tanstack/react-start"
+import { createFileRoute } from '@tanstack/react-router'
+import { json } from '@tanstack/react-start'
 
-export const Route = createFileRoute("/api/admin/users")({
+export const Route = createFileRoute('/api/admin/users')({
   server: {
-    middleware: [authMiddleware], // All handlers require auth
+    middleware: [authMiddleware],  // All handlers require auth
     handlers: (createHandlers) => ({
       GET: createHandlers.GET(async ({ context }) => {
         const users = await db.users.findMany()
@@ -218,14 +218,14 @@ export const Route = createFileRoute("/api/admin/users")({
 
 ## Server Functions vs Server Routes
 
-| Feature            | Server Functions | Server Routes      |
-| ------------------ | ---------------- | ------------------ |
-| Primary use        | Internal RPC     | External consumers |
-| Type safety        | Full end-to-end  | Manual             |
-| Response format    | JSON (automatic) | Any (manual)       |
-| Raw request access | Limited          | Full               |
-| URL structure      | Auto-generated   | Explicit paths     |
-| Webhooks           | Not ideal        | Designed for       |
+| Feature | Server Functions | Server Routes |
+|---------|-----------------|--------------|
+| Primary use | Internal RPC | External consumers |
+| Type safety | Full end-to-end | Manual |
+| Response format | JSON (automatic) | Any (manual) |
+| Raw request access | Limited | Full |
+| URL structure | Auto-generated | Explicit paths |
+| Webhooks | Not ideal | Designed for |
 
 ## Context
 

@@ -17,7 +17,7 @@ const router = createRouter({
   // defaultPreloadStaleTime: 30000 (default)
 })
 
-export const Route = createFileRoute("/posts")({
+export const Route = createFileRoute('/posts')({
   loader: async () => {
     // Fetches directly - cached by Router
     const posts = await fetchPosts()
@@ -29,7 +29,7 @@ export const Route = createFileRoute("/posts")({
 function PostsPage() {
   // Also uses Query cache - which is authoritative?
   const { data } = useQuery({
-    queryKey: ["posts"],
+    queryKey: ['posts'],
     queryFn: fetchPosts,
   })
 
@@ -41,10 +41,10 @@ function PostsPage() {
 
 ```tsx
 // router.tsx - Disable router cache when using Query
-import { QueryClient } from "@tanstack/react-query"
-import { createRouter } from "@tanstack/react-router"
-import { setupRouterSsrQueryIntegration } from "@tanstack/react-router-ssr-query"
-import { routeTree } from "./routeTree.gen"
+import { QueryClient } from '@tanstack/react-query'
+import { createRouter } from '@tanstack/react-router'
+import { setupRouterSsrQueryIntegration } from '@tanstack/react-router-ssr-query'
+import { routeTree } from './routeTree.gen'
 
 export function getRouter() {
   const queryClient = new QueryClient({
@@ -59,7 +59,7 @@ export function getRouter() {
   const router = createRouter({
     routeTree,
     context: { queryClient },
-    defaultPreload: "intent",
+    defaultPreload: 'intent',
     defaultPreloadStaleTime: 0, // Let Query manage caching
     scrollRestoration: true,
   })
@@ -73,7 +73,7 @@ export function getRouter() {
 }
 
 // routes/posts.tsx
-export const Route = createFileRoute("/posts")({
+export const Route = createFileRoute('/posts')({
   loader: async ({ context: { queryClient } }) => {
     // Query is the single cache source
     await queryClient.ensureQueryData(postQueries.all())
@@ -92,14 +92,14 @@ function PostsPage() {
 
 ## Cache Comparison
 
-| Feature             | Router Cache      | Query Cache          |
-| ------------------- | ----------------- | -------------------- |
-| Invalidation        | Manual/time-based | Query keys, patterns |
-| Background refetch  | No                | Yes                  |
-| Optimistic updates  | No                | Yes                  |
-| Mutations           | No built-in       | Full support         |
-| DevTools            | Limited           | Rich debugging       |
-| Cross-route sharing | Full              | Full                 |
+| Feature | Router Cache | Query Cache |
+|---------|-------------|-------------|
+| Invalidation | Manual/time-based | Query keys, patterns |
+| Background refetch | No | Yes |
+| Optimistic updates | No | Yes |
+| Mutations | No built-in | Full support |
+| DevTools | Limited | Rich debugging |
+| Cross-route sharing | Full | Full |
 
 ## Good Example: Coordinated Caching Config
 
@@ -109,8 +109,8 @@ export function getRouter() {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
-        staleTime: 60 * 1000, // Fresh for 1 minute
-        gcTime: 10 * 60 * 1000, // Cache for 10 minutes
+        staleTime: 60 * 1000,       // Fresh for 1 minute
+        gcTime: 10 * 60 * 1000,     // Cache for 10 minutes
         refetchOnWindowFocus: true, // Refetch when tab focused
         retry: 1,
       },
@@ -120,7 +120,7 @@ export function getRouter() {
   const router = createRouter({
     routeTree,
     context: { queryClient },
-    defaultPreload: "intent",
+    defaultPreload: 'intent',
     defaultPreloadStaleTime: 0, // Router defers to Query
     scrollRestoration: true,
     defaultStructuralSharing: true,
@@ -145,8 +145,8 @@ export function getRouter() {
   const router = createRouter({
     routeTree,
     context: { queryClient },
-    defaultPreload: "intent", // Preload on hover
-    defaultPreloadStaleTime: 0, // Query decides if data is stale
+    defaultPreload: 'intent',     // Preload on hover
+    defaultPreloadStaleTime: 0,   // Query decides if data is stale
   })
 
   setupRouterSsrQueryIntegration({ router, queryClient })
@@ -169,10 +169,10 @@ const createPost = useMutation({
   mutationFn: submitPost,
   onSuccess: () => {
     // Invalidate Query cache - the single source
-    queryClient.invalidateQueries({ queryKey: ["posts"] })
+    queryClient.invalidateQueries({ queryKey: ['posts'] })
 
     // Router automatically uses updated cache on next navigation
-    navigate({ to: "/posts" })
+    navigate({ to: '/posts' })
   },
 })
 ```

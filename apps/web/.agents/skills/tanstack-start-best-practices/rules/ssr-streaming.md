@@ -10,14 +10,14 @@ Streaming SSR sends HTML chunks to the browser as they're ready, rather than wai
 
 ```tsx
 // Blocking SSR - waits for everything
-export const Route = createFileRoute("/dashboard")({
+export const Route = createFileRoute('/dashboard')({
   loader: async ({ context: { queryClient } }) => {
     // All of these must complete before ANY HTML is sent
     await Promise.all([
-      queryClient.ensureQueryData(userQueries.profile()), // 200ms
-      queryClient.ensureQueryData(dashboardQueries.stats()), // 500ms
-      queryClient.ensureQueryData(activityQueries.recent()), // 300ms
-      queryClient.ensureQueryData(notificationQueries.all()), // 400ms
+      queryClient.ensureQueryData(userQueries.profile()),      // 200ms
+      queryClient.ensureQueryData(dashboardQueries.stats()),   // 500ms
+      queryClient.ensureQueryData(activityQueries.recent()),   // 300ms
+      queryClient.ensureQueryData(notificationQueries.all()),  // 400ms
     ])
     // TTFB: 500ms (slowest query)
   },
@@ -28,7 +28,7 @@ export const Route = createFileRoute("/dashboard")({
 
 ```tsx
 // routes/dashboard.tsx
-export const Route = createFileRoute("/dashboard")({
+export const Route = createFileRoute('/dashboard')({
   loader: async ({ context: { queryClient } }) => {
     // Only await critical above-the-fold data
     await queryClient.ensureQueryData(userQueries.profile())
@@ -117,7 +117,7 @@ function LeftColumn() {
 ## Good Example: Progressive Enhancement
 
 ```tsx
-export const Route = createFileRoute("/posts/$postId")({
+export const Route = createFileRoute('/posts/$postId')({
   loader: async ({ params, context: { queryClient } }) => {
     // Critical: post content (await)
     await queryClient.ensureQueryData(postQueries.detail(params.postId))

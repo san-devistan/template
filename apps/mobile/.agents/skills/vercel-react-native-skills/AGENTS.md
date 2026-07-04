@@ -60,25 +60,16 @@ Comprehensive performance optimization guide for React Native applications, desi
    - 9.8 [Use Native Modals Over JS-Based Bottom Sheets](#98-use-native-modals-over-js-based-bottom-sheets)
    - 9.9 [Use Pressable Instead of Touchable Components](#99-use-pressable-instead-of-touchable-components)
 10. [Design System](#10-design-system) — **MEDIUM**
-
-- 10.1 [Use Compound Components Over Polymorphic Children](#101-use-compound-components-over-polymorphic-children)
-
+   - 10.1 [Use Compound Components Over Polymorphic Children](#101-use-compound-components-over-polymorphic-children)
 11. [Monorepo](#11-monorepo) — **LOW**
-
-- 11.1 [Install Native Dependencies in App Directory](#111-install-native-dependencies-in-app-directory)
-- 11.2 [Use Single Dependency Versions Across Monorepo](#112-use-single-dependency-versions-across-monorepo)
-
+   - 11.1 [Install Native Dependencies in App Directory](#111-install-native-dependencies-in-app-directory)
+   - 11.2 [Use Single Dependency Versions Across Monorepo](#112-use-single-dependency-versions-across-monorepo)
 12. [Third-Party Dependencies](#12-third-party-dependencies) — **LOW**
-
-- 12.1 [Import from Design System Folder](#121-import-from-design-system-folder)
-
+   - 12.1 [Import from Design System Folder](#121-import-from-design-system-folder)
 13. [JavaScript](#13-javascript) — **LOW**
-
-- 13.1 [Hoist Intl Formatter Creation](#131-hoist-intl-formatter-creation)
-
+   - 13.1 [Hoist Intl Formatter Creation](#131-hoist-intl-formatter-creation)
 14. [Fonts](#14-fonts) — **LOW**
-
-- 14.1 [Load fonts natively at build time](#141-load-fonts-natively-at-build-time)
+   - 14.1 [Load fonts natively at build time](#141-load-fonts-natively-at-build-time)
 
 ---
 
@@ -175,7 +166,7 @@ direct child of `<View>`.
 **Incorrect: crashes**
 
 ```tsx
-import { View } from "react-native"
+import { View } from 'react-native'
 
 function Greeting({ name }: { name: string }) {
   return <View>Hello, {name}!</View>
@@ -186,7 +177,7 @@ function Greeting({ name }: { name: string }) {
 **Correct:**
 
 ```tsx
-import { View, Text } from "react-native"
+import { View, Text } from 'react-native'
 
 function Greeting({ name }: { name: string }) {
   return (
@@ -358,7 +349,7 @@ during scroll—expensive items cause jank.
 ```tsx
 function ProductRow({ id }: { id: string }) {
   // Bad: query inside list item
-  const { data: product } = useQuery(["product", id], () => fetchProduct(id))
+  const { data: product } = useQuery(['product', id], () => fetchProduct(id))
   // Bad: multiple context accesses
   const theme = useContext(ThemeContext)
   const user = useContext(UserContext)
@@ -393,7 +384,7 @@ function ProductRow({ name, price, imageUrl }: Props) {
 ```tsx
 // Parent fetches all data once
 function ProductList() {
-  const { data: products } = useQuery(["products"], fetchProducts)
+  const { data: products } = useQuery(['products'], fetchProducts)
 
   return (
     <LegendList
@@ -500,7 +491,7 @@ function DomainSearch() {
 function DomainItem({ tld }: { tld: Tld }) {
   // good: transform within items, and don't pass the dynamic data as a prop
   // good: use a selector function from zustand to receive a stable string back
-  const domain = useKeywordZustandState((s) => s.keyword + "." + tld.name)
+  const domain = useKeywordZustandState((s) => s.keyword + '.' + tld.name)
   return <Text>{domain}</Text>
 }
 ```
@@ -536,9 +527,9 @@ Virtualization can now skip items that haven't changed when typing. Only visible
 
 items (~20) re-render on keystroke, rather than the parent.
 
-\*\*Deriving state within list items based on parent data (avoids parent
+**Deriving state within list items based on parent data (avoids parent
 
-re-renders):\*\*
+re-renders):**
 
 For components where the data is conditional based on the parent state, this
 
@@ -665,7 +656,7 @@ function Feed({ items }: { items: Item[] }) {
 **Correct: virtualizer renders only visible items**
 
 ```tsx
-import { LegendList } from "@legendapp/list"
+import { LegendList } from '@legendapp/list'
 
 function Feed({ items }: { items: Item[] }) {
   return (
@@ -684,7 +675,7 @@ function Feed({ items }: { items: Item[] }) {
 **Alternative: FlashList**
 
 ```tsx
-import { FlashList } from "@shopify/flash-list"
+import { FlashList } from '@shopify/flash-list'
 
 function Feed({ items }: { items: Item[] }) {
   return (
@@ -741,7 +732,7 @@ function ProductItem({ product }: { product: Product }) {
       <Image
         source={{ uri: thumbnailUrl }}
         style={{ width: 100, height: 100 }}
-        contentFit="cover"
+        contentFit='cover'
       />
       <Text>{product.name}</Text>
     </View>
@@ -798,9 +789,9 @@ function Feed({ items }: { items: Item[] }) {
 **Correct: typed items with separate components**
 
 ```tsx
-type HeaderItem = { id: string; type: "header"; title: string }
-type MessageItem = { id: string; type: "message"; text: string }
-type ImageItem = { id: string; type: "image"; url: string }
+type HeaderItem = { id: string; type: 'header'; title: string }
+type MessageItem = { id: string; type: 'message'; text: string }
+type ImageItem = { id: string; type: 'image'; url: string }
 type FeedItem = HeaderItem | MessageItem | ImageItem
 
 function Feed({ items }: { items: FeedItem[] }) {
@@ -811,11 +802,11 @@ function Feed({ items }: { items: FeedItem[] }) {
       getItemType={(item) => item.type}
       renderItem={({ item }) => {
         switch (item.type) {
-          case "header":
+          case 'header':
             return <SectionHeader title={item.title} />
-          case "message":
+          case 'message':
             return <MessageRow text={item.text} />
-          case "image":
+          case 'image':
             return <ImageRow url={item.url} />
         }
       }}
@@ -834,11 +825,11 @@ function Feed({ items }: { items: FeedItem[] }) {
   getItemType={(item) => item.type}
   getEstimatedItemSize={(index, item, itemType) => {
     switch (itemType) {
-      case "header":
+      case 'header':
         return 48
-      case "message":
+      case 'message':
         return 72
-      case "image":
+      case 'image':
         return 300
       default:
         return 72
@@ -879,12 +870,12 @@ Avoid animating `width`, `height`, `top`, `left`, `margin`, or `padding`. These 
 **Incorrect: animates height, triggers layout every frame**
 
 ```tsx
-import Animated, { useAnimatedStyle, withTiming } from "react-native-reanimated"
+import Animated, { useAnimatedStyle, withTiming } from 'react-native-reanimated'
 
 function CollapsiblePanel({ expanded }: { expanded: boolean }) {
   const animatedStyle = useAnimatedStyle(() => ({
     height: withTiming(expanded ? 200 : 0), // triggers layout on every frame
-    overflow: "hidden",
+    overflow: 'hidden',
   }))
 
   return <Animated.View style={animatedStyle}>{children}</Animated.View>
@@ -894,18 +885,18 @@ function CollapsiblePanel({ expanded }: { expanded: boolean }) {
 **Correct: animates scaleY, GPU-accelerated**
 
 ```tsx
-import Animated, { useAnimatedStyle, withTiming } from "react-native-reanimated"
+import Animated, { useAnimatedStyle, withTiming } from 'react-native-reanimated'
 
 function CollapsiblePanel({ expanded }: { expanded: boolean }) {
   const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ scaleY: withTiming(expanded ? 1 : 0) }],
+    transform: [
+      { scaleY: withTiming(expanded ? 1 : 0) },
+    ],
     opacity: withTiming(expanded ? 1 : 0),
   }))
 
   return (
-    <Animated.View
-      style={[{ height: 200, transformOrigin: "top" }, animatedStyle]}
-    >
+    <Animated.View style={[{ height: 200, transformOrigin: 'top' }, animatedStyle]}>
       {children}
     </Animated.View>
   )
@@ -915,11 +906,13 @@ function CollapsiblePanel({ expanded }: { expanded: boolean }) {
 **Correct: animates translateY for slide animations**
 
 ```tsx
-import Animated, { useAnimatedStyle, withTiming } from "react-native-reanimated"
+import Animated, { useAnimatedStyle, withTiming } from 'react-native-reanimated'
 
 function SlideIn({ visible }: { visible: boolean }) {
   const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ translateY: withTiming(visible ? 0 : 100) }],
+    transform: [
+      { translateY: withTiming(visible ? 0 : 100) },
+    ],
     opacity: withTiming(visible ? 1 : 0),
   }))
 
@@ -946,7 +939,7 @@ for side effects, not derivations.
 **Incorrect: useAnimatedReaction for derivation**
 
 ```tsx
-import { useSharedValue, useAnimatedReaction } from "react-native-reanimated"
+import { useSharedValue, useAnimatedReaction } from 'react-native-reanimated'
 
 function MyComponent() {
   const progress = useSharedValue(0)
@@ -966,7 +959,7 @@ function MyComponent() {
 **Correct: useDerivedValue**
 
 ```tsx
-import { useSharedValue, useDerivedValue } from "react-native-reanimated"
+import { useSharedValue, useDerivedValue } from 'react-native-reanimated'
 
 function MyComponent() {
   const progress = useSharedValue(0)
@@ -998,12 +991,12 @@ JS thread round-trip for press animations.
 **Incorrect: Pressable with JS thread callbacks**
 
 ```tsx
-import { Pressable } from "react-native"
+import { Pressable } from 'react-native'
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withTiming,
-} from "react-native-reanimated"
+} from 'react-native-reanimated'
 
 function AnimatedButton({ onPress }: { onPress: () => void }) {
   const scale = useSharedValue(1)
@@ -1029,14 +1022,14 @@ function AnimatedButton({ onPress }: { onPress: () => void }) {
 **Correct: GestureDetector with UI thread worklets**
 
 ```tsx
-import { Gesture, GestureDetector } from "react-native-gesture-handler"
+import { Gesture, GestureDetector } from 'react-native-gesture-handler'
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withTiming,
   interpolate,
   runOnJS,
-} from "react-native-reanimated"
+} from 'react-native-reanimated'
 
 function AnimatedButton({ onPress }: { onPress: () => void }) {
   // Store the press STATE (0 = not pressed, 1 = pressed)
@@ -1097,12 +1090,12 @@ for animations or a ref for non-reactive tracking.
 **Incorrect: useState causes jank**
 
 ```tsx
-import { useState } from "react"
+import { useState } from 'react'
 import {
   ScrollView,
   NativeSyntheticEvent,
   NativeScrollEvent,
-} from "react-native"
+} from 'react-native'
 
 function Feed() {
   const [scrollY, setScrollY] = useState(0)
@@ -1121,7 +1114,7 @@ function Feed() {
 import Animated, {
   useSharedValue,
   useAnimatedScrollHandler,
-} from "react-native-reanimated"
+} from 'react-native-reanimated'
 
 function Feed() {
   const scrollY = useSharedValue(0)
@@ -1146,12 +1139,12 @@ function Feed() {
 **Correct: ref for non-reactive tracking**
 
 ```tsx
-import { useRef } from "react"
+import { useRef } from 'react'
 import {
   ScrollView,
   NativeSyntheticEvent,
   NativeScrollEvent,
-} from "react-native"
+} from 'react-native'
 
 function Feed() {
   const scrollY = useRef(0)
@@ -1202,15 +1195,15 @@ tabs. Avoid `@react-navigation/bottom-tabs` when native feel matters.
 **Incorrect: JS stack navigator**
 
 ```tsx
-import { createStackNavigator } from "@react-navigation/stack"
+import { createStackNavigator } from '@react-navigation/stack'
 
 const Stack = createStackNavigator()
 
 function App() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Home" component={HomeScreen} />
-      <Stack.Screen name="Details" component={DetailsScreen} />
+      <Stack.Screen name='Home' component={HomeScreen} />
+      <Stack.Screen name='Details' component={DetailsScreen} />
     </Stack.Navigator>
   )
 }
@@ -1219,15 +1212,15 @@ function App() {
 **Correct: native stack with react-navigation**
 
 ```tsx
-import { createNativeStackNavigator } from "@react-navigation/native-stack"
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 const Stack = createNativeStackNavigator()
 
 function App() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Home" component={HomeScreen} />
-      <Stack.Screen name="Details" component={DetailsScreen} />
+      <Stack.Screen name='Home' component={HomeScreen} />
+      <Stack.Screen name='Details' component={DetailsScreen} />
     </Stack.Navigator>
   )
 }
@@ -1237,7 +1230,7 @@ function App() {
 
 ```tsx
 // app/_layout.tsx
-import { Stack } from "expo-router"
+import { Stack } from 'expo-router'
 
 export default function Layout() {
   return <Stack />
@@ -1247,15 +1240,15 @@ export default function Layout() {
 **Incorrect: JS bottom tabs**
 
 ```tsx
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 
 const Tab = createBottomTabNavigator()
 
 function App() {
   return (
     <Tab.Navigator>
-      <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Settings" component={SettingsScreen} />
+      <Tab.Screen name='Home' component={HomeScreen} />
+      <Tab.Screen name='Settings' component={SettingsScreen} />
     </Tab.Navigator>
   )
 }
@@ -1264,7 +1257,7 @@ function App() {
 **Correct: native bottom tabs with react-navigation**
 
 ```tsx
-import { createNativeBottomTabNavigator } from "@bottom-tabs/react-navigation"
+import { createNativeBottomTabNavigator } from '@bottom-tabs/react-navigation'
 
 const Tab = createNativeBottomTabNavigator()
 
@@ -1272,17 +1265,17 @@ function App() {
   return (
     <Tab.Navigator>
       <Tab.Screen
-        name="Home"
+        name='Home'
         component={HomeScreen}
         options={{
-          tabBarIcon: () => ({ sfSymbol: "house" }),
+          tabBarIcon: () => ({ sfSymbol: 'house' }),
         }}
       />
       <Tab.Screen
-        name="Settings"
+        name='Settings'
         component={SettingsScreen}
         options={{
-          tabBarIcon: () => ({ sfSymbol: "gear" }),
+          tabBarIcon: () => ({ sfSymbol: 'gear' }),
         }}
       />
     </Tab.Navigator>
@@ -1294,18 +1287,18 @@ function App() {
 
 ```tsx
 // app/(tabs)/_layout.tsx
-import { NativeTabs } from "expo-router/unstable-native-tabs"
+import { NativeTabs } from 'expo-router/unstable-native-tabs'
 
 export default function TabLayout() {
   return (
     <NativeTabs>
-      <NativeTabs.Trigger name="index">
+      <NativeTabs.Trigger name='index'>
         <NativeTabs.Trigger.Label>Home</NativeTabs.Trigger.Label>
-        <NativeTabs.Trigger.Icon sf="house.fill" md="home" />
+        <NativeTabs.Trigger.Icon sf='house.fill' md='home' />
       </NativeTabs.Trigger>
-      <NativeTabs.Trigger name="settings">
+      <NativeTabs.Trigger name='settings'>
         <NativeTabs.Trigger.Label>Settings</NativeTabs.Trigger.Label>
-        <NativeTabs.Trigger.Icon sf="gear" md="settings" />
+        <NativeTabs.Trigger.Icon sf='gear' md='settings' />
       </NativeTabs.Trigger>
     </NativeTabs>
   )
@@ -1324,10 +1317,10 @@ behind the translucent tab bar. If you need to disable this, use
 
 ```tsx
 <Stack.Screen
-  name="Profile"
+  name='Profile'
   component={ProfileScreen}
   options={{
-    header: () => <CustomHeader title="Profile" />,
+    header: () => <CustomHeader title='Profile' />,
   }}
 />
 ```
@@ -1336,13 +1329,13 @@ behind the translucent tab bar. If you need to disable this, use
 
 ```tsx
 <Stack.Screen
-  name="Profile"
+  name='Profile'
   component={ProfileScreen}
   options={{
-    title: "Profile",
+    title: 'Profile',
     headerLargeTitleEnabled: true,
     headerSearchBarOptions: {
-      placeholder: "Search",
+      placeholder: 'Search',
     },
   }}
 />
@@ -1418,13 +1411,13 @@ function Cart({ items }: { items: Item[] }) {
 
 ```tsx
 // Incorrect: storing both firstName, lastName, AND fullName
-const [firstName, setFirstName] = useState("")
-const [lastName, setLastName] = useState("")
-const [fullName, setFullName] = useState("")
+const [firstName, setFirstName] = useState('')
+const [lastName, setLastName] = useState('')
+const [fullName, setFullName] = useState('')
 
 // Correct: derive fullName
-const [firstName, setFirstName] = useState("")
-const [lastName, setLastName] = useState("")
+const [firstName, setFirstName] = useState('')
+const [lastName, setLastName] = useState('')
 const fullName = `${firstName} ${lastName}`
 ```
 
@@ -1697,7 +1690,7 @@ creates new references and breaks memoization.
 **Incorrect: dotting into object**
 
 ```tsx
-import { useRouter } from "expo-router"
+import { useRouter } from 'expo-router'
 
 function SaveButton(props) {
   const router = useRouter()
@@ -1705,7 +1698,7 @@ function SaveButton(props) {
   // bad: react-compiler will key the cache on "props" and "router", which are objects that change each render
   const handlePress = () => {
     props.onSave()
-    router.push("/success") // unstable reference
+    router.push('/success') // unstable reference
   }
 
   return <Button onPress={handlePress}>Save</Button>
@@ -1715,7 +1708,7 @@ function SaveButton(props) {
 **Correct: destructure early**
 
 ```tsx
-import { useRouter } from "expo-router"
+import { useRouter } from 'expo-router'
 
 function SaveButton({ onSave }) {
   const { push } = useRouter()
@@ -1723,7 +1716,7 @@ function SaveButton({ onSave }) {
   // good: react-compiler will key on push and onSave
   const handlePress = () => {
     onSave()
-    push("/success") // stable reference
+    push('/success') // stable reference
   }
 
   return <Button onPress={handlePress}>Save</Button>
@@ -1743,7 +1736,7 @@ property access—explicit methods ensure correct behavior.
 **Incorrect: breaks with React Compiler**
 
 ```tsx
-import { useSharedValue } from "react-native-reanimated"
+import { useSharedValue } from 'react-native-reanimated'
 
 function Counter() {
   const count = useSharedValue(0)
@@ -1759,7 +1752,7 @@ function Counter() {
 **Correct: React Compiler compatible**
 
 ```tsx
-import { useSharedValue } from "react-native-reanimated"
+import { useSharedValue } from 'react-native-reanimated'
 
 function Counter() {
   const count = useSharedValue(0)
@@ -1802,8 +1795,8 @@ compare values and avoid unnecessary re-renders.
 **Height only:**
 
 ```tsx
-import { useLayoutEffect, useRef, useState } from "react"
-import { View, LayoutChangeEvent } from "react-native"
+import { useLayoutEffect, useRef, useState } from 'react'
+import { View, LayoutChangeEvent } from 'react-native'
 
 function MeasuredBox({ children }: { children: React.ReactNode }) {
   const ref = useRef<View>(null)
@@ -1831,8 +1824,8 @@ function MeasuredBox({ children }: { children: React.ReactNode }) {
 **Both dimensions:**
 
 ```tsx
-import { useLayoutEffect, useRef, useState } from "react"
-import { View, LayoutChangeEvent } from "react-native"
+import { useLayoutEffect, useRef, useState } from 'react'
+import { View, LayoutChangeEvent } from 'react-native'
 
 type Size = { width: number; height: number }
 
@@ -1994,7 +1987,7 @@ Use `contentInsetAdjustmentBehavior="automatic"` on the root ScrollView instead 
 **Incorrect: SafeAreaView wrapper**
 
 ```tsx
-import { SafeAreaView, ScrollView, View, Text } from "react-native"
+import { SafeAreaView, ScrollView, View, Text } from 'react-native'
 
 function MyScreen() {
   return (
@@ -2012,8 +2005,8 @@ function MyScreen() {
 **Incorrect: manual safe area padding**
 
 ```tsx
-import { ScrollView, View, Text } from "react-native"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
+import { ScrollView, View, Text } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 function MyScreen() {
   const insets = useSafeAreaInsets()
@@ -2031,11 +2024,11 @@ function MyScreen() {
 **Correct: native content inset adjustment**
 
 ```tsx
-import { ScrollView, View, Text } from "react-native"
+import { ScrollView, View, Text } from 'react-native'
 
 function MyScreen() {
   return (
-    <ScrollView contentInsetAdjustmentBehavior="automatic">
+    <ScrollView contentInsetAdjustmentBehavior='automatic'>
       <View>
         <Text>Content</Text>
       </View>
@@ -2055,7 +2048,7 @@ Use `expo-image` instead of React Native's `Image`. It provides memory-efficient
 **Incorrect: React Native Image**
 
 ```tsx
-import { Image } from "react-native"
+import { Image } from 'react-native'
 
 function Avatar({ url }: { url: string }) {
   return <Image source={{ uri: url }} style={styles.avatar} />
@@ -2065,7 +2058,7 @@ function Avatar({ url }: { url: string }) {
 **Correct: expo-image**
 
 ```tsx
-import { Image } from "expo-image"
+import { Image } from 'expo-image'
 
 function Avatar({ url }: { url: string }) {
   return <Image source={{ uri: url }} style={styles.avatar} />
@@ -2077,7 +2070,7 @@ function Avatar({ url }: { url: string }) {
 ```tsx
 <Image
   source={{ uri: url }}
-  placeholder={{ blurhash: "LGF5]+Yk^6#M@-5c,1J5@[or[Q6." }}
+  placeholder={{ blurhash: 'LGF5]+Yk^6#M@-5c,1J5@[or[Q6.' }}
   contentFit="cover"
   transition={200}
   style={styles.image}
@@ -2147,8 +2140,8 @@ function ImageGallery({ urls }: { urls: string[] }) {
 **Correct: Galeria with expo-image**
 
 ```tsx
-import { Galeria } from "@nandorojo/galeria"
-import { Image } from "expo-image"
+import { Galeria } from '@nandorojo/galeria'
+import { Image } from 'expo-image'
 
 function ImageGallery({ urls }: { urls: string[] }) {
   return (
@@ -2166,8 +2159,8 @@ function ImageGallery({ urls }: { urls: string[] }) {
 **Single image:**
 
 ```tsx
-import { Galeria } from "@nandorojo/galeria"
-import { Image } from "expo-image"
+import { Galeria } from '@nandorojo/galeria'
+import { Image } from 'expo-image'
 
 function Avatar({ url }: { url: string }) {
   return (
@@ -2228,8 +2221,8 @@ Use [zeego](https://zeego.dev) for cross-platform native menus.
 **Incorrect: custom JS menu**
 
 ```tsx
-import { useState } from "react"
-import { View, Pressable, Text } from "react-native"
+import { useState } from 'react'
+import { View, Pressable, Text } from 'react-native'
 
 function MyMenu() {
   const [open, setOpen] = useState(false)
@@ -2240,11 +2233,11 @@ function MyMenu() {
         <Text>Open Menu</Text>
       </Pressable>
       {open && (
-        <View style={{ position: "absolute", top: 40 }}>
-          <Pressable onPress={() => console.log("edit")}>
+        <View style={{ position: 'absolute', top: 40 }}>
+          <Pressable onPress={() => console.log('edit')}>
             <Text>Edit</Text>
           </Pressable>
-          <Pressable onPress={() => console.log("delete")}>
+          <Pressable onPress={() => console.log('delete')}>
             <Text>Delete</Text>
           </Pressable>
         </View>
@@ -2257,7 +2250,7 @@ function MyMenu() {
 **Correct: native menu with zeego**
 
 ```tsx
-import * as DropdownMenu from "zeego/dropdown-menu"
+import * as DropdownMenu from 'zeego/dropdown-menu'
 
 function MyMenu() {
   return (
@@ -2269,14 +2262,14 @@ function MyMenu() {
       </DropdownMenu.Trigger>
 
       <DropdownMenu.Content>
-        <DropdownMenu.Item key="edit" onSelect={() => console.log("edit")}>
+        <DropdownMenu.Item key='edit' onSelect={() => console.log('edit')}>
           <DropdownMenu.ItemTitle>Edit</DropdownMenu.ItemTitle>
         </DropdownMenu.Item>
 
         <DropdownMenu.Item
-          key="delete"
+          key='delete'
           destructive
-          onSelect={() => console.log("delete")}
+          onSelect={() => console.log('delete')}
         >
           <DropdownMenu.ItemTitle>Delete</DropdownMenu.ItemTitle>
         </DropdownMenu.Item>
@@ -2289,7 +2282,7 @@ function MyMenu() {
 **Context menu: long-press**
 
 ```tsx
-import * as ContextMenu from "zeego/context-menu"
+import * as ContextMenu from 'zeego/context-menu'
 
 function MyContextMenu() {
   return (
@@ -2301,11 +2294,11 @@ function MyContextMenu() {
       </ContextMenu.Trigger>
 
       <ContextMenu.Content>
-        <ContextMenu.Item key="copy" onSelect={() => console.log("copy")}>
+        <ContextMenu.Item key='copy' onSelect={() => console.log('copy')}>
           <ContextMenu.ItemTitle>Copy</ContextMenu.ItemTitle>
         </ContextMenu.Item>
 
-        <ContextMenu.Item key="paste" onSelect={() => console.log("paste")}>
+        <ContextMenu.Item key='paste' onSelect={() => console.log('paste')}>
           <ContextMenu.ItemTitle>Paste</ContextMenu.ItemTitle>
         </ContextMenu.Item>
       </ContextMenu.Content>
@@ -2317,7 +2310,7 @@ function MyContextMenu() {
 **Checkbox items:**
 
 ```tsx
-import * as DropdownMenu from "zeego/dropdown-menu"
+import * as DropdownMenu from 'zeego/dropdown-menu'
 
 function SettingsMenu() {
   const [notifications, setNotifications] = useState(true)
@@ -2332,7 +2325,7 @@ function SettingsMenu() {
 
       <DropdownMenu.Content>
         <DropdownMenu.CheckboxItem
-          key="notifications"
+          key='notifications'
           value={notifications}
           onValueChange={() => setNotifications((prev) => !prev)}
         >
@@ -2348,7 +2341,7 @@ function SettingsMenu() {
 **Submenus:**
 
 ```tsx
-import * as DropdownMenu from "zeego/dropdown-menu"
+import * as DropdownMenu from 'zeego/dropdown-menu'
 
 function MenuWithSubmenu() {
   return (
@@ -2360,21 +2353,21 @@ function MenuWithSubmenu() {
       </DropdownMenu.Trigger>
 
       <DropdownMenu.Content>
-        <DropdownMenu.Item key="home" onSelect={() => console.log("home")}>
+        <DropdownMenu.Item key='home' onSelect={() => console.log('home')}>
           <DropdownMenu.ItemTitle>Home</DropdownMenu.ItemTitle>
         </DropdownMenu.Item>
 
         <DropdownMenu.Sub>
-          <DropdownMenu.SubTrigger key="more">
+          <DropdownMenu.SubTrigger key='more'>
             <DropdownMenu.ItemTitle>More Options</DropdownMenu.ItemTitle>
           </DropdownMenu.SubTrigger>
 
           <DropdownMenu.SubContent>
-            <DropdownMenu.Item key="settings">
+            <DropdownMenu.Item key='settings'>
               <DropdownMenu.ItemTitle>Settings</DropdownMenu.ItemTitle>
             </DropdownMenu.Item>
 
-            <DropdownMenu.Item key="help">
+            <DropdownMenu.Item key='help'>
               <DropdownMenu.ItemTitle>Help</DropdownMenu.ItemTitle>
             </DropdownMenu.Item>
           </DropdownMenu.SubContent>
@@ -2402,15 +2395,15 @@ for low-level primitives.
 **Incorrect: JS-based bottom sheet**
 
 ```tsx
-import BottomSheet from "custom-js-bottom-sheet"
+import BottomSheet from 'custom-js-bottom-sheet'
 
 function MyScreen() {
   const sheetRef = useRef<BottomSheet>(null)
 
   return (
     <View style={{ flex: 1 }}>
-      <Button onPress={() => sheetRef.current?.expand()} title="Open" />
-      <BottomSheet ref={sheetRef} snapPoints={["50%", "90%"]}>
+      <Button onPress={() => sheetRef.current?.expand()} title='Open' />
+      <BottomSheet ref={sheetRef} snapPoints={['50%', '90%']}>
         <View>
           <Text>Sheet content</Text>
         </View>
@@ -2423,18 +2416,18 @@ function MyScreen() {
 **Correct: native Modal with formSheet**
 
 ```tsx
-import { Modal, View, Text, Button } from "react-native"
+import { Modal, View, Text, Button } from 'react-native'
 
 function MyScreen() {
   const [visible, setVisible] = useState(false)
 
   return (
     <View style={{ flex: 1 }}>
-      <Button onPress={() => setVisible(true)} title="Open" />
+      <Button onPress={() => setVisible(true)} title='Open' />
       <Modal
         visible={visible}
-        presentationStyle="formSheet"
-        animationType="slide"
+        presentationStyle='formSheet'
+        animationType='slide'
         onRequestClose={() => setVisible(false)}
       >
         <View>
@@ -2451,11 +2444,11 @@ function MyScreen() {
 ```tsx
 // In your navigator
 <Stack.Screen
-  name="Details"
+  name='Details'
   component={DetailsScreen}
   options={{
-    presentation: "formSheet",
-    sheetAllowedDetents: "fitToContents",
+    presentation: 'formSheet',
+    sheetAllowedDetents: 'fitToContents',
   }}
 />
 ```
@@ -2475,7 +2468,7 @@ Never use `TouchableOpacity` or `TouchableHighlight`. Use `Pressable` from
 **Incorrect: legacy Touchable components**
 
 ```tsx
-import { TouchableOpacity } from "react-native"
+import { TouchableOpacity } from 'react-native'
 
 function MyButton({ onPress }: { onPress: () => void }) {
   return (
@@ -2489,7 +2482,7 @@ function MyButton({ onPress }: { onPress: () => void }) {
 **Correct: Pressable**
 
 ```tsx
-import { Pressable } from "react-native"
+import { Pressable } from 'react-native'
 
 function MyButton({ onPress }: { onPress: () => void }) {
   return (
@@ -2503,7 +2496,7 @@ function MyButton({ onPress }: { onPress: () => void }) {
 **Correct: Pressable from gesture handler for lists**
 
 ```tsx
-import { Pressable } from "react-native-gesture-handler"
+import { Pressable } from 'react-native-gesture-handler'
 
 function ListItem({ onPress }: { onPress: () => void }) {
   return (
@@ -2730,8 +2723,8 @@ not directly from packages. This enables global changes and easy refactoring.
 **Incorrect: imports directly from package**
 
 ```tsx
-import { View, Text } from "react-native"
-import { Button } from "@ui/button"
+import { View, Text } from 'react-native'
+import { Button } from '@ui/button'
 
 function Profile() {
   return (
@@ -2746,9 +2739,9 @@ function Profile() {
 **Correct: imports from design system**
 
 ```tsx
-import { View } from "@/components/view"
-import { Text } from "@/components/text"
-import { Button } from "@/components/button"
+import { View } from '@/components/view'
+import { Text } from '@/components/text'
+import { Button } from '@/components/button'
 
 function Profile() {
   return (
@@ -2784,9 +2777,9 @@ instantiate. Hoist to module scope when the locale/options are static.
 
 ```tsx
 function Price({ amount }: { amount: number }) {
-  const formatter = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
+  const formatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
   })
   return <Text>{formatter.format(amount)}</Text>
 }
@@ -2795,9 +2788,9 @@ function Price({ amount }: { amount: number }) {
 **Correct: hoisted to module scope**
 
 ```tsx
-const currencyFormatter = new Intl.NumberFormat("en-US", {
-  style: "currency",
-  currency: "USD",
+const currencyFormatter = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
 })
 
 function Price({ amount }: { amount: number }) {
@@ -2809,7 +2802,7 @@ function Price({ amount }: { amount: number }) {
 
 ```tsx
 const dateFormatter = useMemo(
-  () => new Intl.DateTimeFormat(locale, { dateStyle: "medium" }),
+  () => new Intl.DateTimeFormat(locale, { dateStyle: 'medium' }),
   [locale]
 )
 ```
@@ -2818,11 +2811,11 @@ const dateFormatter = useMemo(
 
 ```tsx
 // Module-level formatters
-const dateFormatter = new Intl.DateTimeFormat("en-US", { dateStyle: "medium" })
-const timeFormatter = new Intl.DateTimeFormat("en-US", { timeStyle: "short" })
-const percentFormatter = new Intl.NumberFormat("en-US", { style: "percent" })
-const relativeFormatter = new Intl.RelativeTimeFormat("en-US", {
-  numeric: "auto",
+const dateFormatter = new Intl.DateTimeFormat('en-US', { dateStyle: 'medium' })
+const timeFormatter = new Intl.DateTimeFormat('en-US', { timeStyle: 'short' })
+const percentFormatter = new Intl.NumberFormat('en-US', { style: 'percent' })
+const relativeFormatter = new Intl.RelativeTimeFormat('en-US', {
+  numeric: 'auto',
 })
 ```
 
@@ -2851,12 +2844,12 @@ Use the `expo-font` config plugin to embed fonts at build time instead of
 **Incorrect: async font loading**
 
 ```tsx
-import { useFonts } from "expo-font"
-import { Text, View } from "react-native"
+import { useFonts } from 'expo-font'
+import { Text, View } from 'react-native'
 
 function App() {
   const [fontsLoaded] = useFonts({
-    "Geist-Bold": require("./assets/fonts/Geist-Bold.otf"),
+    'Geist-Bold': require('./assets/fonts/Geist-Bold.otf'),
   })
 
   if (!fontsLoaded) {
@@ -2865,7 +2858,7 @@ function App() {
 
   return (
     <View>
-      <Text style={{ fontFamily: "Geist-Bold" }}>Hello</Text>
+      <Text style={{ fontFamily: 'Geist-Bold' }}>Hello</Text>
     </View>
   )
 }
@@ -2874,13 +2867,13 @@ function App() {
 **Correct: config plugin, fonts embedded at build**
 
 ```tsx
-import { Text, View } from "react-native"
+import { Text, View } from 'react-native'
 
 function App() {
   // No loading state needed—font is already available
   return (
     <View>
-      <Text style={{ fontFamily: "Geist-Bold" }}>Hello</Text>
+      <Text style={{ fontFamily: 'Geist-Bold' }}>Hello</Text>
     </View>
   )
 }

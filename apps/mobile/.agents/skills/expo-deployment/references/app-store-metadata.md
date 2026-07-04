@@ -266,9 +266,9 @@ Use JavaScript for dynamic values like copyright year or fetched translations.
 
 ```js
 // store.config.js
-const baseConfig = require("./store.config.json")
+const baseConfig = require("./store.config.json");
 
-const year = new Date().getFullYear()
+const year = new Date().getFullYear();
 
 module.exports = {
   ...baseConfig,
@@ -276,7 +276,7 @@ module.exports = {
     ...baseConfig.apple,
     copyright: `${year} Your Company, Inc.`,
   },
-}
+};
 ```
 
 ### Async Configuration (External Localization)
@@ -284,12 +284,12 @@ module.exports = {
 ```js
 // store.config.js
 module.exports = async () => {
-  const baseConfig = require("./store.config.json")
+  const baseConfig = require("./store.config.json");
 
   // Fetch translations from CMS/localization service
   const translations = await fetch(
     "https://api.example.com/app-store-copy"
-  ).then((r) => r.json())
+  ).then((r) => r.json());
 
   return {
     ...baseConfig,
@@ -297,17 +297,17 @@ module.exports = async () => {
       ...baseConfig.apple,
       info: translations,
     },
-  }
-}
+  };
+};
 ```
 
 ### Environment-Based Config
 
 ```js
 // store.config.js
-const baseConfig = require("./store.config.json")
+const baseConfig = require("./store.config.json");
 
-const isProduction = process.env.EAS_BUILD_PROFILE === "production"
+const isProduction = process.env.EAS_BUILD_PROFILE === "production";
 
 module.exports = {
   ...baseConfig,
@@ -322,7 +322,7 @@ module.exports = {
       },
     },
   },
-}
+};
 ```
 
 Update `eas.json` to use JS config:

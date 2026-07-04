@@ -10,7 +10,7 @@ Static prerendering generates HTML at build time for pages that don't require re
 
 ```tsx
 // SSR for completely static content - wasteful
-export const Route = createFileRoute("/about")({
+export const Route = createFileRoute('/about')({
   loader: async () => {
     // Fetching static content on every request
     const content = await fetchAboutPageContent()
@@ -19,7 +19,7 @@ export const Route = createFileRoute("/about")({
 })
 
 // Or no caching headers for semi-static content
-export const Route = createFileRoute("/blog/$slug")({
+export const Route = createFileRoute('/blog/$slug')({
   loader: async ({ params }) => {
     const post = await fetchPost(params.slug)
     return { post }
@@ -32,13 +32,18 @@ export const Route = createFileRoute("/blog/$slug")({
 
 ```tsx
 // app.config.ts
-import { defineConfig } from "@tanstack/react-start/config"
+import { defineConfig } from '@tanstack/react-start/config'
 
 export default defineConfig({
   server: {
     prerender: {
       // Routes to prerender at build time
-      routes: ["/", "/about", "/contact", "/pricing"],
+      routes: [
+        '/',
+        '/about',
+        '/contact',
+        '/pricing',
+      ],
       // Or crawl from root
       crawlLinks: true,
     },
@@ -46,7 +51,7 @@ export default defineConfig({
 })
 
 // routes/about.tsx - Will be prerendered
-export const Route = createFileRoute("/about")({
+export const Route = createFileRoute('/about')({
   loader: async () => {
     // Runs at BUILD time, not request time
     const content = await fetchAboutPageContent()
@@ -70,7 +75,11 @@ export default defineConfig({
           select: { slug: true },
         })
 
-        return ["/", "/blog", ...posts.map((p) => `/blog/${p.slug}`)]
+        return [
+          '/',
+          '/blog',
+          ...posts.map(p => `/blog/${p.slug}`),
+        ]
       },
     },
   },
@@ -81,16 +90,16 @@ export default defineConfig({
 
 ```tsx
 // routes/blog/$slug.tsx
-import { createFileRoute } from "@tanstack/react-router"
-import { setHeaders } from "@tanstack/react-start/server"
+import { createFileRoute } from '@tanstack/react-router'
+import { setHeaders } from '@tanstack/react-start/server'
 
-export const Route = createFileRoute("/blog/$slug")({
+export const Route = createFileRoute('/blog/$slug')({
   loader: async ({ params }) => {
     const post = await fetchPost(params.slug)
 
     // ISR: Cache for 60 seconds, then revalidate
     setHeaders({
-      "Cache-Control": "public, s-maxage=60, stale-while-revalidate=300",
+      'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300',
     })
 
     return { post }
@@ -108,7 +117,7 @@ export const Route = createFileRoute("/blog/$slug")({
 
 ```tsx
 // routes/products.tsx - Prerendered
-export const Route = createFileRoute("/products")({
+export const Route = createFileRoute('/products')({
   loader: async () => {
     // Featured products - prerendered at build
     const featured = await fetchFeaturedProducts()
@@ -117,7 +126,7 @@ export const Route = createFileRoute("/products")({
 })
 
 // routes/products/$productId.tsx - ISR
-export const Route = createFileRoute("/products/$productId")({
+export const Route = createFileRoute('/products/$productId')({
   loader: async ({ params }) => {
     const product = await fetchProduct(params.productId)
 
@@ -125,7 +134,7 @@ export const Route = createFileRoute("/products/$productId")({
 
     // Cache product pages for 5 minutes
     setHeaders({
-      "Cache-Control": "public, s-maxage=300, stale-while-revalidate=600",
+      'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600',
     })
 
     return { product }
@@ -133,11 +142,11 @@ export const Route = createFileRoute("/products/$productId")({
 })
 
 // routes/cart.tsx - Always SSR (user-specific)
-export const Route = createFileRoute("/cart")({
+export const Route = createFileRoute('/cart')({
   loader: async ({ context }) => {
     // No caching - user-specific data
     setHeaders({
-      "Cache-Control": "private, no-store",
+      'Cache-Control': 'private, no-store',
     })
 
     const cart = await fetchUserCart(context.user.id)
@@ -151,13 +160,13 @@ export const Route = createFileRoute("/cart")({
 ```tsx
 // API route to trigger revalidation
 // app/routes/api/revalidate.ts
-export const APIRoute = createAPIFileRoute("/api/revalidate")({
+export const APIRoute = createAPIFileRoute('/api/revalidate')({
   POST: async ({ request }) => {
     const { secret, path } = await request.json()
 
     // Verify secret
     if (secret !== process.env.REVALIDATE_SECRET) {
-      return json({ error: "Invalid secret" }, { status: 401 })
+      return json({ error: 'Invalid secret' }, { status: 401 })
     }
 
     // Trigger revalidation (implementation depends on hosting)
@@ -172,13 +181,13 @@ export const APIRoute = createAPIFileRoute("/api/revalidate")({
 
 ## Cache-Control Directives
 
-| Directive                  | Meaning                            |
-| -------------------------- | ---------------------------------- |
-| `s-maxage=N`               | CDN cache duration (seconds)       |
-| `max-age=N`                | Browser cache duration             |
-| `stale-while-revalidate=N` | Serve stale while fetching fresh   |
-| `private`                  | Don't cache on CDN (user-specific) |
-| `no-store`                 | Never cache                        |
+| Directive | Meaning |
+|-----------|---------|
+| `s-maxage=N` | CDN cache duration (seconds) |
+| `max-age=N` | Browser cache duration |
+| `stale-while-revalidate=N` | Serve stale while fetching fresh |
+| `private` | Don't cache on CDN (user-specific) |
+| `no-store` | Never cache |
 
 ## Context
 

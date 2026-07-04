@@ -6,8 +6,8 @@ Detailed flag specifications for `resend auth` and utility commands.
 
 ## auth login
 
-| Flag          | Type   | Required              | Description                     |
-| ------------- | ------ | --------------------- | ------------------------------- |
+| Flag | Type | Required | Description |
+|------|------|----------|-------------|
 | `--key <key>` | string | Yes (non-interactive) | API key (must start with `re_`) |
 
 Pass the key from an environment variable (e.g. `--key "$RESEND_API_KEY"`) or a secret manager — never as a literal, which would persist in shell history and logs.
@@ -69,6 +69,5 @@ Checks GitHub releases for newer version. Shows upgrade command.
 Opens `https://resend.com/emails` in the default browser.
 
 `broadcasts` and `templates` also have their own `open` subcommands:
-
 - `resend broadcasts open [id]` — open a broadcast or the broadcasts list
 - `resend templates open [id]` — open a template or the templates list

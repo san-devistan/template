@@ -1,7 +1,7 @@
 ---
 name: expo-dev-client
-description: Build and distribute Expo development clients locally or via TestFlight
-version: 1.0.0
+description: Build Expo app for development
+version: 1.1.0
 license: MIT
 ---
 
@@ -9,15 +9,14 @@ Use EAS Build to create development clients for testing native code changes on p
 
 ## Important: When Development Clients Are Needed
 
-**Only create development clients when your app requires custom native code.** Most apps work fine in Expo Go.
+**Development clients are the recommended setup for any real or production app.** Expo Go is a playground for learning and quick experiments with the native libraries it bundles; most apps outgrow it and move to a development client. See [Expo Go vs. development builds](https://docs.expo.dev/develop/development-builds/introduction/) for the full reasoning.
 
 You need a dev client ONLY when using:
 
 - Local Expo modules (custom native code)
 - Apple targets (widgets, app clips, extensions)
 - Third-party native modules not in Expo Go
-
-**Try Expo Go first** with `npx expo start`. If everything works, you don't need a dev client.
+- Config plugins, or testing remote push notifications and App/Universal Links
 
 ## EAS Configuration
 

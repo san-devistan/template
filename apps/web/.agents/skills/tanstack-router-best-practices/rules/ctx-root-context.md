@@ -11,17 +11,17 @@ Use `createRootRouteWithContext` to define typed context that flows through your
 ```tsx
 // No context - importing globals directly
 // routes/__root.tsx
-import { createRootRoute } from "@tanstack/react-router"
-import { queryClient } from "@/lib/query-client" // Global import
+import { createRootRoute } from '@tanstack/react-router'
+import { queryClient } from '@/lib/query-client'  // Global import
 
 export const Route = createRootRoute({
   component: RootComponent,
 })
 
 // routes/posts.tsx
-import { queryClient } from "@/lib/query-client" // Import again
+import { queryClient } from '@/lib/query-client'  // Import again
 
-export const Route = createFileRoute("/posts")({
+export const Route = createFileRoute('/posts')({
   loader: async () => {
     // Using global - harder to test, couples to implementation
     return queryClient.ensureQueryData(postQueries.list())
@@ -33,8 +33,8 @@ export const Route = createFileRoute("/posts")({
 
 ```tsx
 // routes/__root.tsx
-import { createRootRouteWithContext, Outlet } from "@tanstack/react-router"
-import { QueryClient } from "@tanstack/react-query"
+import { createRootRouteWithContext, Outlet } from '@tanstack/react-router'
+import { QueryClient } from '@tanstack/react-query'
 
 // Define the context interface
 interface RouterContext {
@@ -62,14 +62,12 @@ function RootComponent() {
 }
 
 // router.tsx - Provide context when creating router
-import { createRouter } from "@tanstack/react-router"
-import { QueryClient } from "@tanstack/react-query"
-import { setupRouterSsrQueryIntegration } from "@tanstack/react-router-ssr-query"
-import { routeTree } from "./routeTree.gen"
+import { createRouter } from '@tanstack/react-router'
+import { QueryClient } from '@tanstack/react-query'
+import { setupRouterSsrQueryIntegration } from '@tanstack/react-router-ssr-query'
+import { routeTree } from './routeTree.gen'
 
-export function getRouter(
-  auth: RouterContext["auth"] = { user: null, isAuthenticated: false }
-) {
+export function getRouter(auth: RouterContext['auth'] = { user: null, isAuthenticated: false }) {
   const queryClient = new QueryClient()
 
   const router = createRouter({
@@ -78,7 +76,7 @@ export function getRouter(
       queryClient,
       auth,
     },
-    defaultPreload: "intent",
+    defaultPreload: 'intent',
     defaultPreloadStaleTime: 0,
     scrollRestoration: true,
   })
@@ -89,7 +87,7 @@ export function getRouter(
 }
 
 // routes/posts.tsx - Use context in loaders
-export const Route = createFileRoute("/posts")({
+export const Route = createFileRoute('/posts')({
   loader: async ({ context: { queryClient } }) => {
     // Context is typed and injected
     return queryClient.ensureQueryData(postQueries.list())
@@ -111,11 +109,11 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 })
 
 // routes/_authenticated.tsx - Layout route for protected pages
-export const Route = createFileRoute("/_authenticated")({
+export const Route = createFileRoute('/_authenticated')({
   beforeLoad: async ({ context, location }) => {
     if (!context.auth.isAuthenticated) {
       throw redirect({
-        to: "/login",
+        to: '/login',
         search: { redirect: location.href },
       })
     }
@@ -124,10 +122,12 @@ export const Route = createFileRoute("/_authenticated")({
 })
 
 // routes/_authenticated/dashboard.tsx
-export const Route = createFileRoute("/_authenticated/dashboard")({
+export const Route = createFileRoute('/_authenticated/dashboard')({
   loader: async ({ context: { queryClient, auth } }) => {
     // We know user is authenticated from parent beforeLoad
-    return queryClient.ensureQueryData(dashboardQueries.forUser(auth.user!.id))
+    return queryClient.ensureQueryData(
+      dashboardQueries.forUser(auth.user!.id)
+    )
   },
 })
 ```
@@ -136,13 +136,13 @@ export const Route = createFileRoute("/_authenticated/dashboard")({
 
 ```tsx
 // routes/posts/$postId.tsx
-export const Route = createFileRoute("/posts/$postId")({
+export const Route = createFileRoute('/posts/$postId')({
   beforeLoad: async ({ context, params }) => {
     // Extend context with route-specific data
     const post = await fetchPost(params.postId)
 
     return {
-      post, // Available to this route and children
+      post,  // Available to this route and children
     }
   },
   loader: async ({ context }) => {
@@ -155,12 +155,12 @@ export const Route = createFileRoute("/posts/$postId")({
 
 ## Context vs. Loader Data
 
-| Context                                        | Loader Data                  |
-| ---------------------------------------------- | ---------------------------- |
-| Available in beforeLoad, loader, and component | Only available in component  |
-| Set at router creation or in beforeLoad        | Returned from loader         |
-| Good for services, clients, auth               | Good for route-specific data |
-| Flows down to all children                     | Specific to route            |
+| Context | Loader Data |
+|---------|-------------|
+| Available in beforeLoad, loader, and component | Only available in component |
+| Set at router creation or in beforeLoad | Returned from loader |
+| Good for services, clients, auth | Good for route-specific data |
+| Flows down to all children | Specific to route |
 
 ## Context
 

@@ -26,12 +26,12 @@ Example:
 
 ### Fields
 
-| Field                          | Description                                                                                                                                                                                                                                                 |
-| ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `platforms`                    | Array of supported platforms. Valid values include `android`, `apple`, `web`, and `devtools`. You can also use granular Apple platforms such as `ios`, `macos`, and `tvos`, but `apple` is preferred when one Swift module supports multiple Apple targets. |
-| `apple.modules`                | Swift module class names                                                                                                                                                                                                                                    |
-| `apple.appDelegateSubscribers` | Swift AppDelegate subscriber class names                                                                                                                                                                                                                    |
-| `android.modules`              | Fully-qualified Kotlin module class names (package + class)                                                                                                                                                                                                 |
+| Field | Description |
+|-------|-------------|
+| `platforms` | Array of supported platforms. Valid values include `android`, `apple`, `web`, and `devtools`. You can also use granular Apple platforms such as `ios`, `macos`, and `tvos`, but `apple` is preferred when one Swift module supports multiple Apple targets. |
+| `apple.modules` | Swift module class names |
+| `apple.appDelegateSubscribers` | Swift AppDelegate subscriber class names |
+| `android.modules` | Fully-qualified Kotlin module class names (package + class) |
 
 ## Autolinking
 

@@ -13,11 +13,11 @@
   },
   "devDependencies": {
     "oxc-parser": "^0.129.0",
-    "oxc-resolver": "^11.21.3",
+    "oxc-resolver": "^11.23.0",
     "oxfmt": "^0.48.0",
-    "oxlint": "^1.70.0",
+    "oxlint": "^1.72.0",
     "oxlint-tsgolint": "^0.22.1",
-    "turbo": "^2.9.18",
+    "turbo": "^2.10.2",
     "typescript": "5.9.3"
   },
   "engines": {

@@ -5,7 +5,7 @@
       "source": "paulrberg/agent-skills",
       "sourceType": "github",
       "skillPath": "skills/effect-ts/SKILL.md",
-      "computedHash": "c621daa0e94a078462b478abba055da8a0fed1ecd751944c99986543e9083e55"
+      "computedHash": "15fa110f03a040e5bc9dbd19e3824da72b02d3dab6d44cc32c1420a017a4699d"
     },
     "frontend-design": {
       "source": "anthropics/skills",
@@ -16,14 +16,14 @@
     "security-audit": {
       "source": "cloudflare/security-audit-skill",
       "sourceType": "github",
-      "skillPath": "SKILL.md",
-      "computedHash": "112f44eb3c7990a87b3218a5d70e24619131dee42699066a71fca935b18745d1"
+      "skillPath": "skills/security-audit/SKILL.md",
+      "computedHash": "8eda07507ef5ac3e29446b4e269f1eea8bc318521e32af5e9a97b28179ba35e1"
     },
     "turborepo": {
       "source": "vercel/turborepo",
       "sourceType": "github",
       "skillPath": "skills/turborepo/SKILL.md",
-      "computedHash": "b7c3165ae67a2892d6195a5b2cba15c8d96341f5c64ddd0d3ce4225c94a2ae83"
+      "computedHash": "7fcd5ac3e11b30b86907ab9a81af6888954d9f14c72f3e09f5cc2afcbd50956d"
     }
   }
 }

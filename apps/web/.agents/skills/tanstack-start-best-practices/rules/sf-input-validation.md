@@ -10,8 +10,8 @@ Server functions receive data across the network boundary. Always validate input
 
 ```tsx
 // No validation - trusting client input directly
-export const updateUser = createServerFn({ method: "POST" }).handler(
-  async ({ data }) => {
+export const updateUser = createServerFn({ method: 'POST' })
+  .handler(async ({ data }) => {
     // data is unknown/any - no type safety
     // SQL injection, invalid data, type errors all possible
     await db.users.update({
@@ -19,26 +19,24 @@ export const updateUser = createServerFn({ method: "POST" }).handler(
       data: {
         name: data.name,
         email: data.email,
-        role: data.role, // Could be set to 'admin' by malicious client!
+        role: data.role,  // Could be set to 'admin' by malicious client!
       },
     })
-  }
-)
+  })
 
 // Weak validation - type assertion without runtime check
-export const deletePost = createServerFn({ method: "POST" }).handler(
-  async ({ data }: { data: { id: string } }) => {
+export const deletePost = createServerFn({ method: 'POST' })
+  .handler(async ({ data }: { data: { id: string } }) => {
     // Type assertion doesn't validate at runtime
     await db.posts.delete({ where: { id: data.id } })
-  }
-)
+  })
 ```
 
 ## Good Example: With Zod Validation
 
 ```tsx
-import { createServerFn } from "@tanstack/react-start"
-import { z } from "zod"
+import { createServerFn } from '@tanstack/react-start'
+import { z } from 'zod'
 
 const updateUserSchema = z.object({
   id: z.string().uuid(),
@@ -47,7 +45,7 @@ const updateUserSchema = z.object({
   // Don't allow role updates from client input!
 })
 
-export const updateUser = createServerFn({ method: "POST" })
+export const updateUser = createServerFn({ method: 'POST' })
   .validator(updateUserSchema)
   .handler(async ({ data }) => {
     // data is fully typed: { id: string; name: string; email: string }
@@ -69,15 +67,10 @@ export const updateUser = createServerFn({ method: "POST" })
 
 ```tsx
 const createOrderSchema = z.object({
-  items: z
-    .array(
-      z.object({
-        productId: z.string().uuid(),
-        quantity: z.number().int().min(1).max(100),
-      })
-    )
-    .min(1)
-    .max(50),
+  items: z.array(z.object({
+    productId: z.string().uuid(),
+    quantity: z.number().int().min(1).max(100),
+  })).min(1).max(50),
   shippingAddress: z.object({
     street: z.string().min(1),
     city: z.string().min(1),
@@ -87,7 +80,7 @@ const createOrderSchema = z.object({
   couponCode: z.string().optional(),
 })
 
-export const createOrder = createServerFn({ method: "POST" })
+export const createOrder = createServerFn({ method: 'POST' })
   .validator(createOrderSchema)
   .handler(async ({ data }) => {
     // All data is validated and typed
@@ -98,22 +91,19 @@ export const createOrder = createServerFn({ method: "POST" })
 ## Good Example: Transform and Refine
 
 ```tsx
-const registrationSchema = z
-  .object({
-    email: z.string().email().toLowerCase(), // Transform to lowercase
-    password: z
-      .string()
-      .min(8, "Password must be at least 8 characters")
-      .regex(/[A-Z]/, "Password must contain uppercase letter")
-      .regex(/[0-9]/, "Password must contain number"),
-    confirmPassword: z.string(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords must match",
-    path: ["confirmPassword"],
-  })
+const registrationSchema = z.object({
+  email: z.string().email().toLowerCase(),  // Transform to lowercase
+  password: z.string()
+    .min(8, 'Password must be at least 8 characters')
+    .regex(/[A-Z]/, 'Password must contain uppercase letter')
+    .regex(/[0-9]/, 'Password must contain number'),
+  confirmPassword: z.string(),
+}).refine(
+  (data) => data.password === data.confirmPassword,
+  { message: 'Passwords must match', path: ['confirmPassword'] }
+)
 
-export const register = createServerFn({ method: "POST" })
+export const register = createServerFn({ method: 'POST' })
   .validator(registrationSchema)
   .handler(async ({ data }) => {
     // Passwords match, email is lowercase
@@ -130,7 +120,7 @@ export const register = createServerFn({ method: "POST" })
 
 ```tsx
 // lib/schemas/post.ts - Shared validation schema
-import { z } from "zod"
+import { z } from 'zod'
 
 export const createPostSchema = z.object({
   title: z.string().min(1).max(200),
@@ -141,16 +131,14 @@ export const createPostSchema = z.object({
 export type CreatePostInput = z.infer<typeof createPostSchema>
 
 // lib/posts.functions.ts - Server function
-import { createPostSchema } from "./schemas/post"
+import { createPostSchema } from './schemas/post'
 
-export const createPost = createServerFn({ method: "POST" })
+export const createPost = createServerFn({ method: 'POST' })
   .validator(createPostSchema)
-  .handler(async ({ data }) => {
-    /* ... */
-  })
+  .handler(async ({ data }) => { /* ... */ })
 
 // components/CreatePostForm.tsx - Client form validation
-import { createPostSchema, type CreatePostInput } from "@/lib/schemas/post"
+import { createPostSchema, type CreatePostInput } from '@/lib/schemas/post'
 
 function CreatePostForm() {
   const form = useForm<CreatePostInput>({

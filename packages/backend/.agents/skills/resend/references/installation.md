@@ -6,16 +6,16 @@ Always install the latest SDK version to ensure you have support for all feature
 
 These are the minimum versions required for full functionality (sending, receiving, and webhook verification). Always prefer the latest version when possible.
 
-| Language | Package             | Min Version | Install                                 |
-| -------- | ------------------- | ----------- | --------------------------------------- |
-| Node.js  | `resend`            | >= 6.14.0   | `npm install resend`                    |
-| Python   | `resend`            | >= 2.21.0   | `pip install resend`                    |
-| Go       | `resend-go/v3`      | >= 3.1.0    | `go get github.com/resend/resend-go/v3` |
-| Ruby     | `resend`            | >= 1.0.0    | `gem install resend`                    |
-| PHP      | `resend/resend-php` | >= 1.1.0    | `composer require resend/resend-php`    |
-| Rust     | `resend-rs`         | >= 0.20.0   | `cargo add resend-rs`                   |
-| Java     | `resend-java`       | >= 4.11.0   | See [Maven/Gradle](#java) below         |
-| .NET     | `Resend`            | >= 0.2.1    | `dotnet add package Resend`             |
+| Language | Package | Min Version | Install |
+|----------|---------|-------------|---------|
+| Node.js | `resend` | >= 6.14.0 | `npm install resend` |
+| Python | `resend` | >= 2.21.0 | `pip install resend` |
+| Go | `resend-go/v3` | >= 3.1.0 | `go get github.com/resend/resend-go/v3` |
+| Ruby | `resend` | >= 1.0.0 | `gem install resend` |
+| PHP | `resend/resend-php` | >= 1.1.0 | `composer require resend/resend-php` |
+| Rust | `resend-rs` | >= 0.20.0 | `cargo add resend-rs` |
+| Java | `resend-java` | >= 4.11.0 | See [Maven/Gradle](#java) below |
+| .NET | `Resend` | >= 0.2.1 | `dotnet add package Resend` |
 
 > **If the project already has a Resend SDK installed**, check the version and upgrade if it's below the minimum. Older SDKs may be missing `webhooks.verify()`, `emails.receiving.get()`, or `domains.claims.*`, which power webhook security, inbound email, and domain claiming.
 
@@ -23,17 +23,17 @@ These are the minimum versions required for full functionality (sending, receivi
 
 Check for these files to determine the project's language/framework:
 
-| File                                   | Language           | SDK               |
-| -------------------------------------- | ------------------ | ----------------- |
-| `package.json`                         | Node.js/TypeScript | resend            |
-| `requirements.txt` or `pyproject.toml` | Python             | resend            |
-| `go.mod`                               | Go                 | resend-go/v3      |
-| `Gemfile`                              | Ruby               | resend            |
-| `composer.json`                        | PHP                | resend/resend-php |
-| `Cargo.toml`                           | Rust               | resend-rs         |
-| `pom.xml` or `build.gradle`            | Java               | resend-java       |
-| `*.csproj` or `*.sln`                  | .NET               | Resend            |
-| `mix.exs`                              | Elixir             | resend            |
+| File | Language | SDK |
+|------|----------|-----|
+| `package.json` | Node.js/TypeScript | resend |
+| `requirements.txt` or `pyproject.toml` | Python | resend |
+| `go.mod` | Go | resend-go/v3 |
+| `Gemfile` | Ruby | resend |
+| `composer.json` | PHP | resend/resend-php |
+| `Cargo.toml` | Rust | resend-rs |
+| `pom.xml` or `build.gradle` | Java | resend-java |
+| `*.csproj` or `*.sln` | .NET | Resend |
+| `mix.exs` | Elixir | resend |
 
 ## Installation Commands
 
@@ -44,7 +44,6 @@ npm install resend
 ```
 
 Alternative package managers:
-
 ```bash
 yarn add resend
 pnpm add resend
@@ -70,7 +69,6 @@ gem install resend
 ```
 
 Or add to Gemfile:
-
 ```ruby
 gem 'resend'
 ```
@@ -91,13 +89,11 @@ cargo add tokio -F macros,rt-multi-thread
 ### Java
 
 Gradle:
-
 ```gradle
 implementation 'com.resend:resend-java:4.11.0'
 ```
 
 Maven:
-
 ```xml
 <dependency>
   <groupId>com.resend</groupId>
@@ -115,7 +111,6 @@ dotnet add package Resend
 ### Elixir
 
 Add to `mix.exs`:
-
 ```elixir
 def deps do
   [
