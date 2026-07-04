@@ -10,59 +10,59 @@ Request middleware runs before every server request (routes, SSR, server functio
 
 ```tsx
 // Duplicating auth logic in every server function
-export const getProfile = createServerFn()
-  .handler(async () => {
-    const session = await getSession()
-    if (!session) throw new Error('Unauthorized')
-    // ... rest of handler
-  })
+export const getProfile = createServerFn().handler(async () => {
+  const session = await getSession()
+  if (!session) throw new Error("Unauthorized")
+  // ... rest of handler
+})
 
-export const updateProfile = createServerFn({ method: 'POST' })
-  .handler(async ({ data }) => {
+export const updateProfile = createServerFn({ method: "POST" }).handler(
+  async ({ data }) => {
     const session = await getSession()
-    if (!session) throw new Error('Unauthorized')
+    if (!session) throw new Error("Unauthorized")
     // ... rest of handler
-  })
+  }
+)
 
-export const deleteAccount = createServerFn({ method: 'POST' })
-  .handler(async () => {
+export const deleteAccount = createServerFn({ method: "POST" }).handler(
+  async () => {
     const session = await getSession()
-    if (!session) throw new Error('Unauthorized')
+    if (!session) throw new Error("Unauthorized")
     // ... rest of handler
-  })
+  }
+)
 ```
 
 ## Good Example: Authentication Middleware
 
 ```tsx
 // lib/middleware/auth.ts
-import { createMiddleware } from '@tanstack/react-start'
-import { getSession } from './session.server'
+import { createMiddleware } from "@tanstack/react-start"
+import { getSession } from "./session.server"
 
-export const authMiddleware = createMiddleware()
-  .server(async ({ next }) => {
-    const session = await getSession()
+export const authMiddleware = createMiddleware().server(async ({ next }) => {
+  const session = await getSession()
 
-    // Pass session to downstream handlers via context
-    return next({
-      context: {
-        session,
-        user: session?.user ?? null,
-      },
-    })
+  // Pass session to downstream handlers via context
+  return next({
+    context: {
+      session,
+      user: session?.user ?? null,
+    },
   })
+})
 
 // lib/middleware/requireAuth.ts
 export const requireAuthMiddleware = createMiddleware()
-  .middleware([authMiddleware])  // Depends on auth middleware
+  .middleware([authMiddleware]) // Depends on auth middleware
   .server(async ({ next, context }) => {
     if (!context.user) {
-      throw redirect({ to: '/login' })
+      throw redirect({ to: "/login" })
     }
 
     return next({
       context: {
-        user: context.user,  // Now guaranteed to exist
+        user: context.user, // Now guaranteed to exist
       },
     })
   })
@@ -72,8 +72,8 @@ export const requireAuthMiddleware = createMiddleware()
 
 ```tsx
 // lib/middleware/logging.ts
-export const loggingMiddleware = createMiddleware()
-  .server(async ({ next, request }) => {
+export const loggingMiddleware = createMiddleware().server(
+  async ({ next, request }) => {
     const start = Date.now()
     const requestId = crypto.randomUUID()
 
@@ -90,23 +90,21 @@ export const loggingMiddleware = createMiddleware()
       console.error(`[${requestId}] Error:`, error)
       throw error
     }
-  })
+  }
+)
 ```
 
 ## Good Example: Global Middleware Configuration
 
 ```tsx
 // app/start.ts
-import { createStart } from '@tanstack/react-start/server'
-import { loggingMiddleware } from './middleware/logging'
-import { authMiddleware } from './middleware/auth'
+import { createStart } from "@tanstack/react-start/server"
+import { loggingMiddleware } from "./middleware/logging"
+import { authMiddleware } from "./middleware/auth"
 
 export default createStart({
   // Request middleware runs for all requests
-  requestMiddleware: [
-    loggingMiddleware,
-    authMiddleware,
-  ],
+  requestMiddleware: [loggingMiddleware, authMiddleware],
 })
 ```
 
@@ -114,15 +112,15 @@ export default createStart({
 
 ```tsx
 // lib/middleware/rateLimit.ts
-import { createMiddleware } from '@tanstack/react-start'
+import { createMiddleware } from "@tanstack/react-start"
 
 const rateLimitStore = new Map<string, { count: number; resetAt: number }>()
 
-export const rateLimitMiddleware = createMiddleware()
-  .server(async ({ next, request }) => {
-    const ip = request.headers.get('x-forwarded-for') ?? 'unknown'
+export const rateLimitMiddleware = createMiddleware().server(
+  async ({ next, request }) => {
+    const ip = request.headers.get("x-forwarded-for") ?? "unknown"
     const now = Date.now()
-    const windowMs = 60 * 1000  // 1 minute
+    const windowMs = 60 * 1000 // 1 minute
     const maxRequests = 100
 
     let record = rateLimitStore.get(ip)
@@ -135,11 +133,12 @@ export const rateLimitMiddleware = createMiddleware()
     rateLimitStore.set(ip, record)
 
     if (record.count > maxRequests) {
-      throw new Response('Too Many Requests', { status: 429 })
+      throw new Response("Too Many Requests", { status: 429 })
     }
 
     return next()
-  })
+  }
+)
 ```
 
 ## Middleware Execution Order

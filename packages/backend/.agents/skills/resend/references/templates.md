@@ -18,10 +18,10 @@ Create (draft) → Publish → Send
 
 Editing a published template creates a new draft — the published version keeps sending until you publish again.
 
-| State | Can send? |
-|-------|-----------|
-| **Draft** | No |
-| **Published** | Yes |
+| State         | Can send? |
+| ------------- | --------- |
+| **Draft**     | No        |
+| **Published** | Yes       |
 
 ## Variable Syntax
 
@@ -52,13 +52,13 @@ Variable key casing is arbitrary (`ORDER_ID`, `orderId`, `order_id` all work) bu
 
 ### Variable Constraints
 
-| Constraint | Limit |
-|------------|-------|
-| Max variables per template | 50 |
-| Key characters | ASCII letters, numbers, underscores only |
-| Key max length | 50 characters |
-| String value max | 2,000 characters |
-| Number value max | 2^53 − 1 |
+| Constraint                 | Limit                                    |
+| -------------------------- | ---------------------------------------- |
+| Max variables per template | 50                                       |
+| Key characters             | ASCII letters, numbers, underscores only |
+| Key max length             | 50 characters                            |
+| String value max           | 2,000 characters                         |
+| Number value max           | 2^53 − 1                                 |
 
 ### Reserved Names
 
@@ -71,15 +71,15 @@ These cannot be used as custom variable keys — rename to `USER_FIRST_NAME`, `U
 ```typescript
 const { data, error } = await resend.emails.send(
   {
-    from: 'Acme <orders@acme.com>',
-    to: ['customer@example.com'],
+    from: "Acme <orders@acme.com>",
+    to: ["customer@example.com"],
     template: {
-      id: 'order-confirmation',  // alias or auto-generated ID
-      variables: { CUSTOMER_NAME: 'Alice', ORDER_ID: '12345' },
+      id: "order-confirmation", // alias or auto-generated ID
+      variables: { CUSTOMER_NAME: "Alice", ORDER_ID: "12345" },
     },
   },
   { idempotencyKey: `order-confirm/${orderId}` }
-);
+)
 ```
 
 Cannot combine `template` with `html`, `text`, or `react` — mutually exclusive. `subject` and `from` from the template can be overridden per-send.
@@ -102,15 +102,15 @@ template: { id: 'order-confirmation', variables: { CUSTOMER_NAME: 'Alice' } }
 
 ## SDK Methods (Node.js)
 
-| Operation | Method |
-|-----------|--------|
-| Create | `resend.templates.create(params)` |
-| Get | `resend.templates.get(id)` |
-| List | `resend.templates.list(params)` |
-| Update | `resend.templates.update(id, params)` |
-| Delete | `resend.templates.remove(id)` ← not `.delete()` |
-| Publish | `resend.templates.publish(id)` |
-| Duplicate | `resend.templates.duplicate(id)` |
+| Operation | Method                                          |
+| --------- | ----------------------------------------------- |
+| Create    | `resend.templates.create(params)`               |
+| Get       | `resend.templates.get(id)`                      |
+| List      | `resend.templates.list(params)`                 |
+| Update    | `resend.templates.update(id, params)`           |
+| Delete    | `resend.templates.remove(id)` ← not `.delete()` |
+| Publish   | `resend.templates.publish(id)`                  |
+| Duplicate | `resend.templates.duplicate(id)`                |
 
 ### Create Template
 
@@ -119,25 +119,27 @@ template: { id: 'order-confirmation', variables: { CUSTOMER_NAME: 'Alice' } }
 
 ```typescript
 const { data, error } = await resend.templates.create({
-  name: 'Order Confirmation',
-  alias: 'order-confirmation',
-  subject: 'Your Order #{{{ORDER_ID}}}',
-  html: '<p>Hi {{{CUSTOMER_NAME}}}, your order #{{{ORDER_ID}}} has shipped!</p>',
+  name: "Order Confirmation",
+  alias: "order-confirmation",
+  subject: "Your Order #{{{ORDER_ID}}}",
+  html: "<p>Hi {{{CUSTOMER_NAME}}}, your order #{{{ORDER_ID}}} has shipped!</p>",
   variables: [
-    { key: 'CUSTOMER_NAME', type: 'string', fallbackValue: 'Customer' },
-    { key: 'ORDER_ID', type: 'string' },
+    { key: "CUSTOMER_NAME", type: "string", fallbackValue: "Customer" },
+    { key: "ORDER_ID", type: "string" },
   ],
-});
+})
 // Returns: { id: 'tmpl_abc123', object: 'template' }
 ```
 
 ### Chainable Create → Publish
 
 ```typescript
-const { data, error } = await resend.templates.create({
-  name: 'Welcome',
-  html: '<p>Hi {{{NAME}}}</p>',
-}).publish();
+const { data, error } = await resend.templates
+  .create({
+    name: "Welcome",
+    html: "<p>Hi {{{NAME}}}</p>",
+  })
+  .publish()
 // Template is created AND published in one call
 ```
 
@@ -145,19 +147,22 @@ const { data, error } = await resend.templates.create({
 
 ```typescript
 // Get by ID or alias
-await resend.templates.get('tmpl_abc123');
-await resend.templates.get('order-confirmation');  // by alias
+await resend.templates.get("tmpl_abc123")
+await resend.templates.get("order-confirmation") // by alias
 
 // List — cursor-based pagination, max 100 per page
-const { data } = await resend.templates.list({ limit: 100 });
+const { data } = await resend.templates.list({ limit: 100 })
 // data.has_more === true → fetch next page
-await resend.templates.list({ limit: 100, after: data.data[data.data.length - 1].id });
+await resend.templates.list({
+  limit: 100,
+  after: data.data[data.data.length - 1].id,
+})
 
 // Update (partial — only provided fields change)
-await resend.templates.update('tmpl_abc123', { name: 'Order Confirmed' });
+await resend.templates.update("tmpl_abc123", { name: "Order Confirmed" })
 
 // Delete
-await resend.templates.remove('tmpl_abc123');  // returns { deleted: true }
+await resend.templates.remove("tmpl_abc123") // returns { deleted: true }
 ```
 
 See `fetch-all-templates.mjs` for a complete pagination loop.
@@ -165,18 +170,20 @@ See `fetch-all-templates.mjs` for a complete pagination loop.
 ### Publish
 
 ```typescript
-await resend.templates.publish('tmpl_abc123');
+await resend.templates.publish("tmpl_abc123")
 // Template is now live. Publishing is synchronous — no delay needed before sending.
 ```
 
 ### Duplicate
 
 ```typescript
-const { data, error } = await resend.templates.duplicate('tmpl_abc123');
+const { data, error } = await resend.templates.duplicate("tmpl_abc123")
 // Returns: { id: 'tmpl_new456', object: 'template' }
 
 // Chainable — duplicate and publish in one call
-const { data, error } = await resend.templates.duplicate('tmpl_abc123').publish();
+const { data, error } = await resend.templates
+  .duplicate("tmpl_abc123")
+  .publish()
 ```
 
 Useful for creating variants (e.g., A/B testing subject lines) or bootstrapping new templates from an existing one.
@@ -187,16 +194,16 @@ Every template maintains full version history. Reverting creates a new draft fro
 
 ## Common Mistakes
 
-| Mistake | Fix |
-|---------|-----|
-| `{{VAR}}` instead of `{{{VAR}}}` | Triple braces required — double braces don't render variables |
-| Sending with draft template | Call `.publish()` first — draft templates cannot send |
-| Adding delay after create/publish | Publishing is synchronous — send failure has another cause |
-| `{{#each}}` or `{{#if}}` in template HTML | No loop/conditional support — pre-render dynamic lists server-side |
-| `html` + `template` in same send call | Mutually exclusive — remove `html` when using template |
-| Using `FIRST_NAME`, `EMAIL` as variable keys | Reserved — rename to `USER_FIRST_NAME`, `USER_EMAIL` |
-| Variable without fallback missing at send | Add `fallbackValue` or always provide the variable |
-| Calling `.delete()` | SDK method is `.remove()` |
-| Expecting alias = name | `alias` is a separate referenceable slug; `name` is display-only |
-| 60+ variables | Max 50 — pre-render complex content as a single HTML variable |
-| No idempotency key on sends | Template sends use the same endpoint — pass `idempotencyKey` |
+| Mistake                                      | Fix                                                                |
+| -------------------------------------------- | ------------------------------------------------------------------ |
+| `{{VAR}}` instead of `{{{VAR}}}`             | Triple braces required — double braces don't render variables      |
+| Sending with draft template                  | Call `.publish()` first — draft templates cannot send              |
+| Adding delay after create/publish            | Publishing is synchronous — send failure has another cause         |
+| `{{#each}}` or `{{#if}}` in template HTML    | No loop/conditional support — pre-render dynamic lists server-side |
+| `html` + `template` in same send call        | Mutually exclusive — remove `html` when using template             |
+| Using `FIRST_NAME`, `EMAIL` as variable keys | Reserved — rename to `USER_FIRST_NAME`, `USER_EMAIL`               |
+| Variable without fallback missing at send    | Add `fallbackValue` or always provide the variable                 |
+| Calling `.delete()`                          | SDK method is `.remove()`                                          |
+| Expecting alias = name                       | `alias` is a separate referenceable slug; `name` is display-only   |
+| 60+ variables                                | Max 50 — pre-render complex content as a single HTML variable      |
+| No idempotency key on sends                  | Template sends use the same endpoint — pass `idempotencyKey`       |

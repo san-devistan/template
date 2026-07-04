@@ -16,18 +16,22 @@ src/app/profile-editor.tsx             ← regular Expo Router route, imports th
 ```
 
 `src/app/profile-editor.tsx`:
+
 ```tsx
-import ProfileEditor from '../components/ProfileEditor';
-export default ProfileEditor;
+import ProfileEditor from "../components/ProfileEditor"
+export default ProfileEditor
 ```
 
 Alternatively, keep everything in one regular route file and branch on `Platform.OS`:
 
 ```tsx
 // src/app/profile-editor.tsx
-import { Platform } from 'react-native';
+import { Platform } from "react-native"
 // import SwiftUI components only when on iOS to avoid Android crash
-const SwiftUIForm = Platform.OS === 'ios' ? require('../components/ProfileEditor.ios').default : null;
+const SwiftUIForm =
+  Platform.OS === "ios"
+    ? require("../components/ProfileEditor.ios").default
+    : null
 ```
 
 Or more simply, put the `Platform.OS` guard and the SwiftUI import in the same route file (safe because Metro only bundles `.ios.tsx` imports on iOS builds when using platform extensions in `components/`).
@@ -49,18 +53,17 @@ Or more simply, put the `Platform.OS` guard and the SwiftUI import in the same r
 - `RNHostView` is specifically for embedding RN components inside a SwiftUI tree. Example:
 
 ```jsx
-import { Host } from "@expo/ui";                       // Host always from universal root
-import { VStack, RNHostView } from "@expo/ui/swift-ui"; // platform components from swift-ui
-import { Pressable } from "react-native";
-
-<Host matchContents>
+import { Host } from "@expo/ui" // Host always from universal root
+import { VStack, RNHostView } from "@expo/ui/swift-ui" // platform components from swift-ui
+import { Pressable } from "react-native"
+;<Host matchContents>
   <VStack>
     <RNHostView matchContents>
       // Here, `Pressable` is an RN component so it is wrapped in `RNHostView`.
       <Pressable />
     </RNHostView>
   </VStack>
-</Host>;
+</Host>
 ```
 
 - If a required modifier or View is missing in Expo UI, it can be extended via a local Expo module. See: https://docs.expo.dev/guides/expo-ui-swift-ui/extending/index.md. Confirm with the user before extending.

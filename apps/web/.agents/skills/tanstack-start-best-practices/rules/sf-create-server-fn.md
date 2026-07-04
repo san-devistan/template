@@ -11,12 +11,12 @@
 ```tsx
 // Using fetch directly - no type safety, manual serialization
 async function createPost(data: CreatePostInput) {
-  const response = await fetch('/api/posts', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+  const response = await fetch("/api/posts", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   })
-  if (!response.ok) throw new Error('Failed to create post')
+  if (!response.ok) throw new Error("Failed to create post")
   return response.json()
 }
 
@@ -34,9 +34,9 @@ export async function POST(request: Request) {
 
 ```tsx
 // lib/posts.functions.ts
-import { createServerFn } from '@tanstack/react-start'
-import { z } from 'zod'
-import { db } from './db.server'
+import { createServerFn } from "@tanstack/react-start"
+import { z } from "zod"
+import { db } from "./db.server"
 
 const createPostSchema = z.object({
   title: z.string().min(1).max(200),
@@ -44,7 +44,7 @@ const createPostSchema = z.object({
   published: z.boolean().default(false),
 })
 
-export const createPost = createServerFn({ method: 'POST' })
+export const createPost = createServerFn({ method: "POST" })
   .inputValidator(createPostSchema)
   .handler(async ({ data }) => {
     // This code only runs on the server
@@ -66,15 +66,15 @@ function CreatePostForm() {
     try {
       const post = await createPostMutation({
         data: {
-          title: formData.get('title') as string,
-          content: formData.get('content') as string,
+          title: formData.get("title") as string,
+          content: formData.get("content") as string,
           published: false,
         },
       })
       // post is fully typed
-      console.log('Created post:', post.id)
+      console.log("Created post:", post.id)
     } catch (error) {
-      console.error('Failed to create post:', error)
+      console.error("Failed to create post:", error)
     }
   }
 }
@@ -84,10 +84,10 @@ function CreatePostForm() {
 
 ```tsx
 // lib/posts.functions.ts
-export const getPosts = createServerFn()  // GET is default
+export const getPosts = createServerFn() // GET is default
   .handler(async () => {
     const posts = await db.posts.findMany({
-      orderBy: { createdAt: 'desc' },
+      orderBy: { createdAt: "desc" },
       take: 20,
     })
     return posts
@@ -106,7 +106,7 @@ export const getPost = createServerFn()
   })
 
 // Usage in route loader
-export const Route = createFileRoute('/posts/$postId')({
+export const Route = createFileRoute("/posts/$postId")({
   loader: async ({ params }) => {
     return await getPost({ data: { id: params.postId } })
   },

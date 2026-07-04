@@ -10,11 +10,11 @@ When integrating TanStack Router with TanStack Query, use `queryClient.ensureQue
 
 ```tsx
 // Using prefetchQuery - doesn't return data, can't await stale check
-export const Route = createFileRoute('/posts/$postId')({
+export const Route = createFileRoute("/posts/$postId")({
   loader: async ({ params, context: { queryClient } }) => {
     // prefetchQuery never throws, swallows errors
     queryClient.prefetchQuery({
-      queryKey: ['posts', params.postId],
+      queryKey: ["posts", params.postId],
       queryFn: () => fetchPost(params.postId),
     })
     // No await - might not complete before render
@@ -23,9 +23,9 @@ export const Route = createFileRoute('/posts/$postId')({
 })
 
 // Fetching directly - bypasses TanStack Query cache
-export const Route = createFileRoute('/posts')({
+export const Route = createFileRoute("/posts")({
   loader: async () => {
-    const posts = await fetchPosts()  // Not cached
+    const posts = await fetchPosts() // Not cached
     return { posts }
   },
 })
@@ -37,12 +37,12 @@ export const Route = createFileRoute('/posts')({
 // Define queryOptions for reuse
 const postQueryOptions = (postId: string) =>
   queryOptions({
-    queryKey: ['posts', postId],
+    queryKey: ["posts", postId],
     queryFn: () => fetchPost(postId),
-    staleTime: 5 * 60 * 1000,  // 5 minutes
+    staleTime: 5 * 60 * 1000, // 5 minutes
   })
 
-export const Route = createFileRoute('/posts/$postId')({
+export const Route = createFileRoute("/posts/$postId")({
   loader: async ({ params, context: { queryClient } }) => {
     // ensureQueryData:
     // - Returns cached data if fresh
@@ -67,7 +67,7 @@ function PostPage() {
 ## Good Example: Multiple Parallel Queries
 
 ```tsx
-export const Route = createFileRoute('/dashboard')({
+export const Route = createFileRoute("/dashboard")({
   loader: async ({ context: { queryClient } }) => {
     // Parallel data fetching
     await Promise.all([
@@ -82,7 +82,7 @@ export const Route = createFileRoute('/dashboard')({
 ## Good Example: Dependent Queries
 
 ```tsx
-export const Route = createFileRoute('/users/$userId/posts')({
+export const Route = createFileRoute("/users/$userId/posts")({
   loader: async ({ params, context: { queryClient } }) => {
     // First query needed for second
     const user = await queryClient.ensureQueryData(
@@ -90,9 +90,7 @@ export const Route = createFileRoute('/users/$userId/posts')({
     )
 
     // Dependent query uses result
-    await queryClient.ensureQueryData(
-      postQueries.byAuthor(user.id)
-    )
+    await queryClient.ensureQueryData(postQueries.byAuthor(user.id))
   },
 })
 ```
@@ -104,7 +102,7 @@ export const Route = createFileRoute('/users/$userId/posts')({
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 60 * 1000,  // 1 minute default
+      staleTime: 60 * 1000, // 1 minute default
     },
   },
 })
@@ -128,20 +126,18 @@ export const router = createRouter({
 
   // Wrap with QueryClientProvider
   Wrap: ({ children }) => (
-    <QueryClientProvider client={queryClient}>
-      {children}
-    </QueryClientProvider>
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   ),
 })
 ```
 
 ## ensureQueryData vs prefetchQuery vs fetchQuery
 
-| Method | Returns | Throws | Awaits | Use Case |
-|--------|---------|--------|--------|----------|
-| `ensureQueryData` | Data | Yes | Yes | Route loaders (recommended) |
-| `prefetchQuery` | void | No | Yes | Background prefetching |
-| `fetchQuery` | Data | Yes | Yes | When you need data immediately |
+| Method            | Returns | Throws | Awaits | Use Case                       |
+| ----------------- | ------- | ------ | ------ | ------------------------------ |
+| `ensureQueryData` | Data    | Yes    | Yes    | Route loaders (recommended)    |
+| `prefetchQuery`   | void    | No     | Yes    | Background prefetching         |
+| `fetchQuery`      | Data    | Yes    | Yes    | When you need data immediately |
 
 ## Context
 

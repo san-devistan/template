@@ -12,7 +12,7 @@ If your query function depends on a variable, that variable must be included in 
 function UserPosts({ userId }: { userId: string }) {
   // Missing userId in query key - all users share the same cache!
   const { data } = useQuery({
-    queryKey: ['posts'],
+    queryKey: ["posts"],
     queryFn: () => fetchPostsByUser(userId),
   })
 
@@ -22,7 +22,7 @@ function UserPosts({ userId }: { userId: string }) {
 function FilteredTodos({ status, page }: { status: string; page: number }) {
   // Missing filter parameters - won't refetch when filters change
   const { data } = useQuery({
-    queryKey: ['todos'],
+    queryKey: ["todos"],
     queryFn: () => fetchTodos({ status, page }),
   })
 
@@ -36,7 +36,7 @@ function FilteredTodos({ status, page }: { status: string; page: number }) {
 function UserPosts({ userId }: { userId: string }) {
   // userId included - each user has their own cache entry
   const { data } = useQuery({
-    queryKey: ['posts', userId],
+    queryKey: ["posts", userId],
     queryFn: () => fetchPostsByUser(userId),
   })
 
@@ -46,7 +46,7 @@ function UserPosts({ userId }: { userId: string }) {
 function FilteredTodos({ status, page }: { status: string; page: number }) {
   // All dependencies included - refetches when any change
   const { data } = useQuery({
-    queryKey: ['todos', { status, page }],
+    queryKey: ["todos", { status, page }],
     queryFn: () => fetchTodos({ status, page }),
   })
 

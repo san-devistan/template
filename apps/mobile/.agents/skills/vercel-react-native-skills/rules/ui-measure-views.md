@@ -15,8 +15,8 @@ compare values and avoid unnecessary re-renders.
 **Height only:**
 
 ```tsx
-import { useLayoutEffect, useRef, useState } from 'react'
-import { View, LayoutChangeEvent } from 'react-native'
+import { useLayoutEffect, useRef, useState } from "react"
+import { View, LayoutChangeEvent } from "react-native"
 
 function MeasuredBox({ children }: { children: React.ReactNode }) {
   const ref = useRef<View>(null)
@@ -44,8 +44,8 @@ function MeasuredBox({ children }: { children: React.ReactNode }) {
 **Both dimensions:**
 
 ```tsx
-import { useLayoutEffect, useRef, useState } from 'react'
-import { View, LayoutChangeEvent } from 'react-native'
+import { useLayoutEffect, useRef, useState } from "react"
+import { View, LayoutChangeEvent } from "react-native"
 
 type Size = { width: number; height: number }
 

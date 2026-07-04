@@ -50,13 +50,13 @@ function Cart({ items }: { items: Item[] }) {
 
 ```tsx
 // Incorrect: storing both firstName, lastName, AND fullName
-const [firstName, setFirstName] = useState('')
-const [lastName, setLastName] = useState('')
-const [fullName, setFullName] = useState('')
+const [firstName, setFirstName] = useState("")
+const [lastName, setLastName] = useState("")
+const [fullName, setFullName] = useState("")
 
 // Correct: derive fullName
-const [firstName, setFirstName] = useState('')
-const [lastName, setLastName] = useState('')
+const [firstName, setFirstName] = useState("")
+const [lastName, setLastName] = useState("")
 const fullName = `${firstName} ${lastName}`
 ```
 

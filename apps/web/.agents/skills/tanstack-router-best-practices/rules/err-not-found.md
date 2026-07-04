@@ -16,11 +16,11 @@ const router = createRouter({
 })
 
 // Or throwing generic error
-export const Route = createFileRoute('/posts/$postId')({
+export const Route = createFileRoute("/posts/$postId")({
   loader: async ({ params }) => {
     const post = await fetchPost(params.postId)
     if (!post) {
-      throw new Error('Not found')  // Generic error, not proper 404
+      throw new Error("Not found") // Generic error, not proper 404
     }
     return post
   },
@@ -62,17 +62,17 @@ const router = createRouter({
 
 ```tsx
 // routes/posts/$postId.tsx
-import { createFileRoute, notFound } from '@tanstack/react-router'
+import { createFileRoute, notFound } from "@tanstack/react-router"
 
-export const Route = createFileRoute('/posts/$postId')({
+export const Route = createFileRoute("/posts/$postId")({
   loader: async ({ params }) => {
     const post = await fetchPost(params.postId)
     if (!post) {
-      throw notFound()  // Proper 404 handling
+      throw notFound() // Proper 404 handling
     }
     return post
   },
-  notFoundComponent: PostNotFound,  // Custom 404 for this route
+  notFoundComponent: PostNotFound, // Custom 404 for this route
   component: PostPage,
 })
 
@@ -92,7 +92,7 @@ function PostNotFound() {
 ## Good Example: Not Found with Data
 
 ```tsx
-export const Route = createFileRoute('/users/$username')({
+export const Route = createFileRoute("/users/$username")({
   loader: async ({ params }) => {
     const user = await fetchUser(params.username)
     if (!user) {
@@ -138,7 +138,7 @@ function UserNotFound() {
 
 ```tsx
 // routes/$.tsx - Catch-all splat route
-export const Route = createFileRoute('/$')({
+export const Route = createFileRoute("/$")({
   component: CatchAllNotFound,
 })
 
@@ -160,12 +160,12 @@ function CatchAllNotFound() {
 ```tsx
 // Not found bubbles up through route tree
 // routes/posts.tsx
-export const Route = createFileRoute('/posts')({
-  notFoundComponent: PostsNotFound,  // Catches child 404s too
+export const Route = createFileRoute("/posts")({
+  notFoundComponent: PostsNotFound, // Catches child 404s too
 })
 
 // routes/posts/$postId.tsx
-export const Route = createFileRoute('/posts/$postId')({
+export const Route = createFileRoute("/posts/$postId")({
   loader: async ({ params }) => {
     const post = await fetchPost(params.postId)
     if (!post) throw notFound()
@@ -175,10 +175,10 @@ export const Route = createFileRoute('/posts/$postId')({
 })
 
 // routes/posts/$postId/comments.tsx
-export const Route = createFileRoute('/posts/$postId/comments')({
+export const Route = createFileRoute("/posts/$postId/comments")({
   loader: async ({ params }) => {
     const comments = await fetchComments(params.postId)
-    if (!comments) throw notFound()  // Bubbles to /posts notFoundComponent
+    if (!comments) throw notFound() // Bubbles to /posts notFoundComponent
     return comments
   },
 })

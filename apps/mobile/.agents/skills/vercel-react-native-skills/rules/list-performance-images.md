@@ -40,7 +40,7 @@ function ProductItem({ product }: { product: Product }) {
       <Image
         source={{ uri: thumbnailUrl }}
         style={{ width: 100, height: 100 }}
-        contentFit='cover'
+        contentFit="cover"
       />
       <Text>{product.name}</Text>
     </View>

@@ -7,7 +7,7 @@ Rules enforced by the asc-aso-audit skill. Each rule links to the check that tes
 - **Title, subtitle, and keyword field are indexed** for App Store search.
 - **Description and promotional text are NOT indexed.** Description is for conversion (users see search terms reflected → higher download rate); promotional text is for seasonal messaging.
 - **Description keyword coverage still matters** — while not indexed, descriptions that naturally include keyword terms improve conversion rate, which indirectly boosts search rankings.
-- **Screenshot captions are OCR-indexed** (since June 2025 algorithm update). Use high-value keywords in caption text. *(Informational — not checked by this audit.)*
+- **Screenshot captions are OCR-indexed** (since June 2025 algorithm update). Use high-value keywords in caption text. _(Informational — not checked by this audit.)_
 - **Apple Full Text Search combines words across title + subtitle + keywords.** Single words enable more combinations than multi-word phrases. Example: "quran" + "recitation" in separate fields still matches "quran recitation".
 - **Cross-field combo optimization:** When adding keywords, consider what search queries they enable in combination with words already in title/subtitle. Example: adding "holy" to keywords when "Quran" is in subtitle enables the search "holy quran".
 
@@ -22,14 +22,14 @@ Rules enforced by the asc-aso-audit skill. Each rule links to the check that tes
 
 ## Character Limits
 
-| Field | Limit |
-|-------|-------|
-| Name | 30 |
-| Subtitle | 30 |
-| Keywords | 100 |
-| Description | 4,000 |
-| What's New | 4,000 |
-| Promotional Text | 170 |
+| Field            | Limit |
+| ---------------- | ----- |
+| Name             | 30    |
+| Subtitle         | 30    |
+| Keywords         | 100   |
+| Description      | 4,000 |
+| What's New       | 4,000 |
+| Promotional Text | 170   |
 
 ## Localization Rules
 

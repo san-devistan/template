@@ -28,11 +28,11 @@ Track capability state transitions with account webhooks and re-check capability
 
 Configure connected accounts using three independent dimensions:
 
-| Dimension | Field | What it controls |
-| --- | --- | --- |
-| Dashboard access | `dashboard` | Stripe-hosted dashboard for connected accounts |
-| Fee collection | `defaults.responsibilities.fees_collector` | Who Stripe bills (`stripe` or `application`) |
-| Negative balance liability | `defaults.responsibilities.losses_collector` | Who absorbs unresolved negative balances |
+| Dimension                  | Field                                        | What it controls                               |
+| -------------------------- | -------------------------------------------- | ---------------------------------------------- |
+| Dashboard access           | `dashboard`                                  | Stripe-hosted dashboard for connected accounts |
+| Fee collection             | `defaults.responsibilities.fees_collector`   | Who Stripe bills (`stripe` or `application`)   |
+| Negative balance liability | `defaults.responsibilities.losses_collector` | Who absorbs unresolved negative balances       |
 
 ### Dashboard defaults (important)
 
@@ -62,17 +62,17 @@ If dashboard is `express`, provide access through [login links](https://docs.str
 
 ## Business model to configuration mapping
 
-| Business model | Dashboard | Fees | Losses | Charge pattern | Notes |
-| --- | --- | --- | --- | --- | --- |
-| Marketplace | `express` | `application` | `application` | Destination | Platform owns checkout |
-| On-demand services | `express` | `application` | `application` | Destination | Fast seller onboarding |
-| SaaS platform with payments | `full` | `stripe` | `stripe` | Direct | Sellers run own businesses/stores, own customer relationship |
-| AI/API platform (SaaS) | `full` | `stripe` | `stripe` | Direct | Providers own payment relationship |
-| E-commerce enabler (Shopify-like) | `full` | `stripe` | `stripe` | Direct | Sellers create own online stores, accept own payments |
-| Crowdfunding | `express` | `application` | `application` | Separate charges and transfers | Hold-and-release / delayed payouts |
-| Subscription platform | `express` | `application` | `application` | Destination | Platform manages recurring checkout |
-| Multi-seller cart | `express` | `application` | `application` | Separate charges and transfers | Multiple sellers per transaction |
-| White-label commerce | `none` | `application` | `application` | Destination or direct | Advanced: platform controls all UX |
+| Business model                    | Dashboard | Fees          | Losses        | Charge pattern                 | Notes                                                        |
+| --------------------------------- | --------- | ------------- | ------------- | ------------------------------ | ------------------------------------------------------------ |
+| Marketplace                       | `express` | `application` | `application` | Destination                    | Platform owns checkout                                       |
+| On-demand services                | `express` | `application` | `application` | Destination                    | Fast seller onboarding                                       |
+| SaaS platform with payments       | `full`    | `stripe`      | `stripe`      | Direct                         | Sellers run own businesses/stores, own customer relationship |
+| AI/API platform (SaaS)            | `full`    | `stripe`      | `stripe`      | Direct                         | Providers own payment relationship                           |
+| E-commerce enabler (Shopify-like) | `full`    | `stripe`      | `stripe`      | Direct                         | Sellers create own online stores, accept own payments        |
+| Crowdfunding                      | `express` | `application` | `application` | Separate charges and transfers | Hold-and-release / delayed payouts                           |
+| Subscription platform             | `express` | `application` | `application` | Destination                    | Platform manages recurring checkout                          |
+| Multi-seller cart                 | `express` | `application` | `application` | Separate charges and transfers | Multiple sellers per transaction                             |
+| White-label commerce              | `none`    | `application` | `application` | Destination or direct          | Advanced: platform controls all UX                           |
 
 ## Connected account capabilities (v2)
 

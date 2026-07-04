@@ -41,9 +41,9 @@ function Feed({ items }: { items: Item[] }) {
 **Correct (typed items with separate components):**
 
 ```tsx
-type HeaderItem = { id: string; type: 'header'; title: string }
-type MessageItem = { id: string; type: 'message'; text: string }
-type ImageItem = { id: string; type: 'image'; url: string }
+type HeaderItem = { id: string; type: "header"; title: string }
+type MessageItem = { id: string; type: "message"; text: string }
+type ImageItem = { id: string; type: "image"; url: string }
 type FeedItem = HeaderItem | MessageItem | ImageItem
 
 function Feed({ items }: { items: FeedItem[] }) {
@@ -54,11 +54,11 @@ function Feed({ items }: { items: FeedItem[] }) {
       getItemType={(item) => item.type}
       renderItem={({ item }) => {
         switch (item.type) {
-          case 'header':
+          case "header":
             return <SectionHeader title={item.title} />
-          case 'message':
+          case "message":
             return <MessageRow text={item.text} />
-          case 'image':
+          case "image":
             return <ImageRow url={item.url} />
         }
       }}
@@ -83,11 +83,11 @@ function Feed({ items }: { items: FeedItem[] }) {
   getItemType={(item) => item.type}
   getEstimatedItemSize={(index, item, itemType) => {
     switch (itemType) {
-      case 'header':
+      case "header":
         return 48
-      case 'message':
+      case "message":
         return 72
-      case 'image':
+      case "image":
         return 300
       default:
         return 72

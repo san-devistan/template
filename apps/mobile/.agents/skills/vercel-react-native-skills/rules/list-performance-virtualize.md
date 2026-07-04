@@ -30,7 +30,7 @@ function Feed({ items }: { items: Item[] }) {
 **Correct (virtualizer renders only visible items):**
 
 ```tsx
-import { LegendList } from '@legendapp/list'
+import { LegendList } from "@legendapp/list"
 
 function Feed({ items }: { items: Item[] }) {
   return (
@@ -49,7 +49,7 @@ function Feed({ items }: { items: Item[] }) {
 **Alternative (FlashList):**
 
 ```tsx
-import { FlashList } from '@shopify/flash-list'
+import { FlashList } from "@shopify/flash-list"
 
 function Feed({ items }: { items: Item[] }) {
   return (

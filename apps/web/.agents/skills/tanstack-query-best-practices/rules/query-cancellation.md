@@ -11,7 +11,7 @@ TanStack Query provides an `AbortSignal` to cancel in-flight requests when queri
 ```tsx
 // Not using abort signal - requests complete even when unnecessary
 const { data } = useQuery({
-  queryKey: ['search', searchTerm],
+  queryKey: ["search", searchTerm],
   queryFn: async () => {
     // User types fast: "a", "ab", "abc"
     // Three requests fire, all complete, wasting bandwidth
@@ -23,10 +23,10 @@ const { data } = useQuery({
 // Component unmounts but request keeps running
 function UserProfile({ userId }: { userId: string }) {
   const { data } = useQuery({
-    queryKey: ['user', userId],
+    queryKey: ["user", userId],
     queryFn: async () => {
       const response = await fetch(`/api/users/${userId}`)
-      return response.json()  // Completes even if user navigated away
+      return response.json() // Completes even if user navigated away
     },
   })
 }
@@ -36,10 +36,10 @@ function UserProfile({ userId }: { userId: string }) {
 
 ```tsx
 const { data } = useQuery({
-  queryKey: ['search', searchTerm],
+  queryKey: ["search", searchTerm],
   queryFn: async ({ signal }) => {
     const response = await fetch(`/api/search?q=${searchTerm}`, {
-      signal,  // Pass abort signal to fetch
+      signal, // Pass abort signal to fetch
     })
     return response.json()
   },
@@ -54,13 +54,13 @@ const { data } = useQuery({
 ## Good Example: With Axios
 
 ```tsx
-import axios from 'axios'
+import axios from "axios"
 
 const { data } = useQuery({
-  queryKey: ['users', userId],
+  queryKey: ["users", userId],
   queryFn: async ({ signal }) => {
     const response = await axios.get(`/api/users/${userId}`, {
-      signal,  // Axios supports AbortSignal
+      signal, // Axios supports AbortSignal
     })
     return response.data
   },
@@ -72,10 +72,10 @@ const { data } = useQuery({
 ```tsx
 function SearchResults() {
   const queryClient = useQueryClient()
-  const [searchTerm, setSearchTerm] = useState('')
+  const [searchTerm, setSearchTerm] = useState("")
 
   const { data } = useQuery({
-    queryKey: ['search', searchTerm],
+    queryKey: ["search", searchTerm],
     queryFn: async ({ signal }) => {
       const response = await fetch(`/api/search?q=${searchTerm}`, { signal })
       return response.json()
@@ -85,8 +85,8 @@ function SearchResults() {
 
   // Cancel all search queries manually
   const handleClear = () => {
-    queryClient.cancelQueries({ queryKey: ['search'] })
-    setSearchTerm('')
+    queryClient.cancelQueries({ queryKey: ["search"] })
+    setSearchTerm("")
   }
 
   return (
@@ -126,25 +126,25 @@ const updateTodo = useMutation({
 ```tsx
 // For non-fetch APIs that need custom cancellation
 const { data } = useQuery({
-  queryKey: ['expensive-computation', params],
+  queryKey: ["expensive-computation", params],
   queryFn: ({ signal }) => {
     return new Promise((resolve, reject) => {
       // Check if already cancelled
       if (signal.aborted) {
-        reject(new DOMException('Aborted', 'AbortError'))
+        reject(new DOMException("Aborted", "AbortError"))
         return
       }
 
-      const worker = new Worker('computation.js')
+      const worker = new Worker("computation.js")
       worker.postMessage(params)
 
       worker.onmessage = (e) => resolve(e.data)
       worker.onerror = (e) => reject(e)
 
       // Listen for cancellation
-      signal.addEventListener('abort', () => {
+      signal.addEventListener("abort", () => {
         worker.terminate()
-        reject(new DOMException('Aborted', 'AbortError'))
+        reject(new DOMException("Aborted", "AbortError"))
       })
     })
   },
@@ -153,13 +153,13 @@ const { data } = useQuery({
 
 ## When Queries Are Cancelled
 
-| Scenario | Cancelled? |
-|----------|------------|
-| Query key changes | Yes |
-| Component unmounts | Yes |
-| `queryClient.cancelQueries()` called | Yes |
-| Refetch triggered | Previous request cancelled |
-| `enabled` becomes false | Yes |
+| Scenario                             | Cancelled?                 |
+| ------------------------------------ | -------------------------- |
+| Query key changes                    | Yes                        |
+| Component unmounts                   | Yes                        |
+| `queryClient.cancelQueries()` called | Yes                        |
+| Refetch triggered                    | Previous request cancelled |
+| `enabled` becomes false              | Yes                        |
 
 ## Context
 

@@ -135,8 +135,8 @@ Use the `Color` API from `expo-router` for native semantic colors. It is a type-
 
 ```tsx
 // theme/colors.ts
-import { Platform } from "react-native";
-import { Color } from "expo-router";
+import { Platform } from "react-native"
+import { Color } from "expo-router"
 
 export const colors = {
   label: Platform.select({
@@ -164,15 +164,14 @@ export const colors = {
     android: Color.android.dynamic.primary,
     default: "#007aff",
   })!,
-};
+}
 ```
 
 ```tsx
-import { colors } from "@/theme/colors";
-
-<View style={{ backgroundColor: colors.systemBackground }}>
+import { colors } from "@/theme/colors"
+;<View style={{ backgroundColor: colors.systemBackground }}>
   <Text style={{ color: colors.label }}>Title</Text>
-</View>;
+</View>
 ```
 
 - iOS re-resolves these colors automatically when the system theme changes. On Android, call `useColorScheme()` inside any component that renders them so it re-renders when the theme flips (required when React Compiler memoizes the component).
@@ -232,9 +231,8 @@ Set the page title in Stack.Screen options:
 Add long press context menus to Link components:
 
 ```tsx
-import { Link } from "expo-router";
-
-<Link href="/settings" asChild>
+import { Link } from "expo-router"
+;<Link href="/settings" asChild>
   <Link.Trigger>
     <Pressable>
       <Card />
@@ -262,7 +260,7 @@ import { Link } from "expo-router";
       />
     </Link.Menu>
   </Link.Menu>
-</Link>;
+</Link>
 ```
 
 ## Link Previews
@@ -325,12 +323,16 @@ app/
 
 ```tsx
 // app/_layout.tsx
-import { NativeTabs } from "expo-router/unstable-native-tabs";
-import { ThemeProvider, DarkTheme, DefaultTheme } from "expo-router/react-navigation";
-import { useColorScheme } from "react-native";
+import { NativeTabs } from "expo-router/unstable-native-tabs"
+import {
+  ThemeProvider,
+  DarkTheme,
+  DefaultTheme,
+} from "expo-router/react-navigation"
+import { useColorScheme } from "react-native"
 
 export default function Layout() {
-  const colorScheme = useColorScheme();
+  const colorScheme = useColorScheme()
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
       <NativeTabs>
@@ -341,7 +343,7 @@ export default function Layout() {
         <NativeTabs.Trigger name="(search)" role="search" />
       </NativeTabs>
     </ThemeProvider>
-  );
+  )
 }
 ```
 
@@ -349,12 +351,12 @@ Create a shared group route so both tabs can push common screens:
 
 ```tsx
 // app/(index,search)/_layout.tsx
-import { Stack } from "expo-router/stack";
-import { colors } from "@/theme/colors";
+import { Stack } from "expo-router/stack"
+import { colors } from "@/theme/colors"
 
 export default function Layout({ segment }) {
-  const screen = segment.match(/\((.*)\)/)?.[1]!;
-  const titles: Record<string, string> = { index: "Items", search: "Search" };
+  const screen = segment.match(/\((.*)\)/)?.[1]!
+  const titles: Record<string, string> = { index: "Items", search: "Search" }
 
   return (
     <Stack
@@ -372,6 +374,6 @@ export default function Layout({ segment }) {
       <Stack.Screen name={screen} options={{ title: titles[screen] }} />
       <Stack.Screen name="i/[id]" options={{ headerLargeTitle: false }} />
     </Stack>
-  );
+  )
 }
 ```

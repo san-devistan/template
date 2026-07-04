@@ -13,7 +13,7 @@ Never use `TouchableOpacity` or `TouchableHighlight`. Use `Pressable` from
 **Incorrect (legacy Touchable components):**
 
 ```tsx
-import { TouchableOpacity } from 'react-native'
+import { TouchableOpacity } from "react-native"
 
 function MyButton({ onPress }: { onPress: () => void }) {
   return (
@@ -27,7 +27,7 @@ function MyButton({ onPress }: { onPress: () => void }) {
 **Correct (Pressable):**
 
 ```tsx
-import { Pressable } from 'react-native'
+import { Pressable } from "react-native"
 
 function MyButton({ onPress }: { onPress: () => void }) {
   return (
@@ -41,7 +41,7 @@ function MyButton({ onPress }: { onPress: () => void }) {
 **Correct (Pressable from gesture handler for lists):**
 
 ```tsx
-import { Pressable } from 'react-native-gesture-handler'
+import { Pressable } from "react-native-gesture-handler"
 
 function ListItem({ onPress }: { onPress: () => void }) {
   return (
