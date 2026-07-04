@@ -17,6 +17,7 @@
     "oxfmt": "^0.48.0",
     "oxlint": "^1.72.0",
     "oxlint-tsgolint": "^0.22.1",
+    "portless": "^0.15.1",
     "turbo": "^2.10.2",
     "typescript": "5.9.3"
   },

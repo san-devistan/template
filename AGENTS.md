@@ -13,6 +13,19 @@ before introducing new patterns.
 | Web UI system | `packages/ui`      | React 19, shadcn-style components, Tailwind CSS v4, Base UI, lucide-react, `usehooks-ts`        | Source of truth for the web design system and design tokens.                                               |
 | Automation    | `scripts`          | Shell and explicit Node.js scripts                                                              | JavaScript is allowed here for repo tooling.                                                               |
 
+## Local Development
+
+Local dev servers use Portless so each app keeps the same URL every time it
+starts. Use the app's `package.json` `portless.name` value as
+`<portless-app-name>`.
+
+- Web app: `https://<portless-app-name>.localhost`
+- Mobile app: `https://mobile.<portless-app-name>.localhost`
+
+Do not guess or browse random localhost ports when testing local apps. Use the
+Portless URLs above, or run `corepack pnpm exec portless list` to inspect active
+routes.
+
 ## Design System Ownership
 
 `packages/ui` owns the canonical web design system, shared design tokens, and
@@ -94,8 +107,12 @@ being touched first, then add cross-cutting skills for the specific technology
 or concern. If multiple rows match, use the smallest useful set and read them in
 the order listed.
 
-When launching an agent from the repository root, route to the local workspace
-guide first. Do not assume workspace-local skills are globally available by name.
+Agents are launched from the repository root. Treat this file as the entrypoint,
+then route to the nearest workspace guide before touching code. Workspace-local
+skills are intentionally scoped under that workspace's `.agents/skills/`
+directory; load them by path after reading the workspace guide. Do not assume
+workspace-local skills are globally available by name, and do not flatten
+workspace-specific skills into the root skill directory.
 
 | Scope / workspace                 | Read first                   | Local skill families                                              |
 | --------------------------------- | ---------------------------- | ----------------------------------------------------------------- |

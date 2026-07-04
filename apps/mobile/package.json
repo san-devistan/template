@@ -4,13 +4,12 @@
   "private": true,
   "main": "expo-router/entry",
   "scripts": {
-    "dev": "pnpm run sync:theme && expo start",
-    "start": "pnpm run sync:theme && expo start",
+    "dev": "pnpm run sync:theme && portless run expo start",
+    "start": "pnpm run dev",
     "android": "pnpm run sync:theme && expo start --android",
     "ios": "pnpm run sync:theme && expo start --ios",
     "lint": "cd ../.. && oxlint apps/mobile",
     "sync:theme": "node ../../scripts/sync-design-system.mjs",
-    "web": "pnpm run sync:theme && expo start --web",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
@@ -81,5 +80,8 @@
     "babel-preset-expo": "^54.0.11",
     "tailwindcss": "^3.4.19",
     "typescript": "~5.9.3"
+  },
+  "portless": {
+    "name": "mobile.template"
   }
 }
