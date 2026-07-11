@@ -1,7 +1,7 @@
 # Repository Guide
 
-This is a pnpm workspace monorepo. Prefer repo-local conventions and skills
-before introducing new patterns.
+This is a pnpm workspace monorepo. The project name is `template`; this is the value of the variable `<project-name>`.
+Prefer repo-local conventions and skills before introducing new patterns.
 
 ## Workspace Map
 
@@ -15,16 +15,22 @@ before introducing new patterns.
 
 ## Local Development
 
-Local dev servers use Portless so each app keeps the same URL every time it
-starts. Use the app's `package.json` `portless.name` value as
-`<portless-app-name>`.
+Local dev servers keep the same URL every time they start.
 
-- Web app: `https://<portless-app-name>.localhost`
-- Mobile app: `https://mobile.<portless-app-name>.localhost`
+- Web app: `https://<project-name>.localhost`
+- Mobile app: `https://mobile.<project-name>.localhost`
 
-Do not guess or browse random localhost ports when testing local apps. Use the
-Portless URLs above, or run `corepack pnpm exec portless list` to inspect active
-routes.
+When you need to check local dev server logs, inspect the attached Zellij session whose name contains `<project-name>`.
+The server processes should be running in that project's Zellij panes.
+
+## Verification Gate
+
+Before handing off changes, verify the implemented behavior in the running app using the appropriate local app verification skill:
+
+- For local web app changes, use the `browser:control-in-app-browser` skill against the relevant local dev server URL.
+- For local iOS app changes, use the `build-ios-apps:ios-simulator-browser` skill against the running iOS Simulator app.
+
+Inspect dev server logs as part of verification. If the app check or logs show errors, warnings, broken UI, failed requests, or unexpected behavior, use the available skills and MCPs to diagnose and fix the issue before handing off.
 
 ## Design System Ownership
 

@@ -2,16 +2,9 @@
   "$schema": "https://turbo.build/schema.json",
   "ui": "tui",
   "tasks": {
-    "build": {
-      "dependsOn": ["^build"],
+    "web#build": {
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
       "outputs": [".output/**"]
-    },
-    "lint": {
-      "dependsOn": ["^lint"]
-    },
-    "format": {
-      "dependsOn": ["^format"]
     },
     "typecheck": {
       "dependsOn": ["^typecheck"]

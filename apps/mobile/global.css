@@ -47,7 +47,7 @@
     --radius-3xl: calc(var(--radius) * 2.2);
     --radius-4xl: calc(var(--radius) * 2.6);
     --font-heading: var(--font-sans);
-    --font-sans: 'Inter Variable', sans-serif;
+    --font-sans: "Inter Variable", sans-serif;
     --duration-fast: 150ms;
     --duration-base: 200ms;
     --duration-slow: 250ms;
