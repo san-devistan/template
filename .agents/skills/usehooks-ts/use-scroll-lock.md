@@ -157,7 +157,6 @@ export function useScrollLock(
     return () => {
       unlock()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [autoLock, lockTarget, widthReflow])
 
   return { isLocked, lock, unlock }

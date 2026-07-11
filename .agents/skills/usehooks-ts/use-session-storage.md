@@ -73,7 +73,6 @@ import type { Dispatch, SetStateAction } from 'react'
 import { useEventCallback, useEventListener } from 'usehooks-ts'
 
 declare global {
-  // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
   interface WindowEventMap {
     'session-storage': CustomEvent
   }
@@ -209,7 +208,6 @@ export function useSessionStorage<T>(
 
   useEffect(() => {
     setStoredValue(readValue())
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [key])
 
   const handleStorageChange = useCallback(

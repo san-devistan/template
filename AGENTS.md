@@ -23,14 +23,15 @@ Local dev servers keep the same URL every time they start.
 When you need to check local dev server logs, inspect the attached Zellij session whose name contains `<project-name>`.
 The server processes should be running in that project's Zellij panes.
 
-## Verification Gate
+## App Verification
 
-Before handing off changes, verify the implemented behavior in the running app using the appropriate local app verification skill:
+Do not verify each request in the browser, iOS Simulator, or local dev server logs by default. Only perform these running-app checks when the user explicitly asks for them.
+
+When explicitly requested:
 
 - For local web app changes, use the `browser:control-in-app-browser` skill against the relevant local dev server URL.
 - For local iOS app changes, use the `build-ios-apps:ios-simulator-browser` skill against the running iOS Simulator app.
-
-Inspect dev server logs as part of verification. If the app check or logs show errors, warnings, broken UI, failed requests, or unexpected behavior, use the available skills and MCPs to diagnose and fix the issue before handing off.
+- Inspect the relevant dev server logs. If the app check or logs show errors, warnings, broken UI, failed requests, or unexpected behavior, use the available skills and MCPs to diagnose and fix the issue before handing off.
 
 ## Design System Ownership
 

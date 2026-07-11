@@ -28,3 +28,10 @@ flowchart LR
   Oxc --> Doctor["React Diagnostics<br/>with React Doctor"]
   Doctor --> Types["TypeScript Checks"]
 ```
+
+## Set Up
+
+- change names for portless in apps package.json
+- change names in root agents.md file
+- choose the shadcn theme and apply it
+- run sync mobile theme
