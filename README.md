@@ -31,6 +31,6 @@ flowchart LR
 
 ## Set Up
 
-- replace `project-name` in the codebase
+- replace `name-of-project` in the codebase
 - run `pnpm update:deps` and `pnpm update:skills`
 - apply theme with `pnpm dlx shadcn@latest apply --preset [preset-id] --cwd apps/web --yes` then `pnpm sync:design-system`

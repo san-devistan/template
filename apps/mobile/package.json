@@ -84,6 +84,6 @@
     "typescript": "~5.9.3"
   },
   "portless": {
-    "name": "mobile.pushup"
+    "name": "mobile.name-of-project"
   }
 }
