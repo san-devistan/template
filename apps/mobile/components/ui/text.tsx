@@ -1,4 +1,4 @@
-import { withInterTextStyle } from "@/lib/fonts"
+import { withMobileTextStyle } from "@/lib/fonts"
 import { cn } from "@/lib/utils"
 import { Slot } from "@rn-primitives/slot"
 import { cva, type VariantProps } from "class-variance-authority"
@@ -17,19 +17,19 @@ const textVariants = cva(
       variant: {
         default: "",
         h1: cn(
-          "text-center text-4xl font-extrabold tracking-tight",
+          "text-center font-heading text-4xl font-extrabold tracking-tight",
           Platform.select({ web: "scroll-m-20 text-balance" })
         ),
         h2: cn(
-          "border-b border-border pb-2 text-3xl font-semibold tracking-tight",
+          "border-b border-border pb-2 font-heading text-3xl font-semibold tracking-tight",
           Platform.select({ web: "scroll-m-20 first:mt-0" })
         ),
         h3: cn(
-          "text-2xl font-semibold tracking-tight",
+          "font-heading text-2xl font-semibold tracking-tight",
           Platform.select({ web: "scroll-m-20" })
         ),
         h4: cn(
-          "text-xl font-semibold tracking-tight",
+          "font-heading text-xl font-semibold tracking-tight",
           Platform.select({ web: "scroll-m-20" })
         ),
         p: "mt-3 leading-7 sm:mt-6",
@@ -88,7 +88,7 @@ function Text({
       className={resolvedClassName}
       role={variant ? ROLE[variant] : undefined}
       aria-level={variant ? ARIA_LEVEL[variant] : undefined}
-      style={withInterTextStyle(resolvedClassName, style)}
+      style={withMobileTextStyle(resolvedClassName, style)}
       {...props}
     />
   )

@@ -4,6 +4,10 @@ packages:
 
 minimumReleaseAge: 2880
 
+peerDependencyRules:
+  allowedVersions:
+    tailwindcss: ">=3.0.0"
+
 allowBuilds:
   esbuild: true
   msw: false

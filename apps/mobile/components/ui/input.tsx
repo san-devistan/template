@@ -1,4 +1,4 @@
-import { withInterTextStyle } from "@/lib/fonts"
+import { withMobileTextStyle } from "@/lib/fonts"
 import { cn } from "@/lib/utils"
 import { Platform, TextInput } from "react-native"
 
@@ -8,7 +8,7 @@ function Input({
   ...props
 }: React.ComponentProps<typeof TextInput> & React.RefAttributes<TextInput>) {
   const resolvedClassName = cn(
-    "shadow-xs flex h-9 w-full min-w-0 flex-row items-center rounded-md border border-input bg-transparent px-2.5 py-1 text-base leading-5 text-foreground dark:bg-input/30",
+    "flex h-9 w-full min-w-0 flex-row items-center rounded-3xl border border-transparent bg-input/50 px-3 py-1 text-base leading-5 text-foreground",
     props.editable === false &&
       cn(
         "opacity-50",
@@ -30,7 +30,7 @@ function Input({
   return (
     <TextInput
       className={resolvedClassName}
-      style={withInterTextStyle(resolvedClassName, style)}
+      style={withMobileTextStyle(resolvedClassName, style)}
       {...props}
     />
   )

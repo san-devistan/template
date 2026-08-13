@@ -1,12 +1,6 @@
 {
   "version": 1,
   "skills": {
-    "effect-ts": {
-      "source": "paulrberg/agent-skills",
-      "sourceType": "github",
-      "skillPath": "skills/effect-ts/SKILL.md",
-      "computedHash": "15fa110f03a040e5bc9dbd19e3824da72b02d3dab6d44cc32c1420a017a4699d"
-    },
     "frontend-design": {
       "source": "anthropics/skills",
       "sourceType": "github",

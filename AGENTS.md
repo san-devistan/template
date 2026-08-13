@@ -1,6 +1,6 @@
 # Repository Guide
 
-This is a pnpm workspace monorepo. The project name is `template`; this is the value of the variable `<project-name>`.
+This is a pnpm workspace monorepo. The project name is `project-name`; this is the value of the variable `<project-name>`.
 Prefer repo-local conventions and skills before introducing new patterns.
 
 ## Workspace Map
@@ -121,21 +121,37 @@ directory; load them by path after reading the workspace guide. Do not assume
 workspace-local skills are globally available by name, and do not flatten
 workspace-specific skills into the root skill directory.
 
-| Scope / workspace                 | Read first                   | Local skill families                                              |
-| --------------------------------- | ---------------------------- | ----------------------------------------------------------------- |
-| `apps/web`                        | `apps/web/AGENTS.md`         | TanStack Start, Router, Query, React performance, web guidelines  |
-| `apps/mobile`                     | `apps/mobile/AGENTS.md`      | Expo, EAS, React Native, native UI, data fetching, ASC CLI        |
-| `packages/backend`                | `packages/backend/AGENTS.md` | Convex, Better Auth, Resend/email, Stripe                         |
-| `packages/ui`                     | `packages/ui/AGENTS.md`      | shadcn, web design tokens, shared React components, UI primitives |
-| Root, `scripts`, workspace config | this file                    | Turborepo, package boundaries, repo tooling                       |
+| Scope / workspace                 | Read first                   | Local skill families                                                                 |
+| --------------------------------- | ---------------------------- | ------------------------------------------------------------------------------------ |
+| `apps/web`                        | `apps/web/AGENTS.md`         | TanStack Start, Router, Query, React performance, Effect, ts-pattern, web guidelines |
+| `apps/mobile`                     | `apps/mobile/AGENTS.md`      | Expo, EAS, React Native, native UI, data fetching, Effect, ts-pattern, ASC CLI       |
+| `packages/backend`                | `packages/backend/AGENTS.md` | Convex, Better Auth, Resend/email, Stripe, Effect, ts-pattern                        |
+| `packages/ui`                     | `packages/ui/AGENTS.md`      | shadcn, web design tokens, shared React components, UI primitives                    |
+| Root, `scripts`, workspace config | this file                    | Turborepo, package boundaries, repo tooling                                          |
 
 For TypeScript code, prefer the project-standard packages that encode safer
-patterns instead of hand-written equivalents:
+patterns instead of hand-written equivalents.
 
-- Use `effect-ts` for typed async workflows, service dependencies, structured
-  errors, schemas, config, retries, resource handling, and concurrency. Prefer
-  Effect composition over scattered `try`/`catch`, nullable error state, ad hoc
-  dependency wiring, or bespoke validation in nontrivial logic.
+Effect is project-standard in workspaces that already depend on `effect`:
+`apps/web`, `apps/mobile`, and `packages/backend`. In those workspaces, read
+the workspace-local `effect-ts` skill before nontrivial Effect work. Prefer
+Effect for typed failures, required context/dependencies, async workflows,
+external services, schemas, config, retries, resource handling, tracing, and
+concurrency. This keeps errors and dependencies visible in types instead of
+hidden behind thrown exceptions, nullable state, or ad hoc Promise chains.
+
+Do not force Effect into pure synchronous helpers, simple React render/state
+code, design tokens, shell scripts, or `packages/ui` work unless that workspace
+explicitly adds an `effect` dependency and the added ceremony reduces real risk.
+
+- Use the workspace-local `effect-ts` skill in `apps/web`, `apps/mobile`, and
+  `packages/backend` for nontrivial Effect work.
+- Use the workspace-local `ts-pattern` skill in `apps/web`, `apps/mobile`, and
+  `packages/backend` when branching over discriminated unions, tagged states,
+  action/result variants, or other finite cases where `.exhaustive()` prevents
+  missed cases. Prefer `ts-pattern` over hand-written `switch`/`default` blocks
+  that can silently accept new union members. Keep simple boolean/nullish logic
+  as plain TypeScript.
 - Use `usehooks-ts` for common browser and React hook concerns such as storage,
   media queries, events, debounce/throttle, timers, observers, clipboard, dark
   mode, scroll lock, and mounted/client checks. Prefer its SSR-safe hooks over

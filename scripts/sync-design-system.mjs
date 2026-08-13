@@ -239,7 +239,25 @@ function buildThemeInlineVars(tokens) {
   }
 }
 
+function buildWebFontImports(fonts) {
+  return Object.values(fonts.web)
+    .map((font) => font.match(/["']([^"']+)["']/)?.[1])
+    .filter(Boolean)
+    .map((font) => font.replace(/\s+Variable$/, ""))
+    .map((font) =>
+      font
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-|-$/g, "")
+    )
+    .filter(Boolean)
+    .filter((font, index, fontNames) => fontNames.indexOf(font) === index)
+    .map((font) => `@import "@fontsource-variable/${font}";`)
+    .join("\n")
+}
+
 function buildWebCss(tokens) {
+  const fontImports = buildWebFontImports(tokens.fonts)
   const rootVars = {
     ...buildColorVars(tokens.colors.light),
     ...buildRadiusVars(tokens.radius),
@@ -253,7 +271,7 @@ function buildWebCss(tokens) {
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
-@import "@fontsource-variable/inter";
+${fontImports}
 
 @custom-variant dark (&:is(.dark *));
 @source "../../../apps/**/*.{ts,tsx}";

@@ -54,33 +54,49 @@ only the narrow skill needed for the task.
 
 ### App Store Connect And Store Ops
 
-| Skill                           | Invoke when                                                                                              |
-| ------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| `asc-cli-usage`                 | Running, designing, or debugging `asc` commands, flags, output formats, auth, pagination, or discovery   |
-| `asc-id-resolver`               | Resolving App Store Connect IDs for apps, builds, versions, groups, testers, or other ASC resources      |
-| `asc-app-create-ui`             | Creating a new App Store Connect app record via browser automation when no public API covers it          |
-| `asc-release-flow`              | Determining release readiness and driving App Store review submission, first availability, IAP, privacy  |
-| `asc-submission-health`         | Validating submission readiness, submitting prepared versions, or monitoring/troubleshooting review      |
-| `asc-build-lifecycle`           | Waiting on build processing, finding latest builds, managing build retention, or cleaning old builds     |
-| `asc-xcode-build`               | Building, archiving, exporting, uploading IPA/PKG artifacts, or managing Xcode version/build numbers     |
-| `asc-signing-setup`             | Bundle IDs, capabilities, signing certificates, provisioning profiles, or encrypted signing sync         |
-| `asc-testflight-orchestration`  | TestFlight distribution, beta groups, testers, and What to Test notes                                    |
-| `asc-crash-triage`              | TestFlight crashes, beta feedback, app hangs, performance diagnostics, or crash summaries                |
-| `asc-metadata-sync`             | Syncing, validating, applying, or migrating canonical App Store metadata and localizations               |
-| `asc-localize-metadata`         | Translating/localizing App Store descriptions, keywords, What's New, subtitles, or adding languages      |
-| `asc-whats-new-writer`          | Generating localized App Store release notes or promotional text from git log, bullets, or free text     |
-| `asc-subscription-localization` | Bulk-localizing subscription or in-app purchase display names across App Store locales                   |
-| `asc-screenshot-resize`         | Resizing and validating App Store screenshots with current screenshot-size requirements                  |
-| `asc-shots-pipeline`            | Automating iOS screenshots with xcodebuild/simctl, AXe, framing, and screenshot upload                   |
-| `asc-aso-audit`                 | Offline ASO audits over canonical metadata and keyword gap analysis after `asc metadata pull`            |
-| `asc-ppp-pricing`               | Territory-specific pricing, PPP pricing, price imports, schedules, subscriptions, or in-app purchases    |
-| `asc-revenuecat-catalog-sync`   | Reconciling App Store subscriptions/IAPs with RevenueCat products, entitlements, offerings, and packages |
-| `asc-apple-ads`                 | Apple Ads auth, org lookup, campaigns, ad groups, ads, keywords, reports, or safe live testing           |
-| `asc-notarization`              | macOS archive/export/notarization for Developer ID distribution outside the App Store                    |
-| `asc-workflow`                  | Defining, validating, running, resuming, or auditing repo-local `asc workflow` automations               |
-| `asc-wall-submit`               | Submitting or updating a Wall of Apps entry with `asc apps wall submit`                                  |
+| Skill                           | Invoke when                                                                                                                                      |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `asc-cli-usage`                 | Running, designing, or debugging `asc` commands, flags, output formats, auth, pagination, or discovery                                           |
+| `asc-id-resolver`               | Resolving App Store Connect IDs for apps, builds, versions, groups, testers, or other ASC resources                                              |
+| `asc-app-create-ui`             | Creating a new App Store Connect app record via browser automation when no public API covers it                                                  |
+| `asc-release-flow`              | Determining release readiness and driving App Store review submission, first availability, IAP, privacy                                          |
+| `asc-submission-health`         | Validating submission readiness, submitting prepared versions, or monitoring/troubleshooting review                                              |
+| `asc-build-lifecycle`           | Waiting on build processing, finding latest builds, managing build retention, or cleaning old builds                                             |
+| `asc-xcode-build`               | Building, archiving, exporting, uploading IPA/PKG artifacts, or managing Xcode version/build numbers                                             |
+| `asc-signing-setup`             | Bundle IDs, capabilities, signing certificates, provisioning profiles, or encrypted signing sync                                                 |
+| `asc-testflight-orchestration`  | TestFlight distribution, beta groups, testers, and What to Test notes                                                                            |
+| `asc-crash-triage`              | TestFlight crashes, beta feedback, app hangs, performance diagnostics, or crash summaries                                                        |
+| `asc-metadata-sync`             | Syncing, validating, applying, or migrating canonical App Store metadata and localizations                                                       |
+| `asc-localize-metadata`         | Translating/localizing App Store descriptions, keywords, What's New, subtitles, or adding languages                                              |
+| `asc-whats-new-writer`          | Generating localized App Store release notes or promotional text from git log, bullets, or free text                                             |
+| `asc-subscription-localization` | Bulk-localizing subscription or in-app purchase display names across App Store locales                                                           |
+| `asc-screenshot-resize`         | Resizing and validating App Store screenshots with current screenshot-size requirements                                                          |
+| `asc-shots-pipeline`            | Automating iOS screenshots with xcodebuild/simctl, AXe, framing, and screenshot upload                                                           |
+| `asc-aso-audit`                 | Offline ASO audits over canonical metadata and keyword gap analysis after `asc metadata pull`                                                    |
+| `asc-ppp-pricing`               | Territory-specific pricing, PPP pricing, price imports, schedules, subscriptions, or in-app purchases                                            |
+| `asc-revenuecat-catalog-sync`   | Reconciling App Store subscriptions/IAPs with RevenueCat products, entitlements, offerings, and packages                                         |
+| `asc-apple-ads`                 | Apple Ads auth, org lookup, campaigns, ad groups, ads, keywords, reports, or safe live testing                                                   |
+| `asc-notarization`              | macOS archive/export/notarization for Developer ID distribution outside the App Store                                                            |
+| `asc-workflow`                  | Defining, validating, running, resuming, or auditing repo-local `asc workflow` automations                                                       |
+| `asc-wall-submit`               | Submitting or updating a Wall of Apps entry with `asc apps wall submit`                                                                          |
+| `effect-ts`                     | Nontrivial Effect work: typed failures, native/API boundaries, service/context dependencies, config, retries, resources, concurrency, or tracing |
+| `ts-pattern`                    | Exhaustive pattern matching for discriminated unions, navigation/state variants, native/API result variants, reducer actions, or finite statuses |
 
-For cross-cutting TypeScript or Effect work, use the shared root skills in
+This workspace depends on `effect`. Prefer Effect for mobile workflows where
+typed failures or required context make behavior clearer: backend API adapters,
+native resource boundaries, retrying/offline-capable operations, config,
+background work, and concurrent tasks. Keep pure UI components, simple hooks,
+and local screen state simple.
+
+Use the local `ts-pattern` skill when mobile code branches over finite typed
+cases such as navigation variants, async screen states, reducer actions,
+native/API result variants, and sync/offline statuses. If the implementation
+imports `ts-pattern`, add the dependency to this workspace in the same change.
+Use `.exhaustive()` unless an `.otherwise(...)` fallback is intentionally valid
+for every remaining case. Keep simple booleans and nullish fallbacks as plain
+TypeScript.
+
+For cross-cutting TypeScript work, use the shared root skills in
 `.agents/skills/` after reading this file.
 
 ## Tools

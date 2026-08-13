@@ -19,7 +19,7 @@ function Alert({
     iconClassName?: string
   }) {
   const textClassName = cn(
-    "text-sm text-foreground",
+    "text-sm text-card-foreground",
     variant === "destructive" && "text-destructive",
     className
   )
@@ -29,7 +29,7 @@ function Alert({
       <View
         role="alert"
         className={cn(
-          "relative w-full rounded-lg border border-border bg-card px-4 pb-2 pt-3.5",
+          "relative w-full rounded-2xl border border-border bg-card px-4 py-3",
           className
         )}
         {...props}

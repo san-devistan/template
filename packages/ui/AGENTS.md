@@ -40,8 +40,13 @@ shadcn skill is local to this package.
 | -------- | ---------------------------------------------------------------------------------------------------------------------------- |
 | `shadcn` | shadcn/ui components, registries, presets, component updates, composition, styling rules, CLI behavior, or `components.json` |
 
-For cross-cutting visual design, browser hooks, TypeScript quality, or Effect
-work, use the shared root skills in `.agents/skills/` after reading this file.
+For cross-cutting visual design, browser hooks, or TypeScript quality work, use
+the shared root skills in `.agents/skills/` after reading this file. This
+package does not depend on `effect`; do not introduce Effect here unless the
+task explicitly adds an Effect-backed workflow and the dependency is justified.
+This package also does not depend on `ts-pattern`; keep simple component
+branching in plain TypeScript unless a discriminated-union-heavy UI workflow
+explicitly justifies the dependency.
 
 ## UI MCPs
 

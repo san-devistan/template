@@ -89,6 +89,14 @@
     "typescript/no-misused-promises": "error",
     "typescript/restrict-template-expressions": "error"
   },
+  "overrides": [
+    {
+      "files": ["apps/mobile/components/ui/**/*.tsx"],
+      "rules": {
+        "import/namespace": "off"
+      }
+    }
+  ],
   "ignorePatterns": [
     ".agents/**",
     "**/.agents/**",

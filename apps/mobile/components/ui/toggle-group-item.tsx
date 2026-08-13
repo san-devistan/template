@@ -36,10 +36,10 @@ function getToggleGroupItemClassName({
       size: context.size || size,
     }),
     disabled && "opacity-50",
-    selected && "bg-accent",
+    selected && "bg-muted",
     "min-w-0 shrink-0 rounded-none shadow-none",
-    isFirst && "rounded-l-md",
-    isLast && "rounded-r-md",
+    isFirst && "rounded-l-3xl",
+    isLast && "rounded-r-3xl",
     outline && "border-l-0",
     outline && isFirst && "border-l",
     Platform.select({
@@ -68,7 +68,7 @@ function ToggleGroupItem({
   const textClassName = cn(
     "text-sm font-medium text-foreground",
     selected
-      ? "text-accent-foreground"
+      ? "text-foreground"
       : Platform.select({ web: "group-hover:text-muted-foreground" })
   )
   const itemClassName = getToggleGroupItemClassName({

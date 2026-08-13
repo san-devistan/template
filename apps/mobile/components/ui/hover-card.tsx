@@ -32,7 +32,7 @@ function HoverCardContent({
                 align={align}
                 sideOffset={sideOffset}
                 className={cn(
-                  "outline-hidden z-50 w-64 rounded-lg bg-popover p-4 text-popover-foreground shadow-md ring-1 ring-foreground/10",
+                  "outline-hidden z-50 w-72 rounded-3xl bg-popover p-4 text-popover-foreground shadow-lg ring-1 ring-foreground/5 dark:ring-foreground/10",
                   Platform.select({
                     web: cn(
                       "origin-(--radix-hover-card-content-transform-origin) cursor-default animate-in fade-in-0 zoom-in-95 [&>*]:cursor-auto",

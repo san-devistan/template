@@ -1,3 +1,10 @@
 import { defineSchema } from "convex/server"
+import { match } from "ts-pattern"
 
-export default defineSchema({})
+const schemaMode = { status: "empty" } as const
+
+export default defineSchema(
+  match(schemaMode)
+    .with({ status: "empty" }, () => ({}))
+    .exhaustive()
+)

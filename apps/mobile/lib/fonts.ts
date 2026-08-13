@@ -1,74 +1,113 @@
 import { FONT_FAMILY, TYPOGRAPHY } from "@/lib/theme"
 import {
-  Inter_400Regular,
-  Inter_400Regular_Italic,
-  Inter_500Medium,
-  Inter_600SemiBold,
-  Inter_700Bold,
-  Inter_800ExtraBold,
-} from "@expo-google-fonts/inter"
+  JetBrainsMono_400Regular,
+  JetBrainsMono_400Regular_Italic,
+  JetBrainsMono_500Medium,
+  JetBrainsMono_600SemiBold,
+  JetBrainsMono_700Bold,
+  JetBrainsMono_800ExtraBold,
+} from "@expo-google-fonts/jetbrains-mono"
+import {
+  Oxanium_400Regular,
+  Oxanium_500Medium,
+  Oxanium_600SemiBold,
+  Oxanium_700Bold,
+  Oxanium_800ExtraBold,
+} from "@expo-google-fonts/oxanium"
 import type { StyleProp, TextStyle } from "react-native"
 
-export const interFonts = {
-  Inter_400Regular,
-  Inter_400Regular_Italic,
-  Inter_500Medium,
-  Inter_600SemiBold,
-  Inter_700Bold,
-  Inter_800ExtraBold,
+export const mobileFonts = {
+  Oxanium_400Regular,
+  Oxanium_500Medium,
+  Oxanium_600SemiBold,
+  Oxanium_700Bold,
+  Oxanium_800ExtraBold,
+  JetBrainsMono_400Regular,
+  JetBrainsMono_400Regular_Italic,
+  JetBrainsMono_500Medium,
+  JetBrainsMono_600SemiBold,
+  JetBrainsMono_700Bold,
+  JetBrainsMono_800ExtraBold,
 }
 
-const INTER_TEXT_STYLES = {
+const MOBILE_TEXT_STYLES = {
   regular: { fontFamily: TYPOGRAPHY.body.fontFamily },
   regularItalic: { fontFamily: FONT_FAMILY.regularItalic },
   medium: { fontFamily: TYPOGRAPHY.label.fontFamily },
-  semibold: { fontFamily: TYPOGRAPHY["heading-sm"].fontFamily },
+  semibold: { fontFamily: FONT_FAMILY.semibold },
   bold: { fontFamily: FONT_FAMILY.bold },
-  extrabold: { fontFamily: TYPOGRAPHY["heading-lg"].fontFamily },
+  extrabold: { fontFamily: FONT_FAMILY.extrabold },
+  heading: { fontFamily: FONT_FAMILY.heading },
+  headingItalic: { fontFamily: FONT_FAMILY.headingItalic },
+  headingMedium: { fontFamily: FONT_FAMILY.headingMedium },
+  headingSemibold: { fontFamily: TYPOGRAPHY["heading-sm"].fontFamily },
+  headingBold: { fontFamily: FONT_FAMILY.headingBold },
+  headingExtrabold: { fontFamily: TYPOGRAPHY["heading-lg"].fontFamily },
 } satisfies Record<string, TextStyle>
 
-const INTER_WEIGHT_CLASSES = [
-  ["font-extrabold", INTER_TEXT_STYLES.extrabold],
-  ["font-bold", INTER_TEXT_STYLES.bold],
-  ["font-semibold", INTER_TEXT_STYLES.semibold],
-  ["font-medium", INTER_TEXT_STYLES.medium],
+const BODY_WEIGHT_CLASSES = [
+  ["font-extrabold", MOBILE_TEXT_STYLES.extrabold],
+  ["font-bold", MOBILE_TEXT_STYLES.bold],
+  ["font-semibold", MOBILE_TEXT_STYLES.semibold],
+  ["font-medium", MOBILE_TEXT_STYLES.medium],
+] as const
+
+const HEADING_WEIGHT_CLASSES = [
+  ["font-extrabold", MOBILE_TEXT_STYLES.headingExtrabold],
+  ["font-bold", MOBILE_TEXT_STYLES.headingBold],
+  ["font-semibold", MOBILE_TEXT_STYLES.headingSemibold],
+  ["font-medium", MOBILE_TEXT_STYLES.headingMedium],
 ] as const
 
 function hasClass(className: string | undefined, token: string) {
   return className?.split(/\s+/u).includes(token) ?? false
 }
 
-export function getInterTextStyle(className: string | undefined) {
+export function getMobileTextStyle(className: string | undefined) {
   if (hasClass(className, "font-mono") || hasClass(className, "font-serif")) {
     return undefined
   }
 
-  if (hasClass(className, "italic")) {
-    return INTER_TEXT_STYLES.regularItalic
+  if (hasClass(className, "font-heading")) {
+    if (hasClass(className, "italic")) {
+      return MOBILE_TEXT_STYLES.headingItalic
+    }
+
+    for (const [fontClassName, textStyle] of HEADING_WEIGHT_CLASSES) {
+      if (hasClass(className, fontClassName)) {
+        return textStyle
+      }
+    }
+
+    return MOBILE_TEXT_STYLES.heading
   }
 
-  for (const [fontClassName, textStyle] of INTER_WEIGHT_CLASSES) {
+  if (hasClass(className, "italic")) {
+    return MOBILE_TEXT_STYLES.regularItalic
+  }
+
+  for (const [fontClassName, textStyle] of BODY_WEIGHT_CLASSES) {
     if (hasClass(className, fontClassName)) {
       return textStyle
     }
   }
 
-  return INTER_TEXT_STYLES.regular
+  return MOBILE_TEXT_STYLES.regular
 }
 
-export function withInterTextStyle(
+export function withMobileTextStyle(
   className: string | undefined,
   style: StyleProp<TextStyle>
 ): StyleProp<TextStyle> {
-  const interTextStyle = getInterTextStyle(className)
+  const mobileTextStyle = getMobileTextStyle(className)
 
-  if (!interTextStyle) {
+  if (!mobileTextStyle) {
     return style
   }
 
   if (!style) {
-    return interTextStyle
+    return mobileTextStyle
   }
 
-  return [interTextStyle, style]
+  return [mobileTextStyle, style]
 }

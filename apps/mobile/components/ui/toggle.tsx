@@ -17,7 +17,7 @@ function Toggle({
   const textClassName = cn(
     "text-sm font-medium text-foreground",
     props.pressed
-      ? "text-accent-foreground"
+      ? "text-foreground"
       : Platform.select({ web: "group-hover:text-muted-foreground" }),
     className
   )
@@ -28,7 +28,7 @@ function Toggle({
         className={cn(
           toggleVariants({ variant, size }),
           props.disabled && "opacity-50",
-          props.pressed && "bg-accent",
+          props.pressed && "bg-muted",
           className
         )}
         {...props}

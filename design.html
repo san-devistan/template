@@ -1,0 +1,1175 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>REPS — push-up counter · UI design</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #2b2b2d;
+        --phone: #131314;
+        --card: #1e1e20;
+        --card-2: #252527;
+        --line: #313134;
+        --txt: #f4f4f5;
+        --dim: #8b8b91;
+        --lime: #d7ff3e;
+        --violet: #6c4bf6;
+        --r: 14px;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background: var(--bg);
+        font-family:
+          Inter,
+          system-ui,
+          -apple-system,
+          sans-serif;
+        color: var(--txt);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 56px 24px;
+        overflow-x: auto;
+      }
+      /* diagonal stripes of the reference board */
+      body::before,
+      body::after {
+        content: "";
+        position: fixed;
+        width: 220px;
+        height: 200vh;
+        top: -50vh;
+        background: repeating-linear-gradient(
+          to right,
+          #e9e9ea 0 26px,
+          transparent 26px 62px
+        );
+        transform: rotate(24deg);
+        opacity: 0.9;
+        pointer-events: none;
+      }
+      body::before {
+        left: -60px;
+      }
+      body::after {
+        left: auto;
+        right: -70px;
+        background: repeating-linear-gradient(
+          to right,
+          var(--violet) 0 26px,
+          transparent 26px 62px
+        );
+      }
+      .board {
+        display: flex;
+        gap: 34px;
+        align-items: center;
+        position: relative;
+        z-index: 1;
+      }
+
+      .phone {
+        width: 300px;
+        height: 640px;
+        background: var(--phone);
+        border-radius: 34px;
+        padding: 18px 16px 0;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 30px 60px -20px #000a;
+      }
+      .phone.hero {
+        height: 690px;
+      }
+
+      .status {
+        display: flex;
+        justify-content: space-between;
+        font-size: 11px;
+        color: var(--dim);
+        margin-bottom: 14px;
+        font-weight: 600;
+      }
+      h1 {
+        font-family: "Barlow Condensed", Inter, sans-serif;
+        font-size: 30px;
+        line-height: 1.02;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+      }
+      h2 {
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.2px;
+      }
+      .sub {
+        font-size: 11px;
+        color: var(--dim);
+      }
+      .body {
+        flex: 1;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+      .row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      /* ---------- screen 1 : home ---------- */
+      .avatar {
+        width: 54px;
+        height: 54px;
+        border-radius: 50%;
+        flex: none;
+        background: linear-gradient(140deg, #4b4b52, #26262a);
+        border: 2px solid var(--lime);
+        display: grid;
+        place-items: center;
+      }
+      .name {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 22px;
+        line-height: 1.05;
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+      }
+
+      .datenav {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--dim);
+      }
+      .datenav b {
+        color: var(--txt);
+        font-weight: 600;
+      }
+
+      .spark {
+        display: flex;
+        align-items: flex-end;
+        gap: 2px;
+        height: 52px;
+        padding: 0 2px;
+      }
+      .spark i {
+        flex: 1;
+        background: #3a3a3f;
+        border-radius: 1px;
+        display: block;
+      }
+      .spark i.on {
+        background: var(--lime);
+      }
+      .axis {
+        display: flex;
+        justify-content: space-between;
+        font-size: 9px;
+        color: #66666c;
+        margin-top: 6px;
+      }
+
+      .stats {
+        background: var(--card);
+        border-radius: var(--r);
+        padding: 14px 6px;
+        display: flex;
+      }
+      .stat {
+        flex: 1;
+        text-align: center;
+        border-right: 1px solid var(--line);
+      }
+      .stat:last-child {
+        border: 0;
+      }
+      .stat .v {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 22px;
+        letter-spacing: 0.5px;
+        margin-top: 6px;
+      }
+      .stat .k {
+        font-size: 9.5px;
+        color: var(--dim);
+        margin-top: 1px;
+      }
+
+      .big {
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+      }
+      .big .n {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 40px;
+        line-height: 1;
+      }
+      .big .u {
+        font-size: 12px;
+        color: var(--dim);
+      }
+      .arrow {
+        flex: 1;
+        height: 2px;
+        background: var(--violet);
+        position: relative;
+        margin: 0 4px;
+      }
+      .arrow::after {
+        content: "";
+        position: absolute;
+        right: -1px;
+        top: -4px;
+        border-left: 8px solid var(--violet);
+        border-top: 5px solid transparent;
+        border-bottom: 5px solid transparent;
+      }
+
+      .chart {
+        position: relative;
+      }
+      .chart .dot {
+        position: absolute;
+        left: 58%;
+        top: 26%;
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: var(--lime);
+        border: 2px solid var(--phone);
+      }
+      .chart .guide {
+        position: absolute;
+        left: calc(58% + 4px);
+        top: 30%;
+        bottom: 16px;
+        border-left: 1px dashed #ffffff55;
+      }
+
+      /* ---------- screen 2 : camera ---------- */
+      .cam {
+        position: relative;
+        flex: 1;
+        border-radius: 20px;
+        overflow: hidden;
+        background: radial-gradient(
+          120% 80% at 50% 10%,
+          #3c3c44 0%,
+          #1a1a1e 60%,
+          #101012 100%
+        );
+      }
+      .cam .grain {
+        position: absolute;
+        inset: 0;
+        opacity: 0.35;
+        background: repeating-linear-gradient(
+          0deg,
+          #0000 0 3px,
+          #ffffff08 3px 4px
+        );
+      }
+      .rec {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        background: #000000a6;
+        padding: 5px 9px;
+        border-radius: 20px;
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.6px;
+      }
+      .rec b {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #ff4d4d;
+        animation: blink 1.4s infinite;
+      }
+      @keyframes blink {
+        50% {
+          opacity: 0.15;
+        }
+      }
+      .chip {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        background: #000000a6;
+        padding: 5px 9px;
+        border-radius: 20px;
+        font-size: 10px;
+        color: var(--lime);
+        font-weight: 600;
+      }
+
+      .counter {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 34%;
+        text-align: center;
+      }
+      .counter .n {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 104px;
+        line-height: 0.9;
+        letter-spacing: -1px;
+        text-shadow: 0 8px 40px #000;
+        animation: pop 2.4s ease-in-out infinite;
+      }
+      @keyframes pop {
+        0%,
+        70%,
+        100% {
+          transform: scale(1);
+        }
+        78% {
+          transform: scale(1.07);
+        }
+      }
+      .counter .l {
+        font-size: 10px;
+        letter-spacing: 3px;
+        color: #c9c9cf;
+        margin-top: 2px;
+      }
+
+      .form {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 96px;
+        background: #d7ff3e;
+        color: #101012;
+        font-size: 11px;
+        font-weight: 700;
+        padding: 6px 14px;
+        border-radius: 20px;
+      }
+
+      .depth {
+        position: absolute;
+        right: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 6px;
+        height: 150px;
+        background: #ffffff1a;
+        border-radius: 6px;
+        overflow: hidden;
+      }
+      .depth i {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: var(--lime);
+        border-radius: 6px;
+        animation: depth 2.4s ease-in-out infinite;
+      }
+      @keyframes depth {
+        0%,
+        100% {
+          height: 22%;
+        }
+        45% {
+          height: 88%;
+        }
+      }
+      .depth-l {
+        position: absolute;
+        right: 26px;
+        top: 50%;
+        transform: translateY(-50%) rotate(180deg);
+        writing-mode: vertical-rl;
+        font-size: 9px;
+        letter-spacing: 2px;
+        color: #9a9aa2;
+      }
+
+      .cambar {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        padding: 14px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background: linear-gradient(to top, #0b0b0ce6, transparent);
+      }
+      .pill {
+        flex: 1;
+        background: #ffffff14;
+        border: 1px solid #ffffff1f;
+        border-radius: 12px;
+        padding: 8px 10px;
+        backdrop-filter: blur(6px);
+      }
+      .pill .k {
+        font-size: 9px;
+        color: #a5a5ad;
+      }
+      .pill .v {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 19px;
+        margin-top: 1px;
+      }
+      .stop {
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        background: var(--lime);
+        display: grid;
+        place-items: center;
+        flex: none;
+      }
+      .stop span {
+        width: 15px;
+        height: 15px;
+        background: #101012;
+        border-radius: 3px;
+      }
+
+      /* pose skeleton */
+      .pose {
+        position: absolute;
+        inset: 0;
+      }
+      .pose line {
+        stroke: var(--lime);
+        stroke-width: 2;
+        stroke-linecap: round;
+        opacity: 0.9;
+      }
+      .pose circle {
+        fill: #fff;
+        stroke: var(--lime);
+        stroke-width: 2;
+      }
+      .pose .box {
+        fill: none;
+        stroke: #ffffff40;
+        stroke-width: 1;
+        stroke-dasharray: 4 6;
+      }
+
+      /* ---------- screen 3 : sessions ---------- */
+      .tabs {
+        display: flex;
+        gap: 22px;
+      }
+      .tab {
+        text-align: center;
+        color: var(--dim);
+        font-size: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+      }
+      .tab.on {
+        color: var(--lime);
+      }
+      .days {
+        display: flex;
+        gap: 6px;
+      }
+      .day {
+        flex: 1;
+        background: var(--card);
+        border-radius: 11px;
+        padding: 8px 0;
+        text-align: center;
+      }
+      .day .d {
+        font-size: 8.5px;
+        color: var(--dim);
+        letter-spacing: 0.5px;
+      }
+      .day .n {
+        font-size: 13px;
+        font-weight: 600;
+        margin-top: 3px;
+      }
+      .day.on {
+        background: var(--violet);
+      }
+      .day.on .d {
+        color: #ffffffbb;
+      }
+
+      .sess {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        padding: 9px 0;
+        border-bottom: 1px solid var(--line);
+      }
+      .sess:last-child {
+        border: 0;
+      }
+      .thumb {
+        width: 46px;
+        height: 46px;
+        border-radius: 10px;
+        flex: none;
+        display: grid;
+        place-items: center;
+        background: linear-gradient(140deg, #33333a, #1c1c20);
+        border: 1px solid var(--line);
+      }
+      .thumb .n {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 19px;
+        color: var(--lime);
+      }
+      .sess .t {
+        flex: 1;
+        min-width: 0;
+      }
+      .sess .t b {
+        font-size: 12px;
+        font-weight: 600;
+        display: block;
+      }
+      .sess .t s {
+        display: block;
+        font-size: 10px;
+        color: var(--dim);
+        text-decoration: none;
+        margin-top: 2px;
+      }
+      .sess .t em {
+        font-style: normal;
+        font-size: 10px;
+        color: var(--lime);
+      }
+      .sess .r {
+        text-align: right;
+        font-size: 10px;
+        color: var(--dim);
+        line-height: 1.35;
+      }
+
+      /* ---------- nav ---------- */
+      nav {
+        display: flex;
+        justify-content: space-between;
+        padding: 14px 12px 20px;
+        margin-top: auto;
+      }
+      nav a {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+        font-size: 9px;
+        color: #5d5d64;
+        text-decoration: none;
+      }
+      nav a.on {
+        color: var(--txt);
+      }
+      .fab {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: var(--lime);
+        display: grid;
+        place-items: center;
+        margin-top: -8px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="board">
+      <!-- ============ 1. HOME ============ -->
+      <div class="phone">
+        <div class="status"><span>9:41</span><span>▮▮▮ ⌁ 82%</span></div>
+        <div class="body">
+          <div class="row" style="gap: 12px; justify-content: flex-start">
+            <div class="avatar">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#d7ff3e"
+                stroke-width="1.6"
+              >
+                <circle cx="12" cy="8" r="3.4" />
+                <path d="M4.5 20c1.2-4 4-6 7.5-6s6.3 2 7.5 6" />
+              </svg>
+            </div>
+            <div>
+              <div class="name">Leo<br />Combaret</div>
+            </div>
+          </div>
+
+          <div class="datenav"><span>‹</span><b>Today</b><span>›</span></div>
+
+          <div>
+            <div class="spark">
+              <i style="height: 14%"></i><i style="height: 9%"></i
+              ><i style="height: 22%"></i><i style="height: 11%"></i>
+              <i style="height: 8%"></i><i style="height: 17%"></i
+              ><i style="height: 12%"></i><i style="height: 26%"></i>
+              <i style="height: 19%"></i><i class="on" style="height: 64%"></i
+              ><i class="on" style="height: 88%"></i>
+              <i class="on" style="height: 71%"></i
+              ><i class="on" style="height: 96%"></i
+              ><i class="on" style="height: 58%"></i> <i style="height: 24%"></i
+              ><i style="height: 14%"></i><i style="height: 31%"></i
+              ><i style="height: 18%"></i> <i class="on" style="height: 52%"></i
+              ><i class="on" style="height: 77%"></i
+              ><i class="on" style="height: 44%"></i> <i style="height: 16%"></i
+              ><i style="height: 10%"></i><i style="height: 20%"></i
+              ><i style="height: 8%"></i> <i style="height: 13%"></i
+              ><i style="height: 9%"></i><i style="height: 15%"></i>
+            </div>
+            <div class="axis">
+              <span>6 AM</span><span>12 PM</span><span>6 PM</span
+              ><span>12 AM</span>
+            </div>
+          </div>
+
+          <div class="stats">
+            <div class="stat">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#d7ff3e"
+                stroke-width="1.7"
+                stroke-linecap="round"
+              >
+                <path d="M4 9v6M20 9v6M7 6v12M17 6v12M7 12h10" />
+              </svg>
+              <div class="v">128</div>
+              <div class="k">Reps</div>
+            </div>
+            <div class="stat">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#d7ff3e"
+                stroke-width="1.7"
+                stroke-linecap="round"
+              >
+                <path
+                  d="M12 3v3M12 18v3M3 12h3M18 12h3M12 8a4 4 0 100 8 4 4 0 000-8z"
+                />
+              </svg>
+              <div class="v">6</div>
+              <div class="k">Sets</div>
+            </div>
+            <div class="stat">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#d7ff3e"
+                stroke-width="1.7"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M12 3c3 4 5 6 5 9a5 5 0 01-10 0c0-2 1-3.5 2.5-5C10 9 11 7 12 3z"
+                />
+              </svg>
+              <div class="v">96</div>
+              <div class="k">Kcal</div>
+            </div>
+          </div>
+
+          <div>
+            <h2 style="margin-bottom: 8px">Max set</h2>
+            <div class="big">
+              <span class="n">18</span><span class="u">reps</span>
+              <span class="arrow"></span>
+              <span class="n">32</span><span class="u">goal</span>
+            </div>
+          </div>
+
+          <div class="chart" style="margin-top: -2px">
+            <div class="row">
+              <span class="sub">Mar — Aug</span
+              ><span class="sub">Monthly ⌄</span>
+            </div>
+            <svg
+              viewBox="0 0 260 92"
+              width="100%"
+              height="92"
+              preserveAspectRatio="none"
+            >
+              <defs>
+                <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#6c4bf6" stop-opacity=".85" />
+                  <stop offset="1" stop-color="#6c4bf6" stop-opacity=".05" />
+                </linearGradient>
+              </defs>
+              <path
+                d="M0 76 C 26 70, 40 58, 60 60 C 84 62, 96 40, 118 34 C 140 28, 150 20, 174 14 C 200 8, 224 16, 260 6 L260 92 L0 92Z"
+                fill="url(#g)"
+              />
+              <path
+                d="M0 76 C 26 70, 40 58, 60 60 C 84 62, 96 40, 118 34 C 140 28, 150 20, 174 14 C 200 8, 224 16, 260 6"
+                fill="none"
+                stroke="#8f74ff"
+                stroke-width="2"
+              />
+            </svg>
+            <div class="guide"></div>
+            <div class="dot"></div>
+            <div class="axis">
+              <span>Mar</span><span>Apr</span><span>May</span><span>Jun</span
+              ><span>Jul</span><span>Aug</span>
+            </div>
+          </div>
+        </div>
+
+        <nav>
+          <a href="#"
+            ><svg
+              width="19"
+              height="19"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.7"
+            >
+              <path
+                d="M4 11l8-6 8 6v8a1 1 0 01-1 1h-4v-6h-6v6H5a1 1 0 01-1-1z"
+              /></svg
+            >Home</a
+          >
+          <a href="#"
+            ><svg
+              width="19"
+              height="19"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.7"
+            >
+              <rect x="3" y="6" width="18" height="13" rx="3" />
+              <circle cx="12" cy="12.5" r="3.2" /></svg
+            >Train</a
+          >
+          <a href="#"
+            ><svg
+              width="19"
+              height="19"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.7"
+              stroke-linecap="round"
+            >
+              <path d="M5 19V11M12 19V5M19 19v-5" /></svg
+            >Stats</a
+          >
+          <a href="#" class="on"
+            ><svg
+              width="19"
+              height="19"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <circle cx="12" cy="8" r="3.6" />
+              <path d="M4.6 20c1.1-3.9 3.9-5.9 7.4-5.9s6.3 2 7.4 5.9z" /></svg
+            >Profile</a
+          >
+        </nav>
+      </div>
+
+      <!-- ============ 2. CAMERA ============ -->
+      <div class="phone hero">
+        <div class="status"><span>9:41</span><span>▮▮▮ ⌁ 82%</span></div>
+        <div class="body">
+          <div class="row" style="margin-bottom: 2px">
+            <h1>Push-up<br />session</h1>
+            <div style="text-align: right">
+              <div class="sub">Set 3 of 5</div>
+              <div
+                style="
+                  font-family: &quot;Barlow Condensed&quot;, sans-serif;
+                  font-size: 20px;
+                  color: var(--lime);
+                "
+              >
+                02:14
+              </div>
+            </div>
+          </div>
+
+          <div class="cam">
+            <div class="grain"></div>
+
+            <svg class="pose" viewBox="0 0 268 470">
+              <rect
+                class="box"
+                x="30"
+                y="216"
+                width="208"
+                height="126"
+                rx="8"
+              />
+              <!-- body in plank: head → shoulder → hip → knee → ankle -->
+              <line x1="56" y1="252" x2="98" y2="262" />
+              <line x1="98" y1="262" x2="152" y2="272" />
+              <line x1="152" y1="272" x2="196" y2="288" />
+              <line x1="196" y1="288" x2="226" y2="316" />
+              <!-- arms -->
+              <line x1="98" y1="262" x2="92" y2="304" />
+              <line x1="92" y1="304" x2="104" y2="330" />
+              <line x1="152" y1="272" x2="150" y2="312" />
+              <line x1="150" y1="312" x2="140" y2="332" />
+              <circle cx="56" cy="252" r="10" />
+              <circle cx="98" cy="262" r="4.5" />
+              <circle cx="152" cy="272" r="4.5" />
+              <circle cx="196" cy="288" r="4.5" />
+              <circle cx="226" cy="316" r="4.5" />
+              <circle cx="92" cy="304" r="4" />
+              <circle cx="150" cy="312" r="4" />
+              <circle cx="104" cy="330" r="4" />
+              <circle cx="140" cy="332" r="4" />
+              <text
+                x="112"
+                y="252"
+                fill="#d7ff3e"
+                font-size="9"
+                font-family="Inter"
+              >
+                88° elbow
+              </text>
+              <text
+                x="196"
+                y="272"
+                fill="#ffffff80"
+                font-size="9"
+                font-family="Inter"
+              >
+                hips aligned
+              </text>
+            </svg>
+
+            <div class="rec"><b></b>REC</div>
+            <div class="chip">Pose lock ✓</div>
+
+            <div class="counter">
+              <div class="n">14</div>
+              <div class="l">R E P S</div>
+            </div>
+
+            <div class="depth-l">DEPTH</div>
+            <div class="depth"><i></i></div>
+
+            <div class="form">Full range — nice</div>
+
+            <div class="cambar">
+              <div class="pill">
+                <div class="k">Tempo</div>
+                <div class="v">
+                  1.8<span style="font-size: 10px"> s/rep</span>
+                </div>
+              </div>
+              <div class="pill">
+                <div class="k">Form</div>
+                <div class="v">96<span style="font-size: 10px">%</span></div>
+              </div>
+              <div class="stop"><span></span></div>
+            </div>
+          </div>
+        </div>
+
+        <nav>
+          <a href="#"
+            ><svg
+              width="19"
+              height="19"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.7"
+            >
+              <path
+                d="M4 11l8-6 8 6v8a1 1 0 01-1 1h-4v-6h-6v6H5a1 1 0 01-1-1z"
+              /></svg
+            >Home</a
+          >
+          <a href="#" class="on"
+            ><svg
+              width="19"
+              height="19"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+            >
+              <rect x="3" y="6" width="18" height="13" rx="3" />
+              <circle cx="12" cy="12.5" r="3.2" /></svg
+            >Train</a
+          >
+          <a href="#"
+            ><svg
+              width="19"
+              height="19"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.7"
+              stroke-linecap="round"
+            >
+              <path d="M5 19V11M12 19V5M19 19v-5" /></svg
+            >Stats</a
+          >
+          <a href="#"
+            ><svg
+              width="19"
+              height="19"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.7"
+            >
+              <circle cx="12" cy="8" r="3.6" />
+              <path d="M4.6 20c1.1-3.9 3.9-5.9 7.4-5.9s6.3 2 7.4 5.9" /></svg
+            >Profile</a
+          >
+        </nav>
+      </div>
+
+      <!-- ============ 3. SESSIONS ============ -->
+      <div class="phone">
+        <div class="status"><span>9:41</span><span>▮▮▮ ⌁ 82%</span></div>
+        <div class="body">
+          <h1>History</h1>
+
+          <div class="tabs">
+            <div class="tab on">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+              >
+                <path d="M4 9v6M20 9v6M7 6v12M17 6v12M7 12h10" />
+              </svg>
+              Push-up
+            </div>
+            <div class="tab">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+              >
+                <path d="M12 4v8M6 20l3-6 3 2 3-4 3 8" />
+              </svg>
+              Squat
+            </div>
+            <div class="tab">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+              >
+                <path d="M4 8h16M8 8v8a4 4 0 008 0V8" />
+              </svg>
+              Plank
+            </div>
+            <div class="tab">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+              >
+                <path d="M12 3v6M9 6h6M6 21l6-12 6 12" />
+              </svg>
+              Burpee
+            </div>
+          </div>
+
+          <div>
+            <div class="sub" style="margin-bottom: 8px">August 2026</div>
+            <div class="days">
+              <div class="day">
+                <div class="d">MON</div>
+                <div class="n">10</div>
+              </div>
+              <div class="day">
+                <div class="d">TUE</div>
+                <div class="n">11</div>
+              </div>
+              <div class="day">
+                <div class="d">WED</div>
+                <div class="n">12</div>
+              </div>
+              <div class="day on">
+                <div class="d">THU</div>
+                <div class="n">13</div>
+              </div>
+              <div class="day">
+                <div class="d">FRI</div>
+                <div class="n">14</div>
+              </div>
+              <div class="day">
+                <div class="d">SAT</div>
+                <div class="n">15</div>
+              </div>
+              <div class="day">
+                <div class="d">SUN</div>
+                <div class="n">16</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="stats" style="padding: 12px 6px">
+            <div class="stat">
+              <div class="v" style="margin: 0">7</div>
+              <div class="k">Day streak</div>
+            </div>
+            <div class="stat">
+              <div class="v" style="margin: 0">1 842</div>
+              <div class="k">All-time reps</div>
+            </div>
+            <div class="stat">
+              <div class="v" style="margin: 0; color: var(--lime)">32</div>
+              <div class="k">Best set</div>
+            </div>
+          </div>
+
+          <div>
+            <h2 style="margin-bottom: 2px">Sessions</h2>
+            <div class="sess">
+              <div class="thumb"><div class="n">32</div></div>
+              <div class="t">
+                <b>Morning set</b><s>07:12 · 1:48 min · 98% form</s
+                ><em>Personal best</em>
+              </div>
+              <div class="r">13<br />AUG</div>
+            </div>
+            <div class="sess">
+              <div class="thumb"><div class="n">24</div></div>
+              <div class="t">
+                <b>Lunch break</b><s>12:40 · 1:22 min · 91% form</s
+                ><em>Steady</em>
+              </div>
+              <div class="r">13<br />AUG</div>
+            </div>
+            <div class="sess">
+              <div class="thumb"><div class="n">18</div></div>
+              <div class="t">
+                <b>Evening burn</b><s>19:05 · 1:10 min · 84% form</s
+                ><em>Depth warning</em>
+              </div>
+              <div class="r">12<br />AUG</div>
+            </div>
+          </div>
+        </div>
+
+        <nav>
+          <a href="#"
+            ><svg
+              width="19"
+              height="19"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.7"
+            >
+              <path
+                d="M4 11l8-6 8 6v8a1 1 0 01-1 1h-4v-6h-6v6H5a1 1 0 01-1-1z"
+              /></svg
+            >Home</a
+          >
+          <a href="#"
+            ><svg
+              width="19"
+              height="19"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.7"
+            >
+              <rect x="3" y="6" width="18" height="13" rx="3" />
+              <circle cx="12" cy="12.5" r="3.2" /></svg
+            >Train</a
+          >
+          <a href="#" class="on"
+            ><svg
+              width="19"
+              height="19"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.9"
+              stroke-linecap="round"
+            >
+              <path d="M5 19V11M12 19V5M19 19v-5" /></svg
+            >Stats</a
+          >
+          <a href="#"
+            ><svg
+              width="19"
+              height="19"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.7"
+            >
+              <circle cx="12" cy="8" r="3.6" />
+              <path d="M4.6 20c1.1-3.9 3.9-5.9 7.4-5.9s6.3 2 7.4 5.9" /></svg
+            >Profile</a
+          >
+        </nav>
+      </div>
+    </div>
+  </body>
+</html>

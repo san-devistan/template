@@ -65,7 +65,7 @@ function AlertDialogContent({
       <AlertDialogOverlay>
         <AlertDialogPrimitive.Content
           className={cn(
-            "z-50 flex w-full max-w-[calc(100%-2rem)] flex-col gap-6 rounded-xl bg-popover p-6 text-popover-foreground ring-1 ring-foreground/10 sm:max-w-lg",
+            "z-50 flex w-full max-w-[calc(100%-2rem)] flex-col gap-6 rounded-4xl bg-popover p-6 text-popover-foreground shadow-xl ring-1 ring-foreground/5 dark:ring-foreground/10 sm:max-w-lg",
             Platform.select({
               web: "animate-in fade-in-0 zoom-in-95 duration-200",
             }),

@@ -1,7 +1,7 @@
 // oxlint-disable-next-line import/no-unassigned-import -- Reanimated logger must be configured before app modules evaluate.
 import "@/lib/reanimated-logger"
 import { useColorScheme } from "@/hooks/use-color-scheme"
-import { interFonts } from "@/lib/fonts"
+import { mobileFonts } from "@/lib/fonts"
 import { NAV_THEME } from "@/lib/theme"
 import { ThemeProvider } from "@react-navigation/native"
 import { PortalHost } from "@rn-primitives/portal"
@@ -46,7 +46,7 @@ function warnFontLoadError(error: Error) {
 
   didWarnFontLoadError = true
   console.warn(
-    "Inter failed to load; mobile will fall back to system fonts.",
+    "Mobile fonts failed to load; mobile will fall back to system fonts.",
     error
   )
 }
@@ -67,7 +67,7 @@ function OptionalConvexProvider({ children }: { children: ReactNode }) {
 
 export default function RootLayout() {
   const colorScheme = useColorScheme() ?? "light"
-  const [fontsLoaded, fontLoadError] = useFonts(interFonts)
+  const [fontsLoaded, fontLoadError] = useFonts(mobileFonts)
 
   useEffect(() => {
     if (fontLoadError) {

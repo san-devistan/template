@@ -55,7 +55,7 @@ function SelectTrigger({
     <SelectPrimitive.Trigger
       ref={ref}
       className={cn(
-        "shadow-xs flex h-9 flex-row items-center justify-between gap-1.5 rounded-md border border-input bg-transparent py-2 pl-2.5 pr-2 dark:bg-input/30 dark:active:bg-input/50",
+        "flex h-9 flex-row items-center justify-between gap-1.5 rounded-3xl border border-transparent bg-input/50 py-2 pl-3 pr-2",
         Platform.select({
           web: "focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:hover:bg-input/50 w-fit whitespace-nowrap text-sm outline-none transition-[color,box-shadow] focus-visible:ring-[3px] disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0",
         }),
@@ -96,14 +96,14 @@ function SelectContentPanel({
       >
         <SelectPrimitive.Content
           className={cn(
-            "relative z-50 min-w-36 rounded-md bg-popover text-popover-foreground shadow-md ring-1 ring-foreground/10",
+            "relative z-50 min-w-36 rounded-3xl bg-popover text-popover-foreground shadow-lg ring-1 ring-foreground/5 dark:ring-foreground/10",
             Platform.select({
               web: cn(
                 "origin-(--radix-select-content-transform-origin) max-h-52 overflow-y-auto overflow-x-hidden animate-in fade-in-0 zoom-in-95",
                 side === "bottom" && "slide-in-from-top-2",
                 side === "top" && "slide-in-from-bottom-2"
               ),
-              native: "p-1",
+              native: "p-1.5",
             }),
             position === "popper" &&
               Platform.select({
@@ -121,7 +121,7 @@ function SelectContentPanel({
           <SelectScrollUpButton />
           <SelectPrimitive.Viewport
             className={cn(
-              "p-1",
+              "p-1.5",
               position === "popper" &&
                 cn(
                   "w-full",
@@ -175,7 +175,7 @@ function SelectLabel({
 }: React.ComponentProps<typeof SelectPrimitive.Label>) {
   return (
     <SelectPrimitive.Label
-      className={cn("px-2 py-1.5 text-xs text-muted-foreground", className)}
+      className={cn("px-3 py-2.5 text-xs text-muted-foreground", className)}
       {...props}
     />
   )
@@ -189,7 +189,7 @@ function SelectItem({
   return (
     <SelectPrimitive.Item
       className={cn(
-        "group relative flex w-full flex-row items-center gap-2 rounded-sm py-1.5 pl-2 pr-8 active:bg-accent",
+        "group relative flex w-full flex-row items-center gap-2.5 rounded-2xl py-2 pl-3 pr-8 active:bg-accent",
         Platform.select({
           web: "focus:bg-accent focus:text-accent-foreground *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2 cursor-default outline-none data-[disabled]:pointer-events-none [&_svg]:pointer-events-none",
         }),
@@ -215,7 +215,7 @@ function SelectSeparator({
   return (
     <SelectPrimitive.Separator
       className={cn(
-        "-mx-1 my-1 h-px bg-border",
+        "-mx-1.5 my-1.5 h-px bg-border",
         Platform.select({ web: "pointer-events-none" }),
         className
       )}

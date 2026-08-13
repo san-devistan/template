@@ -15,7 +15,7 @@ flowchart LR
 
 ## AI Setup
 
-- **Skills:** 73 skills: root 3, web 9, mobile 39, backend 21, UI 1.
+- **Skills:** 76 skills: root 3, web 10, mobile 40, backend 22, UI 1.
 - **MCPs:** 5 mcp: Convex, Better Auth, Stripe, shadcn, Vercel.
 
 ## Quality Gate
@@ -31,7 +31,6 @@ flowchart LR
 
 ## Set Up
 
-- change names for portless in apps package.json
-- change names in root agents.md file
-- choose the shadcn theme and apply it
-- run sync mobile theme
+- replace `project-name` in the codebase
+- run `pnpm update:deps` and `pnpm update:skills`
+- apply theme with `pnpm dlx shadcn@latest apply --preset [preset-id] --cwd apps/web --yes` then `pnpm sync:design-system`

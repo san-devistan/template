@@ -40,6 +40,12 @@ export const FONT_WEIGHT = {
   semibold: 600,
   bold: 700,
   extrabold: 800,
+  heading: 400,
+  headingItalic: 400,
+  headingMedium: 500,
+  headingSemibold: 600,
+  headingBold: 700,
+  headingExtrabold: 800,
 }
 
 function isRecord(value) {

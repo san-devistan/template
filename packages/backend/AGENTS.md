@@ -25,6 +25,34 @@ than owning provider integrations directly.
 Backend-local skills live in `packages/backend/.agents/skills/<skill>/SKILL.md`.
 Read only the narrow skill files needed for the task:
 
+### Effect
+
+| Skill       | Invoke when                                                                                                                              |
+| ----------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `effect-ts` | Nontrivial backend Effect work: typed failures, service/layer dependencies, schemas, config, retries, resources, concurrency, or tracing |
+
+This workspace depends on `effect`. Prefer Effect for backend logic where
+typed errors, required context, resource safety, retries, or concurrent
+workflows matter. Provider integrations, Convex adapters, auth/email/billing
+orchestration, config, and service boundaries should make failures and
+dependencies visible in types instead of relying on thrown exceptions or
+nullable error state. Keep trivial pure helpers and generated Convex API
+plumbing simple.
+
+### ts-pattern
+
+| Skill        | Invoke when                                                                                                                             |
+| ------------ | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `ts-pattern` | Exhaustive pattern matching for discriminated unions, Convex/API result variants, auth/email/billing states, webhook events, or actions |
+
+Use the local `ts-pattern` skill when backend code branches over finite typed
+cases such as provider events, webhook types, auth states, billing states,
+action/result variants, and API response shapes. If the implementation imports
+`ts-pattern`, add the dependency to this workspace in the same change. Use
+`.exhaustive()` unless an `.otherwise(...)` fallback is intentionally valid for
+every remaining case. Keep simple booleans and nullish fallbacks as plain
+TypeScript.
+
 ### Convex
 
 | Skill                      | Invoke when                                                                                            |

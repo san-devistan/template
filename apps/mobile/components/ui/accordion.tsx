@@ -34,7 +34,10 @@ const accordionNativeExitTransition = Platform.select({
 function Accordion({ children, className, ...props }: AccordionProps) {
   const root = (
     <Animated.View
-      className={cn("flex w-full flex-col", className)}
+      className={cn(
+        "flex w-full flex-col overflow-hidden rounded-2xl border border-border",
+        className
+      )}
       layout={accordionLayoutTransition}
     >
       {children}
@@ -122,7 +125,7 @@ function AccordionTrigger({
         <AccordionPrimitive.Trigger {...props} asChild>
           <Trigger
             className={cn(
-              "flex-1 flex-row items-start justify-between gap-6 rounded-md border border-transparent py-4 disabled:opacity-50",
+              "flex-1 flex-row items-start justify-between gap-6 border border-transparent p-4 disabled:opacity-50",
               Platform.select({
                 web: "focus-visible:border-ring focus-visible:ring-ring/50 flex flex-1 outline-none transition-all hover:underline focus-visible:ring-[3px] disabled:pointer-events-none [&[data-state=open]>svg]:rotate-180",
               }),

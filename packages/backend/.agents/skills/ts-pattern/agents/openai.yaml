@@ -1,0 +1,4 @@
+interface:
+  display_name: "ts-pattern"
+  short_description: "Use exhaustive TypeScript pattern matching"
+  default_prompt: "Use $ts-pattern to refactor this TypeScript branching into an exhaustive match."

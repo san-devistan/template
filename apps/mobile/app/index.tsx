@@ -12,21 +12,36 @@ import { Icon } from "@/components/ui/icon"
 import { Input } from "@/components/ui/input"
 import { Switch } from "@/components/ui/switch"
 import { Text } from "@/components/ui/text"
-import { getInterTextStyle } from "@/lib/fonts"
+import { getMobileTextStyle } from "@/lib/fonts"
 import { THEME } from "@/lib/theme"
 import { api } from "@workspace/backend/api"
 import { Effect } from "effect"
 import { CheckIcon, ChevronRightIcon, SparklesIcon } from "lucide-react-native"
 import * as React from "react"
 import { ScrollView, View } from "react-native"
+import { match } from "ts-pattern"
 
 const componentNames = ["Button", "Card", "Input", "Switch", "Badge"] as const
+type BackendModuleStatus =
+  | { status: "empty" }
+  | { status: "ready"; moduleCount: number }
+
 const backendModuleCount = Effect.runSync(
   Effect.sync(() => Object.keys(api).length)
 )
+const backendModuleStatus: BackendModuleStatus =
+  backendModuleCount === 0
+    ? { status: "empty" }
+    : { status: "ready", moduleCount: backendModuleCount }
+const backendModuleLabel = match(backendModuleStatus)
+  .with({ status: "empty" }, () => "None")
+  .with({ status: "ready" }, ({ moduleCount }) => {
+    return String(moduleCount)
+  })
+  .exhaustive()
 const lightPrimarySwatchStyle = { backgroundColor: THEME.light.primary }
 const darkPrimarySwatchStyle = { backgroundColor: THEME.dark.primary }
-const metricTextStyle = getInterTextStyle("font-semibold")
+const metricTextStyle = getMobileTextStyle("font-semibold")
 
 export default function ComponentShowcaseScreen() {
   const [enabled, setEnabled] = React.useState(true)
@@ -96,7 +111,7 @@ export default function ComponentShowcaseScreen() {
           </View>
           <View className="rounded-lg border border-border p-3">
             <Text variant="small">Backend modules</Text>
-            <Text style={metricTextStyle}>{backendModuleCount}</Text>
+            <Text style={metricTextStyle}>{backendModuleLabel}</Text>
           </View>
         </CardContent>
         <CardFooter className="justify-between">

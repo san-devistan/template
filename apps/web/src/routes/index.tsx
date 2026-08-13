@@ -4,10 +4,25 @@ import { Button } from "@workspace/ui/components/button"
 import { Effect } from "effect"
 import { DatabaseZapIcon } from "lucide-react"
 import { useCallback, useState } from "react"
+import { match } from "ts-pattern"
 
 export const Route = createFileRoute("/")({ component: App })
 
+type BackendModuleStatus =
+  | { status: "empty" }
+  | { status: "ready"; moduleCount: number }
+
 const backendModuleCount = Object.keys(api).length
+const backendModuleStatus: BackendModuleStatus =
+  backendModuleCount === 0
+    ? { status: "empty" }
+    : { status: "ready", moduleCount: backendModuleCount }
+const backendModuleLabel = match(backendModuleStatus)
+  .with({ status: "empty" }, () => "Backend modules: none")
+  .with({ status: "ready" }, ({ moduleCount }) => {
+    return `Backend modules: ${moduleCount}`
+  })
+  .exhaustive()
 
 function App() {
   const [count, setCount] = useState(0)
@@ -28,7 +43,7 @@ function App() {
           </Button>
           <div className="mt-4 flex items-center gap-2 text-muted-foreground">
             <DatabaseZapIcon className="size-4" aria-hidden="true" />
-            <span>Backend modules: {backendModuleCount}</span>
+            <span>{backendModuleLabel}</span>
           </div>
         </div>
       </div>

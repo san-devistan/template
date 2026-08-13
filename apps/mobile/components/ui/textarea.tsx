@@ -1,4 +1,4 @@
-import { withInterTextStyle } from "@/lib/fonts"
+import { withMobileTextStyle } from "@/lib/fonts"
 import { cn } from "@/lib/utils"
 import { Platform, TextInput } from "react-native"
 
@@ -11,7 +11,7 @@ function Textarea({
   ...props
 }: React.ComponentProps<typeof TextInput> & React.RefAttributes<TextInput>) {
   const resolvedClassName = cn(
-    "shadow-xs flex min-h-16 w-full flex-row rounded-md border border-input bg-transparent px-2.5 py-2 text-base text-foreground dark:bg-input/30 md:text-sm",
+    "flex min-h-16 w-full flex-row rounded-2xl border border-transparent bg-input/50 px-3 py-3 text-base text-foreground md:text-sm",
     Platform.select({
       web: "placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive field-sizing-content resize-y outline-none transition-[color,box-shadow] focus-visible:ring-[3px] disabled:cursor-not-allowed",
     }),
@@ -23,7 +23,7 @@ function Textarea({
     <TextInput
       className={resolvedClassName}
       placeholderClassName={cn("text-muted-foreground", placeholderClassName)}
-      style={withInterTextStyle(resolvedClassName, style)}
+      style={withMobileTextStyle(resolvedClassName, style)}
       multiline={multiline}
       numberOfLines={numberOfLines}
       textAlignVertical="top"

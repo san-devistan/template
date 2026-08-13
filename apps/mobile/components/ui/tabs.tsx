@@ -23,7 +23,7 @@ function TabsList({
   return (
     <TabsPrimitive.List
       className={cn(
-        "flex h-9 flex-row items-center justify-center rounded-lg bg-muted p-[3px]",
+        "flex h-9 flex-row items-center justify-center rounded-full bg-muted p-1",
         Platform.select({ web: "inline-flex w-fit", native: "mr-auto" }),
         className
       )}
@@ -46,7 +46,7 @@ function TabsTrigger({
     <TextClassContext.Provider value={textClassName}>
       <TabsPrimitive.Trigger
         className={cn(
-          "relative flex h-[calc(100%-1px)] flex-1 flex-row items-center justify-center gap-1.5 rounded-md border border-transparent px-2 py-1 shadow-none",
+          "relative flex h-[calc(100%-1px)] flex-1 flex-row items-center justify-center gap-1.5 rounded-full border border-transparent px-3 py-1 shadow-none",
           Platform.select({
             web: "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:outline-ring inline-flex cursor-default whitespace-nowrap transition-[color,box-shadow] focus-visible:outline-1 focus-visible:ring-[3px] disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0",
           }),

@@ -7,7 +7,7 @@ function Skeleton({
 }: React.ComponentProps<typeof View> & React.RefAttributes<View>) {
   return (
     <View
-      className={cn("animate-pulse rounded-md bg-muted", className)}
+      className={cn("animate-pulse rounded-2xl bg-muted", className)}
       {...props}
     />
   )
