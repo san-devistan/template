@@ -294,6 +294,9 @@ importers:
       ts-pattern:
         specifier: ^5.9.0
         version: 5.9.0
+      usehooks-ts:
+        specifier: ^3.1.1
+        version: 3.1.1(react@19.2.8)
       vite-tsconfig-paths:
         specifier: ^5.1.4
         version: 5.1.4(typescript@5.9.3)(vite@7.3.6(@types/node@25.9.5)(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.50.0)(yaml@2.9.0))

@@ -121,13 +121,13 @@ directory; load them by path after reading the workspace guide. Do not assume
 workspace-local skills are globally available by name, and do not flatten
 workspace-specific skills into the root skill directory.
 
-| Scope / workspace                 | Read first                   | Local skill families                                                                 |
-| --------------------------------- | ---------------------------- | ------------------------------------------------------------------------------------ |
-| `apps/web`                        | `apps/web/AGENTS.md`         | TanStack Start, Router, Query, React performance, Effect, ts-pattern, web guidelines |
-| `apps/mobile`                     | `apps/mobile/AGENTS.md`      | Expo, EAS, React Native, native UI, data fetching, Effect, ts-pattern, ASC CLI       |
-| `packages/backend`                | `packages/backend/AGENTS.md` | Convex, Better Auth, Resend/email, Stripe, Effect, ts-pattern                        |
-| `packages/ui`                     | `packages/ui/AGENTS.md`      | shadcn, web design tokens, shared React components, UI primitives                    |
-| Root, `scripts`, workspace config | this file                    | Turborepo, package boundaries, repo tooling                                          |
+| Scope / workspace                 | Read first                   | Local skill families                                                                              |
+| --------------------------------- | ---------------------------- | ------------------------------------------------------------------------------------------------- |
+| `apps/web`                        | `apps/web/AGENTS.md`         | TanStack Start, Router, Query, React performance, Effect, ts-pattern, usehooks-ts, web guidelines |
+| `apps/mobile`                     | `apps/mobile/AGENTS.md`      | Expo, EAS, React Native, native UI, data fetching, Effect, ts-pattern, ASC CLI                    |
+| `packages/backend`                | `packages/backend/AGENTS.md` | Convex, Better Auth, Resend/email, Stripe, Effect, ts-pattern                                     |
+| `packages/ui`                     | `packages/ui/AGENTS.md`      | shadcn, web design tokens, shared React components, UI primitives, usehooks-ts                    |
+| Root, `scripts`, workspace config | this file                    | Turborepo, package boundaries, repo tooling                                                       |
 
 For TypeScript code, prefer the project-standard packages that encode safer
 patterns instead of hand-written equivalents.
@@ -152,11 +152,12 @@ explicitly adds an `effect` dependency and the added ceremony reduces real risk.
   missed cases. Prefer `ts-pattern` over hand-written `switch`/`default` blocks
   that can silently accept new union members. Keep simple boolean/nullish logic
   as plain TypeScript.
-- Use `usehooks-ts` for common browser and React hook concerns such as storage,
-  media queries, events, debounce/throttle, timers, observers, clipboard, dark
-  mode, scroll lock, and mounted/client checks. Prefer its SSR-safe hooks over
-  handwritten `useEffect` wrappers unless the behavior is genuinely
-  domain-specific or unsupported.
+- Use the workspace-local `usehooks-ts` skill in `apps/web` and `packages/ui`
+  for common browser and React hook concerns such as storage, media queries,
+  events, debounce/throttle, timers, observers, clipboard, dark mode, scroll
+  lock, and mounted/client checks. Prefer its SSR-safe hooks over handwritten
+  `useEffect` wrappers unless the behavior is genuinely domain-specific or
+  unsupported.
 
 Keep trivial synchronous code simple; do not force these packages into places
 where they add ceremony without reducing risk or duplication.

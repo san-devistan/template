@@ -1,0 +1,4 @@
+interface:
+  display_name: "usehooks-ts"
+  short_description: "Use SSR-safe React browser hooks"
+  default_prompt: "Use $usehooks-ts to replace this handwritten browser hook with a library hook."

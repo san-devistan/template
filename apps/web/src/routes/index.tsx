@@ -5,6 +5,7 @@ import { Effect } from "effect"
 import { DatabaseZapIcon } from "lucide-react"
 import { useCallback, useState } from "react"
 import { match } from "ts-pattern"
+import { useMediaQuery } from "usehooks-ts"
 
 export const Route = createFileRoute("/")({ component: App })
 
@@ -26,6 +27,10 @@ const backendModuleLabel = match(backendModuleStatus)
 
 function App() {
   const [count, setCount] = useState(0)
+  const isCompactViewport = useMediaQuery("(max-width: 767px)", {
+    defaultValue: false,
+    initializeWithValue: false,
+  })
 
   const increment = useCallback(() => {
     Effect.runSync(Effect.sync(() => setCount((current) => current + 1)))
@@ -38,6 +43,7 @@ function App() {
           <h1 className="font-medium">Project ready!</h1>
           <p>You may now add components and start building.</p>
           <p>Effect is installed for this workspace.</p>
+          <p>{isCompactViewport ? "Compact viewport" : "Wide viewport"}</p>
           <Button className="mt-2" onClick={increment}>
             Effect count: {count}
           </Button>

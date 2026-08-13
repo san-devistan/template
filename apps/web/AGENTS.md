@@ -34,6 +34,7 @@ the narrow skill needed for the task.
 | `writing-guidelines`                  | Docs/prose review, voice and tone, style cleanup, or written product copy review                                                                      |
 | `effect-ts`                           | Nontrivial Effect work: typed failures, server functions, loaders, service/context dependencies, config, retries, resources, concurrency, or tracing  |
 | `ts-pattern`                          | Exhaustive pattern matching for discriminated unions, route/search variants, async state unions, action/result variants, or typed API response shapes |
+| `usehooks-ts`                         | Browser and React hook utilities: storage, media queries, events, debounce/throttle, timers, observers, clipboard, mounted/client checks              |
 
 This workspace depends on `effect`. Prefer Effect at web IO boundaries where
 typed failures or required context make behavior clearer: server functions,
@@ -48,8 +49,14 @@ the dependency to this workspace in the same change. Use `.exhaustive()` unless
 an `.otherwise(...)` fallback is intentionally valid for every remaining case.
 Keep simple booleans and nullish fallbacks as plain TypeScript.
 
-For cross-cutting TypeScript, browser hooks, or visual-design work, use the
-shared root skills in `.agents/skills/` after reading this file.
+Use the local `usehooks-ts` skill when web code needs common browser hooks such
+as storage, media queries, events, debounce/throttle, timers, observers,
+clipboard, dark mode, scroll lock, or mounted/client checks. This workspace
+depends on `usehooks-ts`; prefer its SSR-safe hooks over handwritten `useEffect`
+wrappers when the behavior is not domain-specific.
+
+For cross-cutting TypeScript or visual-design work, use the shared root skills
+in `.agents/skills/` after reading this file.
 
 ## Tools
 

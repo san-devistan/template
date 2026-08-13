@@ -36,17 +36,24 @@ token file already has changes, the token file remains the source of truth; pass
 UI-local skills live in `packages/ui/.agents/skills/<skill>/SKILL.md`. The
 shadcn skill is local to this package.
 
-| Skill    | Invoke when                                                                                                                  |
-| -------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| `shadcn` | shadcn/ui components, registries, presets, component updates, composition, styling rules, CLI behavior, or `components.json` |
+| Skill         | Invoke when                                                                                                                  |
+| ------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `shadcn`      | shadcn/ui components, registries, presets, component updates, composition, styling rules, CLI behavior, or `components.json` |
+| `usehooks-ts` | Shared browser hooks: media queries, storage, events, debounce/throttle, timers, observers, clipboard, mounted/client checks |
 
-For cross-cutting visual design, browser hooks, or TypeScript quality work, use
-the shared root skills in `.agents/skills/` after reading this file. This
-package does not depend on `effect`; do not introduce Effect here unless the
-task explicitly adds an Effect-backed workflow and the dependency is justified.
-This package also does not depend on `ts-pattern`; keep simple component
-branching in plain TypeScript unless a discriminated-union-heavy UI workflow
-explicitly justifies the dependency.
+This package depends on `usehooks-ts`. Use the local `usehooks-ts` skill for
+shared browser hooks such as media queries, storage, events, debounce/throttle,
+timers, observers, clipboard, and mounted/client checks. Prefer its SSR-safe
+hooks over handwritten `useEffect` wrappers when the behavior is not
+domain-specific.
+
+For cross-cutting visual design or TypeScript quality work, use the shared root
+skills in `.agents/skills/` after reading this file. This package does not
+depend on `effect`; do not introduce Effect here unless the task explicitly adds
+an Effect-backed workflow and the dependency is justified. This package also
+does not depend on `ts-pattern`; keep simple component branching in plain
+TypeScript unless a discriminated-union-heavy UI workflow explicitly justifies
+the dependency.
 
 ## UI MCPs
 
