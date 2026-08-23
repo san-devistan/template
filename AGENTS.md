@@ -1,6 +1,6 @@
 # Repository Guide
 
-This is a pnpm workspace monorepo. The project name is `hitomi`; this is the value of the variable `<project-name>`.
+This is a pnpm workspace monorepo. The project name is `name-of-project`; this is the value of the variable `<project-name>`.
 Prefer repo-local conventions and skills before introducing new patterns.
 
 ## Workspace Map

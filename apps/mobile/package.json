@@ -51,6 +51,6 @@
     "typescript": "~6.0.3"
   },
   "portless": {
-    "name": "mobile.hitomi"
+    "name": "mobile.name-of-project"
   }
 }

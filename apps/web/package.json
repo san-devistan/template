@@ -40,6 +40,6 @@
     "vite": "^7.3.6"
   },
   "portless": {
-    "name": "hitomi"
+    "name": "name-of-project"
   }
 }
