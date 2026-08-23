@@ -1,35 +1,59 @@
 {
   "version": 1,
   "skills": {
+    "animate": {
+      "source": "emilkowalski/skills",
+      "sourceType": "github",
+      "skillPath": "skills/animate/SKILL.md",
+      "computedHash": "609e30351bf518b21a8cfe87cd1111554855527075d6563605bafe61963252f7"
+    },
+    "animate-expo": {
+      "source": "emilkowalski/skills",
+      "sourceType": "github",
+      "skillPath": "skills/animate-expo/SKILL.md",
+      "computedHash": "c9eaf6603b97ca61b05c7561e1045b2f58b6d84cdf8d67565bff23a9ff94ce8a"
+    },
+    "animation-vocabulary": {
+      "source": "emilkowalski/skills",
+      "sourceType": "github",
+      "skillPath": "skills/animation-vocabulary/SKILL.md",
+      "computedHash": "39319fc9a33c15be08666b3685f58666f042ff36bb902b7814c0834a5ba99df4"
+    },
+    "apple-design": {
+      "source": "emilkowalski/skills",
+      "sourceType": "github",
+      "skillPath": "skills/apple-design/SKILL.md",
+      "computedHash": "8b94db67cb9edaad5f1501010804caa610131f1d2dfda0a27664b2e858deade3"
+    },
     "asc-app-create-ui": {
       "source": "rorkai/app-store-connect-cli-skills",
       "sourceType": "github",
       "skillPath": "skills/asc-app-create-ui/SKILL.md",
-      "computedHash": "2133917255d58b7bb0d21a6f4ea0967ed4212190c5e8dd5322d9687f650f572e"
+      "computedHash": "de1c1ab06cee0310a4eb7f4e3b5b79cb182fe856ff892b1902a310a40af94da1"
     },
     "asc-apple-ads": {
       "source": "rorkai/app-store-connect-cli-skills",
       "sourceType": "github",
       "skillPath": "skills/asc-apple-ads/SKILL.md",
-      "computedHash": "f4640b6a9cfbbfbda5b20039ad69af355a5cc1db08eb163392f1fe14b2794abe"
+      "computedHash": "4955f038bd95143063325d4d329a4d920863fffeef183bed9e3ba67043e95151"
     },
     "asc-aso-audit": {
       "source": "rorkai/app-store-connect-cli-skills",
       "sourceType": "github",
       "skillPath": "skills/asc-aso-audit/SKILL.md",
-      "computedHash": "00d3a89c0601d7a1df280febd7ed38fd749a75427646676e07cc7e16dcf11d82"
+      "computedHash": "d344d5435736be799e53c13156b94cd7b487b1a3a46ecedcb178228c0c2a1fbe"
     },
     "asc-build-lifecycle": {
       "source": "rorkai/app-store-connect-cli-skills",
       "sourceType": "github",
       "skillPath": "skills/asc-build-lifecycle/SKILL.md",
-      "computedHash": "d9740c8403f1804242b38996bf5805a227ccd6b7141b280f512f0c0cd8693ce1"
+      "computedHash": "cfdccf5a7fd90e5cc56ed9d837fe58bca61b80440f6a89ac567ad87e5a96b4bc"
     },
     "asc-cli-usage": {
       "source": "rorkai/app-store-connect-cli-skills",
       "sourceType": "github",
       "skillPath": "skills/asc-cli-usage/SKILL.md",
-      "computedHash": "7c6737e9d83e101de962b374605ca3f845f4debc53b89f723e5ac8dafd0dd09f"
+      "computedHash": "80836065b292a5322dc9c5856479327de3822651f15f06d5c317eb8c3c3e6f39"
     },
     "asc-crash-triage": {
       "source": "rorkai/app-store-connect-cli-skills",
@@ -41,19 +65,19 @@
       "source": "rorkai/app-store-connect-cli-skills",
       "sourceType": "github",
       "skillPath": "skills/asc-id-resolver/SKILL.md",
-      "computedHash": "8145486e42bcaac3210ff76082adc252d4893f599291103a24a40502e66971a3"
+      "computedHash": "e15dbaa782ac23455c26ce0133849394c9860fb009eeec55b96e668befe23a6a"
     },
     "asc-localize-metadata": {
       "source": "rorkai/app-store-connect-cli-skills",
       "sourceType": "github",
       "skillPath": "skills/asc-localize-metadata/SKILL.md",
-      "computedHash": "ea4c1d528dc803d0ac78d1c55adde92e4af11a40fb5bba2c1b7379091852f46a"
+      "computedHash": "7ee40cae21c8ac15cc866aaa78057102d6862c7a6ca9ecbfe8e8924ce47a3a45"
     },
     "asc-metadata-sync": {
       "source": "rorkai/app-store-connect-cli-skills",
       "sourceType": "github",
       "skillPath": "skills/asc-metadata-sync/SKILL.md",
-      "computedHash": "98f43da4c0c38963a32eff04312892c6e1f57184a75ff7e2aa669ab2edbc7761"
+      "computedHash": "d663f8ca8cbd3ac413a878bd08d53070f070b7b3ecb61dfab9aec1de649fa680"
     },
     "asc-notarization": {
       "source": "rorkai/app-store-connect-cli-skills",
@@ -65,19 +89,19 @@
       "source": "rorkai/app-store-connect-cli-skills",
       "sourceType": "github",
       "skillPath": "skills/asc-ppp-pricing/SKILL.md",
-      "computedHash": "8afeb97f237de71cf11d3d8ead404d3f21f849c9e071d3278c85abced498d6f3"
+      "computedHash": "f6af112d0b0ea3e35ecfe0b8d63a1a9175be23c267a26a076ea6f00893865076"
     },
     "asc-release-flow": {
       "source": "rorkai/app-store-connect-cli-skills",
       "sourceType": "github",
       "skillPath": "skills/asc-release-flow/SKILL.md",
-      "computedHash": "8e4919ed3d25ae5209a8e79ff59f43b7107980fe39b856487a8af8bb55e8fcd4"
+      "computedHash": "43562e6aca32f704a39a28aa6c89f5d5d704dd39ce0b2027303e5abab01056ed"
     },
     "asc-revenuecat-catalog-sync": {
       "source": "rorkai/app-store-connect-cli-skills",
       "sourceType": "github",
       "skillPath": "skills/asc-revenuecat-catalog-sync/SKILL.md",
-      "computedHash": "2a4c34955e9e0fe31695fbbf7c63c6c254e18381108ac3d77a8c4b67ddf612f9"
+      "computedHash": "1b3e71017c49e0bbdab569a64453d625a81fbb71fb0162c46c74308d2040b597"
     },
     "asc-screenshot-resize": {
       "source": "rorkai/app-store-connect-cli-skills",
@@ -95,25 +119,25 @@
       "source": "rorkai/app-store-connect-cli-skills",
       "sourceType": "github",
       "skillPath": "skills/asc-signing-setup/SKILL.md",
-      "computedHash": "1f894b7be47bdf1dbc957bff3d370515f14482443ca91cc0aeffbf7d12c16885"
+      "computedHash": "5905879f21dc892dad364603a8ffea4243a2fd7245808b353e9831255f0d632a"
     },
     "asc-submission-health": {
       "source": "rorkai/app-store-connect-cli-skills",
       "sourceType": "github",
       "skillPath": "skills/asc-submission-health/SKILL.md",
-      "computedHash": "2c70f167939bf517ff0bcf36dc47462bf44cb3d8908c6c97b9b82e11177571ff"
+      "computedHash": "01f10235d7251f5d6e8a6433830a98243d8d04972182e988288598219d71c2a5"
     },
     "asc-subscription-localization": {
       "source": "rorkai/app-store-connect-cli-skills",
       "sourceType": "github",
       "skillPath": "skills/asc-subscription-localization/SKILL.md",
-      "computedHash": "3f9952bf0c0690e0c33f888fb777967cc06aa1bc378780d8ae2ca4a4f19f4ce2"
+      "computedHash": "1556dc5691bdaa5a5bcd0546e00b1d412687e2cfb7d35634a00775a105d64739"
     },
     "asc-testflight-orchestration": {
       "source": "rorkai/app-store-connect-cli-skills",
       "sourceType": "github",
       "skillPath": "skills/asc-testflight-orchestration/SKILL.md",
-      "computedHash": "b4622ac936b498a73dbbdcb84d3b1e42af7acbec16b3423c3bfe5cf522efddda"
+      "computedHash": "6f948f077adbf4543a98eaf1ac5b8facb6b31c61c734a730c36e1a7a65213195"
     },
     "asc-wall-submit": {
       "source": "rorkai/app-store-connect-cli-skills",
@@ -131,13 +155,19 @@
       "source": "rorkai/app-store-connect-cli-skills",
       "sourceType": "github",
       "skillPath": "skills/asc-workflow/SKILL.md",
-      "computedHash": "7527bb35c37a0821eba6145dc302da5c4f3b0fce0db7f4bd825fe2ba3c45693b"
+      "computedHash": "b03e6fb91824cbd3b3d83620f3d7aade7e72f6279471145dc132c97f3f5ccee6"
     },
     "asc-xcode-build": {
       "source": "rorkai/app-store-connect-cli-skills",
       "sourceType": "github",
       "skillPath": "skills/asc-xcode-build/SKILL.md",
-      "computedHash": "dbf3577739175b8da50a9b63715eb61b6ab165f3fad7ca4e04c811004f0e1703"
+      "computedHash": "bc7686e99d1ab544b282b9c7fa08b4637178a550821ea9a5a234cc48da8a1302"
+    },
+    "ask-sonner": {
+      "source": "emilkowalski/skills",
+      "sourceType": "github",
+      "skillPath": "skills/ask-sonner/SKILL.md",
+      "computedHash": "23f724e97247b2003ccc479f3a9b3af8e4191a0e133b94ee6b73f8405349687f"
     },
     "building-native-ui": {
       "source": "expo/skills",
@@ -149,13 +179,19 @@
       "source": "expo/skills",
       "sourceType": "github",
       "skillPath": "plugins/expo/skills/eas-update-insights/SKILL.md",
-      "computedHash": "160b705dd270cfc554c572b8f829cebcce711f1279820f4f55527b0981bf125c"
+      "computedHash": "d5d79f243bfaab0324e87581016cae7ad7b6392439134418827b4408863c0b12"
     },
     "effect-ts": {
       "source": "paulrberg/agent-skills",
       "sourceType": "github",
       "skillPath": "skills/effect-ts/SKILL.md",
-      "computedHash": "79468424908ecbc55109c9826ff29d2ae9737e1dfff8733875008e1d97e2e085"
+      "computedHash": "2f5cab434a7c6c55d919466d70a2e56c5d70fc2e725af2150090d013f413fad7"
+    },
+    "emil-design-eng": {
+      "source": "emilkowalski/skills",
+      "sourceType": "github",
+      "skillPath": "skills/emil-design-eng/SKILL.md",
+      "computedHash": "41b0a4dc1a27164fe297845a6c6850a39e9242c42c9be999967fcee9df2c5974"
     },
     "expo-api-routes": {
       "source": "expo/skills",
@@ -167,7 +203,7 @@
       "source": "expo/skills",
       "sourceType": "github",
       "skillPath": "plugins/expo/skills/expo-brownfield/SKILL.md",
-      "computedHash": "b7e46eba9d7643fd0488adedabc224914f45af2f0aa20c6ee6516aea81acdff9"
+      "computedHash": "07ce124e416f89a24c21c57402c03960a16e573675752be6a89735fba073b9d4"
     },
     "expo-cicd-workflows": {
       "source": "expo/skills",
@@ -185,19 +221,19 @@
       "source": "expo/skills",
       "sourceType": "github",
       "skillPath": "plugins/expo/skills/expo-dev-client/SKILL.md",
-      "computedHash": "dbbf88a0688564e2231b31d63b88dfd913f44f39bf21162c98493cd01edb4f3f"
+      "computedHash": "41496a5bb64bb753640c3a7de9d58fce81330fbba61f822dabbc04b5f1d7447d"
     },
     "expo-examples": {
       "source": "expo/skills",
       "sourceType": "github",
       "skillPath": "plugins/expo/skills/expo-examples/SKILL.md",
-      "computedHash": "d1793279706f5e2112023c0a26a2a2909fc7ce3da640812f6f2911a4ad497d6c"
+      "computedHash": "1d525c773458f166590f40cd3575d6fca440786fc99fdf58d4704af77d1495df"
     },
     "expo-module": {
       "source": "expo/skills",
       "sourceType": "github",
       "skillPath": "plugins/expo/skills/expo-module/SKILL.md",
-      "computedHash": "fe91e433d28dcc49439c4edc016e7f931e6f699bc84d65cf6975dd494bc04bfa"
+      "computedHash": "9c968a5bcb153ccdac1edbe014145ae37d6e6dac06846bfad7b2faaf890d88f0"
     },
     "expo-observe": {
       "source": "expo/skills",
@@ -209,19 +245,61 @@
       "source": "expo/skills",
       "sourceType": "github",
       "skillPath": "plugins/expo/skills/expo-tailwind-setup/SKILL.md",
-      "computedHash": "85d932863950a9837dd4ab528c2908eff7c119e8c7f59c47963815ee7341e826"
+      "computedHash": "fe7cb21735243b2701a3a1e35be6fbfd7cff6a146447200d4b14d225b619a46d"
     },
     "expo-ui": {
       "source": "expo/skills",
       "sourceType": "github",
       "skillPath": "plugins/expo/skills/expo-ui/SKILL.md",
-      "computedHash": "96b8e9190119110df2ec0efcd4f67fe7c8f686c0a022b28d3efa2533b3167536"
+      "computedHash": "0e3b343c6e60acab6f4fd4ae6364973f3641ee6de609f3e469bf0347302ead9e"
+    },
+    "find-animation-opportunities": {
+      "source": "emilkowalski/skills",
+      "sourceType": "github",
+      "skillPath": "skills/find-animation-opportunities/SKILL.md",
+      "computedHash": "8fb8492eb8fbed1313cb430b5831d925d9b8964ca24f3c41a6244cbd1fd98732"
+    },
+    "improve-animations": {
+      "source": "emilkowalski/skills",
+      "sourceType": "github",
+      "skillPath": "skills/improve-animations/SKILL.md",
+      "computedHash": "eeb219a407e325b687af88db25771cc3018e3148245604112f5ac6990b6fd79c"
+    },
+    "logo-maker": {
+      "source": "panel-ui/PanelUI",
+      "sourceType": "github",
+      "skillPath": "skills/logo-maker/SKILL.md",
+      "computedHash": "231e7b61f97f3eb9baea33d8903222a1235450dc93ae03cd3876110a8ba7d6e7"
     },
     "native-data-fetching": {
       "source": "expo/skills",
       "sourceType": "github",
       "skillPath": "plugins/expo/skills/native-data-fetching/SKILL.md",
       "computedHash": "b4c14fb97506495f15840ca1ab01b8d57c9a44f47f5b851d49a9c5796cc251d1"
+    },
+    "panelui": {
+      "source": "panel-ui/PanelUI",
+      "sourceType": "github",
+      "skillPath": "skills/panelui/SKILL.md",
+      "computedHash": "2b9c9f01a0dcd5864ca5c0c86a704e32ca672ed097794962ee556c51bedd38ad"
+    },
+    "pick-ui-library": {
+      "source": "emilkowalski/skills",
+      "sourceType": "github",
+      "skillPath": "skills/pick-ui-library/SKILL.md",
+      "computedHash": "f8d4d2cf4677bf54b14f35f62a741add93541bfcb67863315a40164365161b49"
+    },
+    "prototype": {
+      "source": "emilkowalski/skills",
+      "sourceType": "github",
+      "skillPath": "skills/prototype/SKILL.md",
+      "computedHash": "f246d1f47566481d9207e1aa574bdee5454257d862919a6591283e9af2f57eab"
+    },
+    "review-animations": {
+      "source": "emilkowalski/skills",
+      "sourceType": "github",
+      "skillPath": "skills/review-animations/SKILL.md",
+      "computedHash": "b9f669af5ae280c19a592a94611520335a81de25c88f225bf60ae4b2d66c8c7c"
     },
     "upgrading-expo": {
       "source": "expo/skills",

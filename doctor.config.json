@@ -4,11 +4,7 @@
     "files": ["**/.output/**"],
     "overrides": [
       {
-        "files": [
-          "components/ui/**",
-          "apps/mobile/components/ui/**",
-          "packages/ui/src/components/**"
-        ],
+        "files": ["components/ui/**", "packages/ui/src/components/**"],
         "rules": ["deslop/unused-file"]
       }
     ]

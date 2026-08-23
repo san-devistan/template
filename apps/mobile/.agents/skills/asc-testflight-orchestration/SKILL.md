@@ -29,6 +29,17 @@ Use this skill when managing TestFlight testers, groups, and build distribution.
 - Remove from group:
   - `asc builds remove-groups --build-id "BUILD_ID" --group "GROUP_ID" --confirm`
 
+## Inspect a build's groups
+
+- `asc testflight groups list --build-id "BUILD_ID" --output table`
+- The build lookup is experimental. It resolves the app, paginates the app's groups, and includes groups with all-build access.
+
+## Upload without distribution
+
+- `asc publish testflight --app "APP_ID" --ipa "./app.ipa" --upload-only --output json`
+- Add `--wait` when the next step needs a processed build.
+- Upload-only requires a new IPA or local Xcode build. Do not combine it with an existing `--build`, groups, tester notifications, test notes, or beta-review submission. `--build-number` is allowed as upload metadata, but it cannot be the only build input.
+
 ## What to Test notes
 
 - `asc builds test-notes create --build-id "BUILD_ID" --locale "en-US" --whats-new "Test instructions"`

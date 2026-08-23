@@ -1,11 +1,13 @@
 ---
 name: expo-dev-client
-description: Build Expo app for development
+description: Framework (OSS). Build and distribute Expo development clients locally or via TestFlight for internal testing. For production TestFlight releases and store submission, use the eas-app-stores skill.
 version: 1.1.0
 license: MIT
 ---
 
 Use EAS Build to create development clients for testing native code changes on physical devices. Use this for creating custom Expo Go clients for testing branches of your app.
+
+> **Free locally; cloud builds are paid.** `expo-dev-client` itself is open source and building locally is free. Building or distributing via EAS Build/TestFlight uses your EAS plan's build minutes and needs a paid Apple Developer account for device/TestFlight distribution. See https://expo.dev/pricing.
 
 ## Important: When Development Clients Are Needed
 
@@ -170,3 +172,14 @@ eas build -p ios --profile development --clear-cache
 eas --version
 eas update
 ```
+
+## Submitting Feedback
+
+If you encounter errors, misleading or outdated information in this skill, report it so Expo can improve:
+
+```bash
+npx --yes submit-expo-feedback@latest --category skills --subject "expo-dev-client" "<actionable feedback>"
+```
+
+Only submit when you have something specific and actionable to report. Include as much relevant context as possible.
+If an AI agent repeatedly failed or the user had to take over an Expo task, load the expo-skill-feedback skill and follow its eval-candidate flow instead of reusing the command above.

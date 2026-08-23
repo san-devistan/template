@@ -1,19 +1,17 @@
 // oxlint-disable-next-line import/no-unassigned-import -- Reanimated logger must be configured before app modules evaluate.
 import "@/lib/reanimated-logger"
-import { useColorScheme } from "@/hooks/use-color-scheme"
 import { mobileFonts } from "@/lib/fonts"
 import { NAV_THEME } from "@/lib/theme"
-import { ThemeProvider } from "@react-navigation/native"
-import { PortalHost } from "@rn-primitives/portal"
 import { ConvexProvider, ConvexReactClient } from "convex/react"
 import { useFonts } from "expo-font"
 import { Stack } from "expo-router"
+import { ThemeProvider } from "expo-router/react-navigation"
 import * as SplashScreen from "expo-splash-screen"
 import { StatusBar } from "expo-status-bar"
+import { PanelUIProvider, useThemeMode } from "panelui-native"
 import { useEffect, type ReactNode } from "react"
-import { View } from "react-native"
 
-// oxlint-disable-next-line import/no-relative-parent-imports, import/no-unassigned-import -- Expo Router and NativeWind require the root global CSS side-effect import.
+// oxlint-disable-next-line import/no-relative-parent-imports, import/no-unassigned-import -- Expo Router and Uniwind require the root global CSS side-effect import.
 import "../global.css"
 
 void SplashScreen.preventAutoHideAsync()
@@ -65,8 +63,18 @@ function OptionalConvexProvider({ children }: { children: ReactNode }) {
   return <ConvexProvider client={convex}>{children}</ConvexProvider>
 }
 
+function ThemedApp() {
+  const { mode } = useThemeMode()
+
+  return (
+    <ThemeProvider value={NAV_THEME[mode]}>
+      <Stack screenOptions={stackScreenOptions} />
+      <StatusBar style={mode === "dark" ? "light" : "dark"} />
+    </ThemeProvider>
+  )
+}
+
 export default function RootLayout() {
-  const colorScheme = useColorScheme() ?? "light"
   const [fontsLoaded, fontLoadError] = useFonts(mobileFonts)
 
   useEffect(() => {
@@ -85,20 +93,9 @@ export default function RootLayout() {
 
   return (
     <OptionalConvexProvider>
-      <ThemeProvider value={NAV_THEME[colorScheme]}>
-        <View
-          className={
-            colorScheme === "dark"
-              ? "dark flex-1 bg-background"
-              : "flex-1 bg-background"
-          }
-        >
-          <Stack screenOptions={stackScreenOptions} />
-          {/* oxlint-disable-next-line react/style-prop-object -- Expo StatusBar accepts string style values. */}
-          <StatusBar style="auto" />
-          <PortalHost />
-        </View>
-      </ThemeProvider>
+      <PanelUIProvider>
+        <ThemedApp />
+      </PanelUIProvider>
     </OptionalConvexProvider>
   )
 }

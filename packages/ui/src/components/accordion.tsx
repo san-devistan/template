@@ -35,7 +35,7 @@ function AccordionTrigger({
       <AccordionPrimitive.Trigger
         data-slot="accordion-trigger"
         className={cn(
-          "group/accordion-trigger relative flex flex-1 items-start justify-between gap-6 border border-transparent p-4 text-left text-sm font-medium transition-all outline-none hover:underline aria-disabled:pointer-events-none aria-disabled:opacity-50 **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 **:data-[slot=accordion-trigger-icon]:text-muted-foreground",
+          "group/accordion-trigger gap-6 p-4 text-sm font-medium **:data-[slot=accordion-trigger-icon]:size-4 relative flex flex-1 items-start justify-between border border-transparent text-left transition-all outline-none hover:underline aria-disabled:pointer-events-none aria-disabled:opacity-50 **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:text-muted-foreground",
           className
         )}
         {...props}
@@ -62,12 +62,12 @@ function AccordionContent({
   return (
     <AccordionPrimitive.Panel
       data-slot="accordion-content"
-      className="overflow-hidden px-4 text-sm data-open:animate-accordion-down data-closed:animate-accordion-up"
+      className="px-4 text-sm data-open:animate-accordion-down data-closed:animate-accordion-up overflow-hidden"
       {...props}
     >
       <div
         className={cn(
-          "h-(--accordion-panel-height) pt-0 pb-4 data-ending-style:h-0 data-starting-style:h-0 [&_a]:underline [&_a]:underline-offset-3 [&_a]:hover:text-foreground [&_p:not(:last-child)]:mb-4",
+          "pt-0 pb-4 data-ending-style:h-0 data-starting-style:h-0 [&_p:not(:last-child)]:mb-4 h-(--accordion-panel-height) [&_a]:underline [&_a]:underline-offset-3 [&_a]:hover:text-foreground",
           className
         )}
       >

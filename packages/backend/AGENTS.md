@@ -74,7 +74,7 @@ TypeScript.
 | `email-and-password-best-practices`        | Email verification, password reset, password policy, hashing, sign-in, sign-up, or credential auth        |
 | `two-factor-authentication-best-practices` | TOTP, OTP, backup codes, trusted devices, MFA setup, authenticator apps, or Better Auth twoFactor plugin  |
 | `organization-best-practices`              | Better Auth organizations, teams, invitations, members, roles, permissions, multi-tenancy, or RBAC        |
-| `create-auth-skill`                        | Scaffolding Better Auth into a TypeScript/JavaScript app with framework detection and auth UI             |
+| `create-auth`                              | Scaffolding Better Auth into a TypeScript/JavaScript app with framework detection and auth UI             |
 
 ### Email And Resend
 

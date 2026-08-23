@@ -11,19 +11,19 @@
       "source": "mattpocock/skills",
       "sourceType": "github",
       "skillPath": "skills/productivity/grilling/SKILL.md",
-      "computedHash": "4ebdd12fe61ff3abf20cff6683740e2b9b3739454be0a3f4a928a1c4d07d6b34"
+      "computedHash": "4dd886b0196bf43729d954ae326016f2bd9f5f79d892500b407c33a753362f14"
     },
     "security-audit": {
       "source": "cloudflare/security-audit-skill",
       "sourceType": "github",
       "skillPath": "skills/security-audit/SKILL.md",
-      "computedHash": "8eda07507ef5ac3e29446b4e269f1eea8bc318521e32af5e9a97b28179ba35e1"
+      "computedHash": "02a15f2226610f8c9d23732b9f11fe64865f35b1c26cd0560db370f441e9a199"
     },
     "turborepo": {
       "source": "vercel/turborepo",
       "sourceType": "github",
       "skillPath": "skills/turborepo/SKILL.md",
-      "computedHash": "7fcd5ac3e11b30b86907ab9a81af6888954d9f14c72f3e09f5cc2afcbd50956d"
+      "computedHash": "eb988d5153a0483bee1e50e0accf39ce57690e55686f3cf25d3b960d672ca703"
     }
   }
 }

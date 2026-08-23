@@ -6,20 +6,27 @@ Connect automation.
 
 ## UI Boundaries
 
-Compose screens from `apps/mobile/components/ui` first. The mobile app does not
-import web React components from `packages/ui`; it mirrors the shared design
-language with native primitives and generated theme values.
+PanelUI is the primary mobile UI library. Before creating a custom component,
+search PanelUI and read the component's current docs through the local
+`panelui` skill. Import packaged components from `panelui-native`.
+
+If a PanelUI component needs customization that its props do not support, do
+not patch `panelui-native`. Copy its source into the repository with the
+PanelUI CLI and own the local component instead, for example:
+`pnpm dlx panelui-cli@latest add time-picker`.
+
+Do not port or mirror React components from `packages/ui`. That package remains
+the source of truth for shared design tokens and web UI only. The generated
+`apps/mobile/global.css` imports `packages/ui/src/styles/globals.css`, so
+PanelUI and any app-specific mobile UI consume the same semantic tokens.
+
+Create app-specific mobile components only when PanelUI does not cover the
+workflow. Compose PanelUI parts before reaching for raw React Native views, use
+semantic tokens such as `bg-background`, `text-foreground`, and
+`border-border`, and never hardcode theme colors.
 
 Shared token changes belong in `packages/ui/src/tokens/design-tokens.json`.
 Run `pnpm sync:design-system` after changing those tokens.
-
-Mobile UI components are native counterparts to shared design-system concepts,
-not wrappers around web components. When a web component is added or changed,
-add or update a mobile component only if a mobile workflow needs the same
-concept. Use React Native primitives, `@rn-primitives/*` where appropriate,
-NativeWind class names, and generated token names such as `bg-background`,
-`text-foreground`, `border-border`, `bg-primary`, and
-`text-primary-foreground`.
 
 Do not hand-edit generated theme files:
 
@@ -35,6 +42,7 @@ only the narrow skill needed for the task.
 
 | Skill                        | Invoke when                                                                                                      |
 | ---------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `panelui`                    | Building mobile UI, choosing PanelUI components, theming, forms, overlays, charts, or debugging missing styles   |
 | `building-native-ui`         | Building Expo Router screens, native UI, navigation, styling, animations, tabs, search, forms, or media patterns |
 | `vercel-react-native-skills` | React Native performance, lists, animations, images, native APIs, monorepo native deps, or platform UI patterns  |
 | `native-data-fetching`       | Any network request, API call, data fetching, caching, offline behavior, React Query/SWR, or Expo Router loaders |
@@ -82,10 +90,9 @@ only the narrow skill needed for the task.
 | `effect-ts`                     | Nontrivial Effect work: typed failures, native/API boundaries, service/context dependencies, config, retries, resources, concurrency, or tracing |
 | `ts-pattern`                    | Exhaustive pattern matching for discriminated unions, navigation/state variants, native/API result variants, reducer actions, or finite statuses |
 
-This workspace depends on `effect`. Prefer Effect for mobile workflows where
-typed failures or required context make behavior clearer: backend API adapters,
-native resource boundaries, retrying/offline-capable operations, config,
-background work, and concurrent tasks. Keep pure UI components, simple hooks,
+Add `effect` when a mobile workflow needs typed failures or required context,
+such as backend API adapters, native resource boundaries, retrying/offline work,
+config, background work, or concurrency. Keep pure UI components, simple hooks,
 and local screen state simple.
 
 Use the local `ts-pattern` skill when mobile code branches over finite typed

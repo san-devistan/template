@@ -32,7 +32,7 @@ function ChartLegendContent({
   return (
     <div
       className={cn(
-        "flex items-center justify-center gap-4",
+        "gap-4 flex items-center justify-center",
         verticalAlign === "top" ? "pb-3" : "pt-3",
         className
       )}
@@ -70,7 +70,7 @@ function ChartLegendItem({
   const Icon = itemConfig?.icon
 
   return (
-    <div className="flex items-center gap-1.5 [&>svg]:size-3 [&>svg]:text-muted-foreground">
+    <div className="gap-1.5 [&>svg]:size-3 flex items-center [&>svg]:text-muted-foreground">
       {Icon && !hideIcon ? (
         <Icon />
       ) : (

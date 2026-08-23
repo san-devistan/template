@@ -5,7 +5,7 @@
       "source": "paulrberg/agent-skills",
       "sourceType": "github",
       "skillPath": "skills/effect-ts/SKILL.md",
-      "computedHash": "79468424908ecbc55109c9826ff29d2ae9737e1dfff8733875008e1d97e2e085"
+      "computedHash": "2f5cab434a7c6c55d919466d70a2e56c5d70fc2e725af2150090d013f413fad7"
     },
     "tanstack-integration-best-practices": {
       "source": "deckardger/tanstack-agent-skills",
@@ -47,7 +47,7 @@
       "source": "vercel-labs/agent-skills",
       "sourceType": "github",
       "skillPath": "skills/react-view-transitions/SKILL.md",
-      "computedHash": "c8952fc9127fa0564d0cb71dccb4215a5608ac933b5831104f09173a97a46f85"
+      "computedHash": "b1be40dfc6e714612020c7583b574cc4c92a1b5bc185a7dd3eea5c0123653d1c"
     },
     "web-design-guidelines": {
       "source": "vercel-labs/agent-skills",

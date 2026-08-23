@@ -1,24 +1,25 @@
 {
-  "name": "name-of-project",
+  "name": "hitomi",
   "version": "0.0.1",
   "private": true,
   "scripts": {
     "build": "turbo run build --filter=web",
-    "dev": "turbo run dev --filter=web --filter=@workspace/backend --filter=mobile",
+    "dev": "turbo run dev --filter=web --filter=@workspace/backend",
     "fix": "bash scripts/fix.sh",
     "update:deps": "pnpm update -r && pnpm peers check --lockfile-only",
-    "update:skills": "npx --yes skills update --project --yes && pnpm -r --workspace-concurrency=1 exec npx --yes skills update --project --yes",
+    "update:skills": "AI_AGENT=codex npx --yes skills update --project --yes && AI_AGENT=codex pnpm -r --workspace-concurrency=1 exec npx --yes skills update --project --yes",
     "sync:design-system": "node scripts/sync-design-system.mjs",
     "sync:shadcn": "npx shadcn@latest diff -c packages/ui"
   },
   "devDependencies": {
+    "@oxlint/plugins": "1.78.0",
     "oxc-parser": "^0.129.0",
     "oxc-resolver": "^11.24.2",
     "oxfmt": "^0.48.0",
-    "oxlint": "^1.78.0",
+    "oxlint": "^1.79.0",
     "oxlint-tsgolint": "^7.0.2001",
     "portless": "^0.15.5",
-    "turbo": "^2.10.9",
+    "turbo": "^2.10.11",
     "typescript": "5.9.3"
   },
   "engines": {

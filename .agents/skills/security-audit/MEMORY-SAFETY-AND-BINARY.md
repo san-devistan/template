@@ -49,7 +49,7 @@ Pick the relevant classes based on Phase 1. Split per subsystem for large target
 - **Chain a weak primitive.** A blocked path means you haven't found the right pivot, not that it's unexploitable. Always ask "what does this actually let me do, and what runs automatically once I can put bytes on disk?" (plugin dirs, autoload, `.git/hooks`, `conftest.py`).
 - **Hunt where the crowd isn't.** The tools researchers themselves trust — debuggers, disassemblers, scanners, dev tooling — are under-audited and high-impact. Old code and obscure formats are gold.
 
-## Verification discipline (apply before reporting ANY finding here)
+## Validation rules (apply before reporting ANY finding here)
 
 1. **Build a debuggable target first.** Wire in crash dumps + a debugger before you claim exploitability. You can't iterate on what you can't observe.
 2. **Read the offset from the crash, not the disassembly.** Send a cyclic (De Bruijn) pattern; the faulting register values give the exact offset. A variable-length prefix (handle, optional field, padding) shifts the geometry off the static prediction.

@@ -72,12 +72,12 @@ function ChartTooltipContent({
   return (
     <div
       className={cn(
-        "grid min-w-32 items-start gap-1.5 rounded-lg border border-border/50 bg-background px-2.5 py-1.5 text-xs shadow-xl",
+        "min-w-32 gap-1.5 px-2.5 py-1.5 text-xs shadow-xl grid items-start rounded-lg border border-border/50 bg-background",
         className
       )}
     >
       {!nestLabel ? tooltipLabel : null}
-      <div className="grid gap-1.5">
+      <div className="gap-1.5 grid">
         {visiblePayload.map((item, itemIndex) => (
           <ChartTooltipItem
             key={getPayloadItemKey(item)}
@@ -129,7 +129,7 @@ function ChartTooltipItem({
   return (
     <div
       className={cn(
-        "flex w-full flex-wrap items-stretch gap-2 [&>svg]:h-2.5 [&>svg]:w-2.5 [&>svg]:text-muted-foreground",
+        "gap-2 [&>svg]:h-2.5 [&>svg]:w-2.5 flex w-full flex-wrap items-stretch [&>svg]:text-muted-foreground",
         indicator === "dot" && "items-center"
       )}
     >
@@ -188,7 +188,7 @@ function ChartTooltipDefaultItem({
           nestLabel ? "items-end" : "items-center"
         )}
       >
-        <div className="grid gap-1.5">
+        <div className="gap-1.5 grid">
           {nestLabel ? tooltipLabel : null}
           <span className="text-muted-foreground">
             {itemConfig?.label ?? item.name}

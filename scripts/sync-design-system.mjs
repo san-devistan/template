@@ -5,11 +5,14 @@ import { fileURLToPath } from "node:url"
 import { promisify } from "node:util"
 
 import { formatNumber, oklchToHsl } from "./design-system/color.mjs"
-import { importAppliedTokens } from "./design-system/extract-applied-tokens.mjs"
+import {
+  getGeneratedWebHeader,
+  importAppliedTokens,
+  wasGeneratedFromWebTokens,
+} from "./design-system/extract-applied-tokens.mjs"
 import {
   COLOR_TOKENS,
   FONT_WEIGHT,
-  expectRecord,
   validateTokens,
 } from "./design-system/tokens.mjs"
 
@@ -65,7 +68,7 @@ async function hasGitChanges(filePath) {
   }
 }
 
-async function shouldImportAppliedCss(mode, generatedWebCss) {
+async function shouldImportAppliedCss(mode, tokens, generatedWebCss) {
   if (mode === "always") {
     return true
   }
@@ -78,6 +81,10 @@ async function shouldImportAppliedCss(mode, generatedWebCss) {
 
   if (currentWebCss === generatedWebCss) {
     return false
+  }
+
+  if (wasGeneratedFromWebTokens(currentWebCss, tokens)) {
+    return true
   }
 
   const [tokensChanged, webCssChanged] = await Promise.all([
@@ -112,38 +119,6 @@ function toCamelCase(token) {
   return token.replace(/-([a-z0-9])/g, (_, char) => char.toUpperCase())
 }
 
-function formatPropertyName(name) {
-  return /^[A-Za-z_$][\w$]*$/u.test(name) ? name : JSON.stringify(name)
-}
-
-function formatTsValue(value, indent = 0) {
-  if (typeof value === "string") {
-    return JSON.stringify(value)
-  }
-
-  if (typeof value === "number") {
-    return value.toString()
-  }
-
-  const record = expectRecord(value, "generated value")
-  const indentation = " ".repeat(indent)
-  const childIndentation = " ".repeat(indent + 2)
-  const lines = ["{"]
-
-  for (const [name, childValue] of Object.entries(record)) {
-    lines.push(
-      `${childIndentation}${formatPropertyName(name)}: ${formatTsValue(
-        childValue,
-        indent + 2
-      )},`
-    )
-  }
-
-  lines.push(`${indentation}}`)
-
-  return lines.join("\n")
-}
-
 function pxToRem(value) {
   return `${formatNumber(value / 16)}rem`
 }
@@ -163,7 +138,12 @@ function buildCssVars(vars, indent = 4) {
 }
 
 function buildColorVars(colors) {
-  return Object.fromEntries(COLOR_TOKENS.map((token) => [token, colors[token]]))
+  return Object.fromEntries(
+    COLOR_TOKENS.flatMap((token) => [
+      [token, colors[token]],
+      [`color-${token}`, colors[token]],
+    ])
+  )
 }
 
 function buildRadiusVars(radius) {
@@ -239,25 +219,7 @@ function buildThemeInlineVars(tokens) {
   }
 }
 
-function buildWebFontImports(fonts) {
-  return Object.values(fonts.web)
-    .map((font) => font.match(/["']([^"']+)["']/)?.[1])
-    .filter(Boolean)
-    .map((font) => font.replace(/\s+Variable$/, ""))
-    .map((font) =>
-      font
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/^-|-$/g, "")
-    )
-    .filter(Boolean)
-    .filter((font, index, fontNames) => fontNames.indexOf(font) === index)
-    .map((font) => `@import "@fontsource-variable/${font}";`)
-    .join("\n")
-}
-
 function buildWebCss(tokens) {
-  const fontImports = buildWebFontImports(tokens.fonts)
   const rootVars = {
     ...buildColorVars(tokens.colors.light),
     ...buildRadiusVars(tokens.radius),
@@ -266,17 +228,7 @@ function buildWebCss(tokens) {
     ...buildTypographyVars(tokens.typography),
   }
 
-  return `${GENERATED_HEADER}
-
-@import "tailwindcss";
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
-${fontImports}
-
-@custom-variant dark (&:is(.dark *));
-@source "../../../apps/**/*.{ts,tsx}";
-@source "../../../components/**/*.{ts,tsx}";
-@source "../**/*.{ts,tsx}";
+  return `${getGeneratedWebHeader(tokens)}
 
 @theme inline {
 ${buildCssVars(buildThemeInlineVars(tokens), 2)}
@@ -289,46 +241,27 @@ ${buildCssVars(rootVars, 2)}
 .dark {
 ${buildCssVars(buildColorVars(tokens.colors.dark), 2)}
 }
-
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-  button:not(:disabled),
-  [role="button"]:not(:disabled) {
-    cursor: pointer;
-  }
-}
 `
 }
 
-function buildMobileCss(tokens, lightTheme, darkTheme) {
-  const rootVars = {
-    ...lightTheme,
-    ...buildRadiusVars(tokens.radius),
-    ...buildFontVars(tokens.fonts),
-    ...buildMotionVars(tokens.motion),
-    ...buildShadowVars(tokens.shadow),
-    ...buildTypographyVars(tokens.typography),
-  }
-
+function buildMobileCss(tokens) {
   return `${GENERATED_HEADER}
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@import "uniwind";
+@import "panelui-native/theme.css";
+@import "../../packages/ui/src/styles/globals.css";
 
-@layer base {
-  :root {
-${buildCssVars(rootVars)}
-  }
+@source "./node_modules/panelui-native/src";
 
-  .dark {
-${buildCssVars(darkTheme)}
-  }
+@theme {
+  --font-normal: ${tokens.fonts.mobile.regular};
+  --font-medium: ${tokens.fonts.mobile.medium};
+  --font-semibold: ${tokens.fonts.mobile.semibold};
+  --font-bold: ${tokens.fonts.mobile.bold};
+  --font-extrabold: ${tokens.fonts.mobile.extrabold};
+  --font-heading: ${tokens.fonts.mobile.heading};
+  --font-mono: ${tokens.fonts.mobile.heading};
 }
 `
 }
@@ -342,33 +275,13 @@ function buildThemeObject(theme, radius) {
   ].join("\n")
 }
 
-function buildTypographyTs(typography) {
-  const lines = ["{"]
-
-  for (const [name, token] of Object.entries(typography)) {
-    lines.push(`  ${formatPropertyName(name)}: {`)
-    lines.push(`    fontSize: ${token.fontSize},`)
-    lines.push(`    lineHeight: ${token.lineHeight},`)
-    lines.push(`    fontFamily: FONT_FAMILY.${token.font},`)
-    lines.push("  },")
-  }
-
-  lines.push("}")
-
-  return lines.join("\n")
-}
-
 function buildThemeTs(tokens, lightTheme, darkTheme) {
   return `// Generated from packages/ui/src/tokens/design-tokens.json. Do not edit by hand.
-import { DarkTheme, DefaultTheme, type Theme } from "@react-navigation/native"
-
-export const FONT_FAMILY = ${formatTsValue(tokens.fonts.mobile)} as const
-
-export const TYPOGRAPHY = ${buildTypographyTs(tokens.typography)} as const
-
-export const MOTION = ${formatTsValue(tokens.motion)} as const
-
-export const COMPONENT_TOKENS = ${formatTsValue(tokens.components)} as const
+import {
+  DarkTheme,
+  DefaultTheme,
+  type Theme,
+} from "expo-router/react-navigation"
 
 export const THEME = {
   light: {
@@ -381,7 +294,7 @@ ${buildThemeObject(darkTheme, tokens.radius)}
 
 export type ThemeName = keyof typeof THEME
 
-export const NAV_THEME: Record<ThemeName, Theme> = {
+export const NAV_THEME = {
   light: {
     ...DefaultTheme,
     colors: {
@@ -406,7 +319,7 @@ export const NAV_THEME: Record<ThemeName, Theme> = {
       text: THEME.dark.foreground,
     },
   },
-}
+} satisfies Record<ThemeName, Theme>
 `
 }
 
@@ -414,7 +327,11 @@ const options = parseArgs(process.argv.slice(2))
 let tokens = await readTokens()
 
 if (
-  await shouldImportAppliedCss(options.importAppliedCss, buildWebCss(tokens))
+  await shouldImportAppliedCss(
+    options.importAppliedCss,
+    tokens,
+    buildWebCss(tokens)
+  )
 ) {
   const changes = await importAppliedTokens({
     tokensFile: TOKENS_FILE,
@@ -431,5 +348,5 @@ const lightTheme = buildMobileColors(tokens.colors.light)
 const darkTheme = buildMobileColors(tokens.colors.dark)
 
 await writeFile(WEB_CSS, buildWebCss(tokens))
-await writeFile(MOBILE_CSS, buildMobileCss(tokens, lightTheme, darkTheme))
+await writeFile(MOBILE_CSS, buildMobileCss(tokens))
 await writeFile(MOBILE_THEME, buildThemeTs(tokens, lightTheme, darkTheme))

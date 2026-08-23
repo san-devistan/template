@@ -3,7 +3,7 @@ name: upgrade-stripe
 description: Guide for upgrading Stripe API versions and SDKs
 ---
 
-The latest Stripe API version is 2026-06-24.dahlia - use this version when upgrading unless the user specifies a different target version.
+The latest Stripe API version is 2026-07-29.dahlia - use this version when upgrading unless the user specifies a different target version.
 
 # Upgrading Stripe Versions
 
@@ -11,7 +11,7 @@ This guide covers upgrading Stripe API versions, server-side SDKs, Stripe.js, an
 
 ## Understanding Stripe API Versioning
 
-Stripe uses date-based API versions (e.g., `2026-06-24.dahlia`, `2025-08-27.basil`, `2024-12-18.acacia`). Your account’s API version determines request/response behavior.
+Stripe uses date-based API versions (e.g., `2026-07-29.dahlia`, `2025-08-27.basil`, `2024-12-18.acacia`). Your account’s API version determines request/response behavior.
 
 ### Types of Changes
 
@@ -43,16 +43,16 @@ These SDKs offer flexible version control:
 
 ```python
 import stripe
-stripe.api_version = '2026-06-24.dahlia'
+stripe.api_version = '2026-07-29.dahlia'
 ```
 
 ```ruby
-Stripe.api_version = '2026-06-24.dahlia'
+Stripe.api_version = '2026-07-29.dahlia'
 ```
 
 ```javascript
 const stripe = require("stripe")("sk_test_xxx", {
-  apiVersion: "2026-06-24.dahlia",
+  apiVersion: "2026-07-29.dahlia",
 })
 ```
 
@@ -61,7 +61,7 @@ const stripe = require("stripe")("sk_test_xxx", {
 ```python
 stripe.Customer.create(
   email="customer@example.com",
-  stripe_version='2026-06-24.dahlia'
+  stripe_version='2026-07-29.dahlia'
 )
 ```
 
@@ -76,7 +76,7 @@ Always specify the API version you’re integrating against in your code instead
 ```javascript
 // Good: Explicit version
 const stripe = require("stripe")("sk_test_xxx", {
-  apiVersion: "2026-06-24.dahlia",
+  apiVersion: "2026-07-29.dahlia",
 })
 
 // Avoid: Relying on account default
@@ -109,7 +109,7 @@ Major npm versions correspond to specific Stripe.js versions.
 
 Each Stripe.js version automatically pairs with its corresponding API version. For instance:
 
-- Dahlia Stripe.js uses `2026-06-24.dahlia` API
+- Dahlia Stripe.js uses `2026-07-29.dahlia` API
 - Acacia Stripe.js uses `2024-12-18.acacia` API
 
 You can’t override this association.
@@ -165,14 +165,14 @@ Use the `Stripe-Version` header to test your code against a new version without 
 ```bash
 curl https://api.stripe.com/v1/customers \
   -u sk_test_xxx: \
-  -H "Stripe-Version: 2026-06-24.dahlia"
+  -H "Stripe-Version: 2026-07-29.dahlia"
 ```
 
 Or in code:
 
 ```javascript
 const stripe = require("stripe")("sk_test_xxx", {
-  apiVersion: "2026-06-24.dahlia", // Test with new version
+  apiVersion: "2026-07-29.dahlia", // Test with new version
 })
 ```
 

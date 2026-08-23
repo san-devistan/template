@@ -10,20 +10,21 @@ Automations are created in a `disabled` state by default. Set `status: "enabled"
 
 ### Node.js
 
-| Operation | Method                                                    | Notes                                               |
-| --------- | --------------------------------------------------------- | --------------------------------------------------- |
-| Create    | `resend.automations.create(params)`                       | Returns automation ID                               |
-| Get       | `resend.automations.get(id)`                              | Returns full automation with steps and connections  |
-| List      | `resend.automations.list(params?)`                        | Filter by `status`, cursor-paginated                |
-| Update    | `resend.automations.update(params)`                       | Partial update — name, status, or steps+connections |
-| Delete    | `resend.automations.remove(id)`                           | Permanent                                           |
-| Stop      | `resend.automations.stop(id)`                             | Sets status to `disabled`                           |
-| List Runs | `resend.automations.runs.list({ automationId, status? })` | Filter by run status                                |
-| Get Run   | `resend.automations.runs.get({ automationId, runId })`    | Returns run with executed steps                     |
+| Operation | Method                                                    | Notes                                                       |
+| --------- | --------------------------------------------------------- | ----------------------------------------------------------- |
+| Create    | `resend.automations.create(params)`                       | Returns automation ID                                       |
+| Get       | `resend.automations.get(id)`                              | Returns full automation with steps and connections          |
+| List      | `resend.automations.list(params?)`                        | Filter by `status`, cursor-paginated                        |
+| Update    | `resend.automations.update(params)`                       | Partial update — name, status, or steps+connections         |
+| Duplicate | `resend.automations.duplicate(id)`                        | Copies steps and connections, returns the new automation ID |
+| Delete    | `resend.automations.remove(id)`                           | Permanent                                                   |
+| Stop      | `resend.automations.stop(id)`                             | Sets status to `disabled`                                   |
+| List Runs | `resend.automations.runs.list({ automationId, status? })` | Filter by run status                                        |
+| Get Run   | `resend.automations.runs.get({ automationId, runId })`    | Returns run with executed steps                             |
 
 ### Python
 
-`resend.Automations.create/get/list/update/remove/stop` — same operations with snake_case params.
+`resend.Automations.create/get/list/update/remove/duplicate/stop` — same operations with snake_case params.
 
 ## Graph Model
 
@@ -52,7 +53,7 @@ Groups: `{ "type": "and" | "or", "rules": [...] }` for nesting.
 
 Supported operators: `eq`, `neq`, `gt`, `gte`, `lt`, `lte`, `contains`, `starts_with`, `ends_with`, `exists`, `is_empty`. The `exists` and `is_empty` operators require no `value`.
 
-For `condition` steps, fields reference contact data (e.g. `properties.plan`). For `filter_rule` in `wait_for_event`, fields are restricted to `event.*` (e.g. `event.status`).
+For `condition` steps, fields use the `contact.*`, `event.*`, or `wait_events.*` namespaces (e.g. `contact.properties.plan`). For `filter_rule` in `wait_for_event`, fields use `event.*` or `contact.*` (e.g. `event.status`).
 
 ### Connections
 
@@ -155,8 +156,8 @@ const { data, error } = await resend.automations.create({
       type: "condition",
       config: {
         type: "rule",
-        field: "properties.plan",
-        operator: "equals",
+        field: "contact.properties.plan",
+        operator: "eq",
         value: "pro",
       },
     },
@@ -226,6 +227,14 @@ const { data: run } = await resend.automations.runs.get({
 ```typescript
 const { data, error } = await resend.automations.stop("aut_abc123")
 // data.status === 'disabled'
+```
+
+### Duplicate an Automation
+
+```typescript
+const { data, error } = await resend.automations.duplicate("aut_abc123")
+// data.id is the new automation's ID
+// The copy starts disabled, named "<original name> (Copy)"
 ```
 
 ## Constraints

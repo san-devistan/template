@@ -31,7 +31,7 @@ export const Route = createRootRouteWithContext<{
     ],
   }),
   notFoundComponent: () => (
-    <main className="container mx-auto p-4 pt-16">
+    <main className="p-4 pt-16 container mx-auto">
       <h1>404</h1>
       <p>The requested page could not be found.</p>
     </main>

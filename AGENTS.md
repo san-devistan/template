@@ -1,6 +1,6 @@
 # Repository Guide
 
-This is a pnpm workspace monorepo. The project name is `name-of-project`; this is the value of the variable `<project-name>`.
+This is a pnpm workspace monorepo. The project name is `hitomi`; this is the value of the variable `<project-name>`.
 Prefer repo-local conventions and skills before introducing new patterns.
 
 ## Workspace Map
@@ -8,7 +8,7 @@ Prefer repo-local conventions and skills before introducing new patterns.
 | Area          | Path               | Stack                                                                                           | Notes                                                                                                      |
 | ------------- | ------------------ | ----------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
 | Web app       | `apps/web`         | TanStack Start, React 19, TanStack Router, TanStack Query, Tailwind CSS v4, Vite, Convex client | Uses shared web UI from `@workspace/ui`.                                                                   |
-| Mobile app    | `apps/mobile`      | Expo Router, React Native, NativeWind, React Native Reusables, Convex client                    | Owns native UI components in `components/ui`, derived from the shared web design system.                   |
+| Mobile app    | `apps/mobile`      | Expo Router, React Native, PanelUI, Uniwind, Convex client                                      | Uses PanelUI components with shared tokens imported from `packages/ui`; custom native UI is app-specific.  |
 | Backend       | `packages/backend` | Convex                                                                                          | Owns Convex schema, functions, generated API exports, auth, email, billing, and backend integration logic. |
 | Web UI system | `packages/ui`      | React 19, shadcn-style components, Tailwind CSS v4, Base UI, lucide-react, `usehooks-ts`        | Source of truth for the web design system and design tokens.                                               |
 | Automation    | `scripts`          | Shell and explicit Node.js scripts                                                              | JavaScript is allowed here for repo tooling.                                                               |
@@ -37,8 +37,8 @@ When explicitly requested:
 
 `packages/ui` owns the canonical web design system, shared design tokens, and
 shadcn-style components. `apps/web` consumes those components through
-`@workspace/ui`. `apps/mobile` owns native UI components that track the shared
-design language without importing web React components.
+`@workspace/ui`. `apps/mobile` imports the shared CSS tokens and uses PanelUI
+as its primary component library; it does not mirror web React components.
 
 For implementation details, read the local workspace guide before editing UI:
 
@@ -46,8 +46,8 @@ For implementation details, read the local workspace guide before editing UI:
 - Mobile app: `apps/mobile/AGENTS.md`
 - Web UI system: `packages/ui/AGENTS.md`
 
-Token generation, generated theme files, and mobile native counterpart rules
-are documented in the UI and mobile workspace guides.
+Token generation, generated theme files, and PanelUI usage rules are
+documented in the UI and mobile workspace guides.
 
 ## File Naming
 
@@ -124,7 +124,7 @@ workspace-specific skills into the root skill directory.
 | Scope / workspace                 | Read first                   | Local skill families                                                                              |
 | --------------------------------- | ---------------------------- | ------------------------------------------------------------------------------------------------- |
 | `apps/web`                        | `apps/web/AGENTS.md`         | TanStack Start, Router, Query, React performance, Effect, ts-pattern, usehooks-ts, web guidelines |
-| `apps/mobile`                     | `apps/mobile/AGENTS.md`      | Expo, EAS, React Native, native UI, data fetching, Effect, ts-pattern, ASC CLI                    |
+| `apps/mobile`                     | `apps/mobile/AGENTS.md`      | Expo, EAS, PanelUI, React Native, native UI, data fetching, Effect, ts-pattern, ASC CLI           |
 | `packages/backend`                | `packages/backend/AGENTS.md` | Convex, Better Auth, Resend/email, Stripe, Effect, ts-pattern                                     |
 | `packages/ui`                     | `packages/ui/AGENTS.md`      | shadcn, web design tokens, shared React components, UI primitives, usehooks-ts                    |
 | Root, `scripts`, workspace config | this file                    | Turborepo, package boundaries, repo tooling                                                       |
@@ -133,19 +133,18 @@ For TypeScript code, prefer the project-standard packages that encode safer
 patterns instead of hand-written equivalents.
 
 Effect is project-standard in workspaces that already depend on `effect`:
-`apps/web`, `apps/mobile`, and `packages/backend`. In those workspaces, read
-the workspace-local `effect-ts` skill before nontrivial Effect work. Prefer
-Effect for typed failures, required context/dependencies, async workflows,
-external services, schemas, config, retries, resource handling, tracing, and
-concurrency. This keeps errors and dependencies visible in types instead of
-hidden behind thrown exceptions, nullable state, or ad hoc Promise chains.
+`apps/web` and `packages/backend`. In those workspaces, read the workspace-local
+`effect-ts` skill before nontrivial Effect work. Add it to `apps/mobile` only
+when a mobile workflow needs typed failures, required context/dependencies,
+retries, resource handling, tracing, or concurrency.
 
 Do not force Effect into pure synchronous helpers, simple React render/state
 code, design tokens, shell scripts, or `packages/ui` work unless that workspace
 explicitly adds an `effect` dependency and the added ceremony reduces real risk.
 
-- Use the workspace-local `effect-ts` skill in `apps/web`, `apps/mobile`, and
-  `packages/backend` for nontrivial Effect work.
+- Use the workspace-local `effect-ts` skill in `apps/web` and
+  `packages/backend` for nontrivial Effect work. In `apps/mobile`, read it
+  before adding Effect for a qualifying workflow.
 - Use the workspace-local `ts-pattern` skill in `apps/web`, `apps/mobile`, and
   `packages/backend` when branching over discriminated unions, tagged states,
   action/result variants, or other finite cases where `.exhaustive()` prevents

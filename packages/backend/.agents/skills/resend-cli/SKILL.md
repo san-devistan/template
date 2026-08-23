@@ -13,7 +13,7 @@ metadata:
   author: resend
   # Skill version is independent from the CLI/package.json version —
   # bump it on skill content changes, not CLI releases.
-  version: "2.3.0"
+  version: "2.8.0"
   homepage: https://resend.com/docs/cli-agents
   source: https://github.com/resend/resend-cli
   openclaw:
@@ -57,6 +57,8 @@ references:
   - references/templates.md
   - references/topics.md
   - references/logs.md
+  - references/careers.md
+  - references/suppressions.md
   - references/webhooks.md
   - references/auth.md
   - references/workflows.md
@@ -142,24 +144,26 @@ Auth resolves: `--api-key` flag > `RESEND_API_KEY` env > config file (`resend lo
 
 ## Available Commands
 
-| Command Group                                        | What it does                                        |
-| ---------------------------------------------------- | --------------------------------------------------- |
-| `emails`                                             | send, get, list, batch, cancel, update              |
-| `emails receiving`                                   | list, get, attachments, forward, listen             |
-| `domains`                                            | create, verify, get, claim, update, delete, list    |
-| `logs`                                               | list, get, open                                     |
-| `api-keys`                                           | create, list, delete                                |
-| `automations`                                        | create, get, list, update, delete, stop, open, runs |
-| `events`                                             | create, get, list, update, delete, send, open       |
-| `broadcasts`                                         | create, send, update, delete, list                  |
-| `contacts`                                           | create, update, delete, segments, topics, imports   |
-| `contact-properties`                                 | create, update, delete, list                        |
-| `segments`                                           | create, get, list, delete, contacts                 |
-| `templates`                                          | create, publish, duplicate, delete, list            |
-| `topics`                                             | create, update, delete, list                        |
-| `webhooks`                                           | create, update, listen, delete, list                |
-| `auth`                                               | login, logout, switch, rename, remove               |
-| `whoami` / `doctor` / `update` / `open` / `commands` | Utility commands                                    |
+| Command Group                                        | What it does                                                   |
+| ---------------------------------------------------- | -------------------------------------------------------------- |
+| `emails`                                             | send, get, list, batch, cancel, update                         |
+| `emails receiving`                                   | list, get, attachments, forward, listen                        |
+| `domains`                                            | create, verify, get, claim, update, delete, list               |
+| `logs`                                               | list, get, open                                                |
+| `careers`                                            | list, apply — browse open positions at Resend and apply        |
+| `suppressions` _(beta)_                              | list, add, get, delete, batch — requires account enrollment    |
+| `api-keys`                                           | create, list, delete                                           |
+| `automations`                                        | create, get, list, update, delete, duplicate, stop, open, runs |
+| `events`                                             | create, get, list, update, delete, send, open                  |
+| `broadcasts`                                         | create, send, update, delete, list                             |
+| `contacts`                                           | create, update, delete, segments, topics, imports              |
+| `contact-properties`                                 | create, update, delete, list                                   |
+| `segments`                                           | create, get, list, delete, contacts                            |
+| `templates`                                          | create, publish, duplicate, delete, list                       |
+| `topics`                                             | create, update, delete, list                                   |
+| `webhooks`                                           | create, update, listen, delete, list                           |
+| `auth`                                               | login, logout, switch, rename, remove                          |
+| `whoami` / `doctor` / `update` / `open` / `commands` | Utility commands                                               |
 
 Read the matching reference file for detailed flags and output shapes.
 
@@ -167,17 +171,18 @@ Read the matching reference file for detailed flags and output shapes.
 
 ## Common Mistakes
 
-| #   | Mistake                                                                    | Fix                                                                                                                                                                           |
-| --- | -------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1   | **Forgetting `--yes` on delete commands**                                  | All `delete`/`rm` subcommands require `--yes` in non-interactive mode — otherwise the CLI exits with an error                                                                 |
-| 2   | **Not saving webhook `signing_secret`**                                    | `webhooks create` shows the secret once only — it cannot be retrieved later. Capture it from command output immediately                                                       |
-| 3   | **Omitting `--quiet` in CI**                                               | Without `-q`, spinners and status text still go to stderr (not stdout). Use `-q` for JSON on stdout with no spinner noise on stderr                                           |
-| 4   | **Using `--scheduled-at` with batch**                                      | Batch sending does not support `scheduled_at` — use single `emails send` instead                                                                                              |
-| 5   | **Expecting `domains list` to include DNS records**                        | List returns summaries only — use `domains get <id>` for the full `records[]` array                                                                                           |
-| 6   | **Sending a dashboard-created broadcast via CLI**                          | Only API-created broadcasts can be sent with `broadcasts send` — dashboard broadcasts must be sent from the dashboard                                                         |
-| 7   | **Passing `--events` to `webhooks update` expecting additive behavior**    | `--events` replaces the entire subscription list — always pass the complete set                                                                                               |
-| 8   | **Expecting `logs list` to include request/response bodies**               | List returns summary fields only — use `logs get <id>` for full `request_body` and `response_body`                                                                            |
-| 9   | **CSV import fails with `create_error` ("missing required email column")** | `contacts imports create` matches columns case-sensitively by lowercase names (`email`, `first_name`, `last_name`) — use `--column-map` for headers like `Email`/`First Name` |
+| #   | Mistake                                                                    | Fix                                                                                                                                                                                                                                                                                                                                |
+| --- | -------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | **Forgetting `--yes` on delete commands**                                  | All `delete`/`rm` subcommands require `--yes` in non-interactive mode — otherwise the CLI exits with an error                                                                                                                                                                                                                      |
+| 2   | **Not saving webhook `signing_secret`**                                    | `webhooks create` shows the secret once only — it cannot be retrieved later. Capture it from command output immediately                                                                                                                                                                                                            |
+| 3   | **Omitting `--quiet` in CI**                                               | Without `-q`, spinners and status text still go to stderr (not stdout). Use `-q` for JSON on stdout with no spinner noise on stderr                                                                                                                                                                                                |
+| 4   | **Passing `--scheduled-at` as a flag to batch**                            | There is no `--scheduled-at` flag on `emails batch` — set `scheduled_at` per-email in the JSON file instead                                                                                                                                                                                                                        |
+| 5   | **Expecting `domains list` to include DNS records**                        | List returns summaries only — use `domains get <id>` for the full `records[]` array                                                                                                                                                                                                                                                |
+| 6   | **Sending a dashboard-created broadcast via CLI**                          | Only API-created broadcasts can be sent with `broadcasts send` — dashboard broadcasts must be sent from the dashboard                                                                                                                                                                                                              |
+| 7   | **Passing `--events` to `webhooks update` expecting additive behavior**    | `--events` replaces the entire subscription list — always pass the complete set                                                                                                                                                                                                                                                    |
+| 8   | **Expecting `logs list` to include request/response bodies**               | List returns summary fields only — use `logs get <id>` for full `request_body` and `response_body`                                                                                                                                                                                                                                 |
+| 9   | **CSV import fails with `create_error` ("missing required email column")** | `contacts imports create` matches columns case-sensitively by lowercase names (`email`, `first_name`, `last_name`) — use `--column-map` for headers like `Email`/`First Name`                                                                                                                                                      |
+| 10  | **URL attachment "succeeds" but the email never arrives**                  | The API fetches `--attachment "https://..."` URLs after returning the email ID — an unreachable URL fails the email asynchronously. Verify with `emails get <id>` (`last_event: "failed"`), and always pass `;filename=` and `;type=` since neither is derived from the URL (defaults: `attachment-0`, `application/octet-stream`) |
 
 ## Common Patterns
 
@@ -185,6 +190,12 @@ Read the matching reference file for detailed flags and output shapes.
 
 ```bash
 resend emails send --from "you@domain.com" --to user@example.com --subject "Hello" --text "Body"
+```
+
+**Send an inline image (CID attachment) — always double-quote `;` params (required on bash, PowerShell, and cmd):**
+
+```bash
+resend emails send --from "you@domain.com" --to user@example.com --subject "Hello" --html "<img src=cid:logo>" --attachment "./logo.png;cid=logo"
 ```
 
 **Send a React Email template (.tsx):**
@@ -231,6 +242,8 @@ resend doctor -q
 - **Defining contact properties** → [references/contact-properties.md](references/contact-properties.md)
 - **Working with templates** → [references/templates.md](references/templates.md)
 - **Viewing API request logs** → [references/logs.md](references/logs.md)
+- **Browsing or applying to jobs at Resend** → [references/careers.md](references/careers.md)
+- **Managing the suppression list** (beta) → [references/suppressions.md](references/suppressions.md)
 - **Creating automations or sending events** → [references/automations.md](references/automations.md)
 - **Setting up webhooks or listening for events** → [references/webhooks.md](references/webhooks.md)
 - **Auth, profiles, or health checks** → [references/auth.md](references/auth.md)

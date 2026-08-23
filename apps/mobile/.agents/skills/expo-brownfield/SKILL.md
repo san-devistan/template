@@ -1,6 +1,6 @@
 ---
 name: expo-brownfield
-description: Integrate Expo and React Native into an existing native iOS or Android app. Use when the user mentions brownfield, embedding React Native in a native app, AAR/XCFramework, or adding Expo to an existing Kotlin/Swift project. Covers both the isolated approach and the integrated approach.
+description: Framework (OSS). Integrate Expo and React Native into an existing native iOS or Android app. Use when the user mentions brownfield, embedding React Native in a native app, AAR/XCFramework, or adding Expo to an existing Kotlin/Swift project. Covers both the isolated approach and the integrated approach.
 ---
 
 # Expo Brownfield
@@ -52,3 +52,14 @@ npx create-expo-app@latest my-project --template default@sdk-55
 ```
 
 Pin the same Expo SDK across both the RN project and any embedded dependencies.
+
+## Submitting Feedback
+
+If you encounter errors, misleading or outdated information in this skill, report it so Expo can improve:
+
+```bash
+npx --yes submit-expo-feedback@latest --category skills --subject "expo-brownfield" "<actionable feedback>"
+```
+
+Only submit when you have something specific and actionable to report. Include as much relevant context as possible.
+If an AI agent repeatedly failed or the user had to take over an Expo task, load the expo-skill-feedback skill and follow its eval-candidate flow instead of reusing the command above.

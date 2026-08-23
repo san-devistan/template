@@ -9,11 +9,11 @@ For findings from the same attack surface, batch them into one validation agent.
 Each validation agent prompt should:
 1. State the specific finding being validated (title, claimed attack, claimed impact)
 2. Ask the agent to read the exact code paths and verify each step of the trace
-3. Ask it to apply these tests:
+3. Ask it to apply these tests (the adversarial, Phase 3 form of the canonical validation rules in [HUNTING.md](HUNTING.md) — here a separate agent tries to make each one fail):
 
 **Validation tests:**
 1. **Exploitation test**: Read the actual code at each step of the trace. Does the data flow work as claimed? Can you construct the exact input (HTTP request, CLI invocation, API call, crafted file, etc.) that triggers this?
-2. **Impact test**: What does the attacker actually get? If the answer is "they learn field names" or "they cause an error", that's LOW at best.
+2. **Impact test**: What does the attacker actually get? If the answer is "they learn field names" or "they cause an error", that's not meaningful impact — not a finding on its own (at most a building block for a chain).
 3. **Baseline test**: Does the identified comparable have the same pattern? If yes, has it been exploited? If never exploited in years of production use, understand why before reporting.
 4. **Mitigation test**: Is there another layer that prevents exploitation? Check middleware, database constraints, framework defaults.
 5. **Parser/runtime behavior test**: If the exploit depends on how a parser or runtime handles specific input, verify against the actual spec or implementation — do not reason from intuition.
@@ -61,7 +61,7 @@ The schema supports two verdict types via `oneOf`:
 **Before writing `findings.json`:**
 
 1. Read `report-schema.json` from this skill's directory. Follow it exactly — `additionalProperties: false` is enforced, so extra fields will make the output invalid.
-2. For each finding, populate every required field. If you cannot fill `trace` with real file paths and line numbers verified against the source, the finding is not sufficiently verified — go back and verify it or reject it.
+2. For each finding, populate every required field. If you cannot fill `trace` with real file paths and line numbers verified against the source, the finding is not sufficiently verified — go back and verify it or reject it. Mind the required fields that aren't self-evident: `intended_behavior` (what the code is *supposed* to do, so the defect is legible), `confidence` (`low`/`medium`/`high`, with a reason), and the `severity` object (`likelihood`/`impact`/`overall_severity`). All `severity` scores use the schema's **lowercase** enum — `informational`/`low`/`medium`/`high`/`critical`; the UPPERCASE tiers in SKILL.md and REPORT.md are prose labels, not valid JSON values.
 3. Run `node <skill-dir>/validate-findings.cjs <output-dir>/findings.json` to validate. It checks required fields, enum values, structural constraints, and `additionalProperties`. This is a structural check only — it confirms the JSON conforms to the schema, not that the findings are correct. Factual verification is Phase 6's job. Fix any failures before proceeding.
 
 ### Phase 6: Independent verification
@@ -81,15 +81,17 @@ You are an independent verifier. You did NOT write this finding. Your job is to 
 
 2. Verify the root_cause statement by reading the cited file and confirming the described defect exists.
 
-3. Verify the execution payloads would actually work:
-   - Does the endpoint exist at the claimed URL?
-   - Does the HTTP method match?
-   - Would the input pass validation as described?
-   - Would auth/access checks pass as described?
+3. Verify the execution payloads would actually work, in terms that fit the target:
+   - Does the entry point exist as claimed — the endpoint/URL, CLI command, exported function, syscall/ioctl, message handler, or tool the attacker invokes?
+   - Does the invocation match — HTTP method, argument shape, call signature, or message format?
+   - Would the input survive validation and parsing on the real code path?
+   - Would the relevant authentication, authorization, or ownership check pass as described?
 
 4. Verify conditions are complete — are there prerequisites the finding missed?
 
 5. Check the remediation code_changes — would the fix actually prevent the attack without breaking normal functionality?
+
+6. Verify `intended_behavior` accurately states what the code should do, and that `confidence` matches the strength of the evidence — don't leave `high` on a claim you couldn't fully trace.
 
 Return one of:
 - "VERIFIED" — all claims checked out against the source

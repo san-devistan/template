@@ -5,25 +5,25 @@
       "source": "resend/resend-skills",
       "sourceType": "github",
       "skillPath": "skills/agent-email-inbox/SKILL.md",
-      "computedHash": "25ffa798578026fcfdc5bdbe5b10ec2d2cd1784f8a94344c0ac055f3a82b57d4"
+      "computedHash": "65ed829de5d962d032c4d0aa96c8557bc48b79e5ba00ee13eb29b3bc881623d2"
     },
     "better-auth-best-practices": {
       "source": "better-auth/skills",
       "sourceType": "github",
       "skillPath": "better-auth/best-practices/SKILL.md",
-      "computedHash": "a4c830509e85557b59339d8d93a4e243e9e59c686e7678854d39230e12c2a6dc"
+      "computedHash": "61ba0ef64ed2e7c424401cc848ca33dd6d790a720c44727717dc0c5cba5fc122"
     },
     "better-auth-security-best-practices": {
       "source": "better-auth/skills",
       "sourceType": "github",
       "skillPath": "security/SKILL.md",
-      "computedHash": "5717187bba9c22030c7174c74012f01c359f21e2ce87e0eb80e24244d8b8c915"
+      "computedHash": "7a230edf3a24ce18162cb4379f59b6a19b8d24ca04db530609d0f15cede556dc"
     },
     "convex": {
       "source": "get-convex/agent-skills",
       "sourceType": "github",
       "skillPath": "skills/convex/SKILL.md",
-      "computedHash": "c5f3622c64ef550aac27d1dbc041f0c7c40d9119863c9fb8bac180b0498ee8ed"
+      "computedHash": "d8d267be1af449b19eaf05a7b1716ed903e1bc4de2e67a911f67859f341c5337"
     },
     "convex-create-component": {
       "source": "get-convex/agent-skills",
@@ -47,7 +47,7 @@
       "source": "get-convex/agent-skills",
       "sourceType": "github",
       "skillPath": "skills/convex-quickstart/SKILL.md",
-      "computedHash": "54e5271d5d613cc4c0068baa250613b5abb6e4533df1e67adc26d2e0c7d68ded"
+      "computedHash": "cc2ab4e1228ea42baa818a0e9fad3ff401cdacc1199610bd9de78a3771676774"
     },
     "convex-setup-auth": {
       "source": "get-convex/agent-skills",
@@ -55,17 +55,17 @@
       "skillPath": "skills/convex-setup-auth/SKILL.md",
       "computedHash": "b1a940758751c5b2fdc6ced105b19927a1655f0c1d4bd2fd5536dc3264202c00"
     },
-    "create-auth-skill": {
+    "create-auth": {
       "source": "better-auth/skills",
       "sourceType": "github",
       "skillPath": "better-auth/create-auth/SKILL.md",
-      "computedHash": "31c027d02dbf1faa37f58191f574b9443143042fb2b684fe32df53ab0270487c"
+      "computedHash": "4e261efac2ae9a2321c4495c846ef97cf239818fc8bd2ab7e92ed1f9d25470f7"
     },
     "effect-ts": {
       "source": "paulrberg/agent-skills",
       "sourceType": "github",
       "skillPath": "skills/effect-ts/SKILL.md",
-      "computedHash": "79468424908ecbc55109c9826ff29d2ae9737e1dfff8733875008e1d97e2e085"
+      "computedHash": "2f5cab434a7c6c55d919466d70a2e56c5d70fc2e725af2150090d013f413fad7"
     },
     "email-and-password-best-practices": {
       "source": "better-auth/skills",
@@ -83,7 +83,7 @@
       "source": "better-auth/skills",
       "sourceType": "github",
       "skillPath": "better-auth/organization/SKILL.md",
-      "computedHash": "79a5a85b43d10e9fe37582b3506b051a33a991817b938f349099baa5ddba21aa"
+      "computedHash": "27627eb3a13bd44eff3a5d890f96e7db052b623db90e01684f759abe3e7fe56b"
     },
     "react-email": {
       "source": "resend/resend-skills",
@@ -95,43 +95,43 @@
       "source": "resend/resend-skills",
       "sourceType": "github",
       "skillPath": "skills/resend/SKILL.md",
-      "computedHash": "b246db7265df47250a7a55efb02778c2870d18e8030164a23e26a6324e4f4f8b"
+      "computedHash": "57a37b64e43df2c6ca5472cc6f880e6ab0785ab03c182165681e40f48ce734f9"
     },
     "resend-cli": {
       "source": "resend/resend-skills",
       "sourceType": "github",
       "skillPath": "skills/resend-cli/SKILL.md",
-      "computedHash": "1855c106e196ebefa8b98c5990ba501bd94c85be48bfc8a36fc3b1d86b93bf42"
+      "computedHash": "da1c2672e1892134bcd56b23e14e681e19af9d46fbc7640133dfa65414fd6480"
     },
     "stripe-best-practices": {
       "source": "stripe/ai",
       "sourceType": "github",
       "skillPath": "skills/stripe-best-practices/SKILL.md",
-      "computedHash": "fc3bec305bdf8b980991364633ff45e3051536de8a68e6c87b3f717054c2b06b"
+      "computedHash": "6b71690c78cec9e053f9a842337f85976704c7b1901a895cf795e37f5b03ea17"
     },
     "stripe-directory": {
       "source": "stripe/ai",
       "sourceType": "github",
       "skillPath": "skills/stripe-directory/SKILL.md",
-      "computedHash": "58d8c458beaa92877ed2f0a622af65a0a91e2804efcc4188ac87a35780015361"
+      "computedHash": "65536c77598b4ff65cf8a0d9a2efb7375ff53faec2d843a104faedd5222a6a4d"
     },
     "stripe-projects": {
       "source": "stripe/ai",
       "sourceType": "github",
       "skillPath": "skills/stripe-projects/SKILL.md",
-      "computedHash": "c084f4044a8d267c096e8391935e5547004a9ab003eaf34ee606041d2485f6c3"
+      "computedHash": "d5b674901c9eb8b1c21e9d3a22728f9a4e0a8a6e22737ce7c284ff8daa51a765"
     },
     "two-factor-authentication-best-practices": {
       "source": "better-auth/skills",
       "sourceType": "github",
       "skillPath": "better-auth/twoFactor/SKILL.md",
-      "computedHash": "7e297aaf887e11fdc03e52bdbf44974e161e8f7c393170ced7dc66cace4f6d46"
+      "computedHash": "a6f720042e5a090909e0d519a6a50a7eb8179553cd5315f0bbad852a6d20dac8"
     },
     "upgrade-stripe": {
       "source": "stripe/ai",
       "sourceType": "github",
       "skillPath": "skills/upgrade-stripe/SKILL.md",
-      "computedHash": "46bb3c16878f93b953ed901b950686d64f04f90c67400bf31e1a0d7790d889df"
+      "computedHash": "f4aa17ac21714309e3cafa4eb15b032b3d8ff8623c8731944ccbcaf6766fdb49"
     }
   }
 }

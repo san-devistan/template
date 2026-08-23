@@ -43,8 +43,8 @@
       "files": ["apps/mobile/**/*.ts", "apps/mobile/**/*.tsx"],
       "options": {
         "sortTailwindcss": {
-          "config": "apps/mobile/tailwind.config.js",
-          "functions": ["cn", "cva"]
+          "stylesheet": "apps/mobile/global.css",
+          "functions": ["cn"]
         }
       }
     }
@@ -64,6 +64,7 @@
     "dist/**",
     "node_modules/**",
     "pnpm-lock.yaml",
+    "tools/oxlint/anti-slop/**",
     "apps/web/src/routeTree.gen.*",
     "packages/backend/convex/_generated/**"
   ]

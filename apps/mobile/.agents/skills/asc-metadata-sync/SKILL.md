@@ -68,6 +68,17 @@ asc metadata apply --app "APP_ID" --version "1.2.3" --platform IOS --dir "./meta
 asc metadata apply --app "APP_ID" --version "1.2.3" --platform IOS --dir "./metadata"
 ```
 
+For a review-artifact workflow with explicit approval before mutation, use the metadata review commands introduced in `asc` 2.6.1:
+
+```bash
+asc metadata plan --app "APP_ID" --version "1.2.3" --platform IOS --dir "./metadata" --review-dir ".asc/metadata/review"
+asc metadata approve --review-dir ".asc/metadata/review" --all
+asc metadata status --review-dir ".asc/metadata/review" --output table
+asc metadata apply --app "APP_ID" --version "1.2.3" --platform IOS --dir "./metadata" --review-dir ".asc/metadata/review" --confirm
+```
+
+Use `asc metadata approve --key "version:1.2.3:en-US:whatsNew"` or `--scope app-info,version` when the user wants selective approval artifacts before the guarded apply. Version-scoped keys include the App Store version string.
+
 ## Keyword-only workflow
 
 Use this when only the version-localization `keywords` field should change:
@@ -131,8 +142,14 @@ Use this only for existing fastlane-format trees:
 asc migrate export --app "APP_ID" --version-id "VERSION_ID" --output-dir "./fastlane"
 asc migrate validate --fastlane-dir "./fastlane"
 asc migrate import --app "APP_ID" --version-id "VERSION_ID" --fastlane-dir "./fastlane" --dry-run
-asc migrate import --app "APP_ID" --version-id "VERSION_ID" --fastlane-dir "./fastlane"
+asc migrate import --app "APP_ID" --version-id "VERSION_ID" --fastlane-dir "./fastlane" --confirm
 ```
+
+Deliverfile `metadata_path` and `screenshots_path` values take precedence and resolve relative to the Deliverfile. With `--fastlane-dir "./fastlane"`, use `metadata_path "./metadata"` rather than `"./fastlane/metadata"`; the latter resolves to `./fastlane/fastlane/metadata`. Fix stale values in the Deliverfile, or remove them to use the conventional `metadata/` and `screenshots/` directories.
+
+Paths outside the selected Fastlane directory fail unless the operator explicitly trusts them with `--allow-external-metadata` or `--allow-external-screenshots`. Keep those flags off for untrusted imports.
+
+Inspect the validation body as well as the process exit: `asc migrate validate` can return a report with `valid: false` and a nonzero `errorCount` while exiting 0. A confirmed import can print `status: "partial"` with completed stages and failure details while exiting nonzero, so non-empty stdout does not mean success.
 
 ## Character limits
 
@@ -150,6 +167,7 @@ asc migrate import --app "APP_ID" --version-id "VERSION_ID" --fastlane-dir "./fa
 - Start with `asc metadata pull` unless the user specifically asks for `.strings` or fastlane metadata.
 - Always run `asc metadata validate` before remote writes.
 - Preview remote changes with `--dry-run` when the command supports it.
+- Use `asc metadata plan` plus `approve`/`status` when the user wants a durable review artifact before apply.
 - For quick edits, always pass `--version-id` or `--version` plus `--platform`; do not rely on ambiguous latest-version behavior.
 - Keep app-info fields and version fields separate.
 - Use `--output table` for human verification and JSON for automation.

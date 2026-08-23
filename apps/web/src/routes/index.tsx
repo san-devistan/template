@@ -37,8 +37,8 @@ function App() {
   }, [])
 
   return (
-    <div className="flex min-h-svh p-6">
-      <div className="flex max-w-md min-w-0 flex-col gap-4 text-sm leading-loose">
+    <div className="p-6 flex min-h-svh">
+      <div className="max-w-md min-w-0 gap-4 text-sm leading-loose flex flex-col">
         <div>
           <h1 className="font-medium">Project ready!</h1>
           <p>You may now add components and start building.</p>
@@ -47,7 +47,7 @@ function App() {
           <Button className="mt-2" onClick={increment}>
             Effect count: {count}
           </Button>
-          <div className="mt-4 flex items-center gap-2 text-muted-foreground">
+          <div className="mt-4 gap-2 flex items-center text-muted-foreground">
             <DatabaseZapIcon className="size-4" aria-hidden="true" />
             <span>{backendModuleLabel}</span>
           </div>

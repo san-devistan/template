@@ -11,6 +11,16 @@
     "promise",
     "node"
   ],
+  "jsPlugins": [
+    {
+      "name": "anti-slop",
+      "specifier": "./tools/oxlint/anti-slop/index.ts"
+    },
+    {
+      "name": "anti-slop-effect",
+      "specifier": "./tools/oxlint/anti-slop/effect/index.ts"
+    }
+  ],
   "options": {
     "typeAware": true,
     "typeCheck": false,
@@ -32,6 +42,12 @@
     }
   },
   "rules": {
+    "anti-slop/no-known-value-widening": "error",
+    "anti-slop/no-object-parameters": "error",
+    "anti-slop/no-unknown-returns": "error",
+    "anti-slop/no-unknown-type-aliases": "error",
+    "anti-slop/no-widen-then-assert": "error",
+    "anti-slop-effect/no-service-constructor-imports": "error",
     "complexity": ["error", { "max": 12 }],
     "max-depth": ["error", 4],
     "max-lines": [
@@ -89,14 +105,6 @@
     "typescript/no-misused-promises": "error",
     "typescript/restrict-template-expressions": "error"
   },
-  "overrides": [
-    {
-      "files": ["apps/mobile/components/ui/**/*.tsx"],
-      "rules": {
-        "import/namespace": "off"
-      }
-    }
-  ],
   "ignorePatterns": [
     ".agents/**",
     "**/.agents/**",
@@ -111,6 +119,7 @@
     "coverage/**",
     "dist/**",
     "node_modules/**",
+    "tools/oxlint/anti-slop/**",
     "apps/web/src/routeTree.gen.*",
     "packages/backend/convex/_generated/**"
   ]

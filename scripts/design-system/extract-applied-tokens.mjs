@@ -1,6 +1,35 @@
+import { createHash } from "node:crypto"
 import { readFile, writeFile } from "node:fs/promises"
 
 import { COLOR_TOKENS } from "./tokens.mjs"
+
+const WEB_TOKEN_HASH_PATTERN = /web-token-hash: ([a-f0-9]{12})/
+
+function webTokenSnapshot(tokens) {
+  return {
+    colors: tokens.colors,
+    radius: tokens.radius,
+    fonts: tokens.fonts.web,
+    typography: tokens.typography,
+    motion: tokens.motion,
+    shadow: tokens.shadow,
+  }
+}
+
+export function getWebTokenHash(tokens) {
+  return createHash("sha256")
+    .update(JSON.stringify(webTokenSnapshot(tokens)))
+    .digest("hex")
+    .slice(0, 12)
+}
+
+export function getGeneratedWebHeader(tokens) {
+  return `/* Generated from packages/ui/src/tokens/design-tokens.json. web-token-hash: ${getWebTokenHash(tokens)}. Do not edit by hand. */`
+}
+
+export function wasGeneratedFromWebTokens(css, tokens) {
+  return WEB_TOKEN_HASH_PATTERN.exec(css)?.[1] === getWebTokenHash(tokens)
+}
 
 function blockFor(css, selector) {
   const escaped = selector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")

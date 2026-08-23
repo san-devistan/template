@@ -6,17 +6,20 @@
 - Integration surfaces
 - Payment Element guidance
 - Saving payment methods
+- Webhooks and fulfillment
 - Dynamic payment methods
 - Deprecated APIs and migration paths
 - PCI compliance
 
 ## API hierarchy
 
-Use the [Checkout Sessions API](https://docs.stripe.com/api/checkout/sessions.md) (`checkout.sessions.create`) for on-session payments. It supports one-time payments and subscriptions and handles taxes, discounts, shipping, and adaptive pricing automatically.
+Use the [Checkout Sessions API](https://docs.stripe.com/api/checkout/sessions.md) (`checkout.sessions.create`) for on-session payments. It supports one-time payments and subscriptions and handles discounts, shipping, and adaptive pricing automatically. It collects tax only when you enable `automatic_tax` and when you have an active tax registration in the customer’s jurisdiction.
 
-Use the [PaymentIntents API](https://docs.stripe.com/payments/paymentintents/lifecycle.md) for off-session payments, or when the merchant needs to model checkout state independently and just create a charge.
+Use the [PaymentIntents API](https://docs.stripe.com/payments/paymentintents/lifecycle.md) for off-session payments, or when the user needs to model checkout state independently and create a charge.
 
 **Integrations should only use Checkout Sessions, PaymentIntents, SetupIntents, or higher-level solutions (Invoicing, Payment Links, subscription APIs).**
+
+On API version `2026-03-25.dahlia` or later, pass the parameter `integration_identifier` to `checkout.sessions.create` to tag sessions with a custom label for tracking and comparing checkout flows in the Dashboard. The label should include a suffix of 8 random letters.
 
 ## Integration surfaces
 
@@ -38,6 +41,24 @@ For surcharging or inspecting card details before payment (e.g., rendering the P
 Use the [Setup Intents API](https://docs.stripe.com/api/setup_intents.md) to save a payment method for later use.
 
 **Traps to avoid:** Don’t use the Sources API to save cards to customers. The Sources API is deprecated — Setup Intents is the correct approach.
+
+## Webhooks and fulfillment
+
+Drive fulfillment from an [event handler](https://docs.stripe.com/checkout/fulfillment.md), not from the success or return page. Customers aren’t guaranteed to visit the landing page — for example, someone can pay successfully and then lose their internet connection before the page loads — so any logic that only runs on the success page silently drops orders.
+
+Handle both `checkout.session.completed` and `checkout.session.async_payment_succeeded`, and fulfill only when the session’s `payment_status` isn’t `unpaid`. With delayed-notification payment methods the completed event arrives while the session is still unpaid, so fulfilling on it alone grants access for payments that later fail and never fulfills the ones that succeed. Handle `checkout.session.async_payment_failed` for failures.
+
+Webhooks are **required**, not optional, for:
+
+- Subscriptions and any recurring billing, where most state changes (renewals, payment failures, cancellations) happen after checkout. Read the Billing skill reference for the lifecycle events to handle.
+- Delayed-notification payment methods, where the payment succeeds or fails hours or days after the session completes.
+- Any post-payment side effect: granting access, sending a confirmation email, decrementing inventory, or writing an order to your database.
+
+**Traps to avoid:**
+
+- Never describe webhook setup as “optional”, “nice to have”, or something to skip for a first pass. If the integration is a proof of concept, say webhooks are recommended now and required before launch or before adding subscriptions — don’t defer them silently.
+- Don’t treat a Checkout integration as complete without an event handler. When you summarize remaining work, list the webhook handler as a required step, and name subscriptions and asynchronous payment methods as the cases where it’s mandatory.
+- Always [verify event signatures](https://docs.stripe.com/webhooks.md#verify-events) before processing an event. Read the security skill reference for webhook signing secret handling.
 
 ## Dynamic payment methods
 
