@@ -1,7 +1,7 @@
 # Repository Guide
 
 This is a pnpm workspace monorepo. The project name is `name-of-project`; this is the value of the variable `<project-name>`.
-Prefer repo-local conventions and skills before introducing new patterns.
+Prefer repo-local conventions before introducing new patterns.
 
 ## Workspace Map
 
@@ -26,12 +26,6 @@ The server processes should be running in that project's Zellij panes.
 ## App Verification
 
 Do not verify each request in the browser, iOS Simulator, or local dev server logs by default. Only perform these running-app checks when the user explicitly asks for them.
-
-When explicitly requested:
-
-- For local web app changes, use the `browser:control-in-app-browser` skill against the relevant local dev server URL.
-- For local iOS app changes, use the `build-ios-apps:ios-simulator-browser` skill against the running iOS Simulator app.
-- Inspect the relevant dev server logs. If the app check or logs show errors, warnings, broken UI, failed requests, or unexpected behavior, use the available skills and MCPs to diagnose and fix the issue before handing off.
 
 ## Design System Ownership
 
@@ -107,56 +101,42 @@ pre-existing, or confirmed false positives, do not expand the scope to fix them
 unless the user asks. Clearly report the failed command(s), representative
 diagnostics, and why they were left untreated.
 
-## Skill Selection
-
-Read only the skill files needed for the task. Select skills by the workspace
-being touched first, then add cross-cutting skills for the specific technology
-or concern. If multiple rows match, use the smallest useful set and read them in
-the order listed.
+## Workspace Routing
 
 Agents are launched from the repository root. Treat this file as the entrypoint,
-then route to the nearest workspace guide before touching code. Workspace-local
-skills are intentionally scoped under that workspace's `.agents/skills/`
-directory; load them by path after reading the workspace guide. Do not assume
-workspace-local skills are globally available by name, and do not flatten
-workspace-specific skills into the root skill directory.
+then route to the nearest workspace guide before touching code.
 
-| Scope / workspace                 | Read first                   | Local skill families                                                                              |
-| --------------------------------- | ---------------------------- | ------------------------------------------------------------------------------------------------- |
-| `apps/web`                        | `apps/web/AGENTS.md`         | TanStack Start, Router, Query, React performance, Effect, ts-pattern, usehooks-ts, web guidelines |
-| `apps/mobile`                     | `apps/mobile/AGENTS.md`      | Expo, EAS, PanelUI, React Native, native UI, data fetching, Effect, ts-pattern, ASC CLI           |
-| `packages/backend`                | `packages/backend/AGENTS.md` | Convex, Better Auth, Resend/email, Stripe, Effect, ts-pattern                                     |
-| `packages/ui`                     | `packages/ui/AGENTS.md`      | shadcn, web design tokens, shared React components, UI primitives, usehooks-ts                    |
-| Root, `scripts`, workspace config | this file                    | Turborepo, package boundaries, repo tooling                                                       |
+| Scope / workspace                 | Read first                   |
+| --------------------------------- | ---------------------------- |
+| `apps/web`                        | `apps/web/AGENTS.md`         |
+| `apps/mobile`                     | `apps/mobile/AGENTS.md`      |
+| `packages/backend`                | `packages/backend/AGENTS.md` |
+| `packages/ui`                     | `packages/ui/AGENTS.md`      |
+| Root, `scripts`, workspace config | this file                    |
 
 For TypeScript code, prefer the project-standard packages that encode safer
 patterns instead of hand-written equivalents.
 
 Effect is project-standard in workspaces that already depend on `effect`:
-`apps/web` and `packages/backend`. In those workspaces, read the workspace-local
-`effect-ts` skill before nontrivial Effect work. Add it to `apps/mobile` only
-when a mobile workflow needs typed failures, required context/dependencies,
-retries, resource handling, tracing, or concurrency.
+`apps/web` and `packages/backend`. Add it to `apps/mobile` only when a mobile
+workflow needs typed failures, required context/dependencies, retries, resource
+handling, tracing, or concurrency.
 
 Do not force Effect into pure synchronous helpers, simple React render/state
 code, design tokens, shell scripts, or `packages/ui` work unless that workspace
 explicitly adds an `effect` dependency and the added ceremony reduces real risk.
 
-- Use the workspace-local `effect-ts` skill in `apps/web` and
-  `packages/backend` for nontrivial Effect work. In `apps/mobile`, read it
-  before adding Effect for a qualifying workflow.
-- Use the workspace-local `ts-pattern` skill in `apps/web`, `apps/mobile`, and
-  `packages/backend` when branching over discriminated unions, tagged states,
-  action/result variants, or other finite cases where `.exhaustive()` prevents
-  missed cases. Prefer `ts-pattern` over hand-written `switch`/`default` blocks
-  that can silently accept new union members. Keep simple boolean/nullish logic
-  as plain TypeScript.
-- Use the workspace-local `usehooks-ts` skill in `apps/web` and `packages/ui`
-  for common browser and React hook concerns such as storage, media queries,
-  events, debounce/throttle, timers, observers, clipboard, dark mode, scroll
-  lock, and mounted/client checks. Prefer its SSR-safe hooks over handwritten
-  `useEffect` wrappers unless the behavior is genuinely domain-specific or
-  unsupported.
+- Use `ts-pattern` in `apps/web`, `apps/mobile`, and `packages/backend` when
+  branching over discriminated unions, tagged states, action/result variants,
+  or other finite cases where `.exhaustive()` prevents missed cases. Prefer
+  `ts-pattern` over hand-written `switch`/`default` blocks that can silently
+  accept new union members. Keep simple boolean/nullish logic as plain
+  TypeScript.
+- Use `usehooks-ts` in `apps/web` and `packages/ui` for common browser and
+  React hook concerns such as storage, media queries, events,
+  debounce/throttle, timers, observers, clipboard, dark mode, scroll lock, and
+  mounted/client checks. Prefer its SSR-safe hooks over handwritten `useEffect`
+  wrappers unless the behavior is genuinely domain-specific or unsupported.
 
 Keep trivial synchronous code simple; do not force these packages into places
 where they add ceremony without reducing risk or duplication.
@@ -170,8 +150,3 @@ where they add ceremony without reducing risk or duplication.
 | Stripe      | Inspect Stripe docs and resources for backend billing and payment work.                                    |
 | shadcn      | Search registries, inspect component examples, and get add commands for shadcn components.                 |
 | Vercel      | Inspect projects, deployments, runtime/build logs, toolbar comments, domains, and deployment access links. |
-
-## Operating Notes
-
-- Keep changes scoped to the package and behavior requested.
-- Do not revert unrelated user changes.

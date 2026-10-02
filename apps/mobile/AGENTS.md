@@ -7,8 +7,8 @@ Connect automation.
 ## UI Boundaries
 
 PanelUI is the primary mobile UI library. Before creating a custom component,
-search PanelUI and read the component's current docs through the local
-`panelui` skill. Import packaged components from `panelui-native`.
+search PanelUI and read the component's current docs. Import packaged
+components from `panelui-native`.
 
 If a PanelUI component needs customization that its props do not support, do
 not patch `panelui-native`. Copy its source into the repository with the
@@ -33,83 +33,25 @@ Do not hand-edit generated theme files:
 - `apps/mobile/global.css`
 - `apps/mobile/lib/theme.ts`
 
-## Skills
-
-Mobile-local skills live in `apps/mobile/.agents/skills/<skill>/SKILL.md`. Read
-only the narrow skill needed for the task.
-
-### Expo And React Native
-
-| Skill                        | Invoke when                                                                                                      |
-| ---------------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| `panelui`                    | Building mobile UI, choosing PanelUI components, theming, forms, overlays, charts, or debugging missing styles   |
-| `building-native-ui`         | Building Expo Router screens, native UI, navigation, styling, animations, tabs, search, forms, or media patterns |
-| `vercel-react-native-skills` | React Native performance, lists, animations, images, native APIs, monorepo native deps, or platform UI patterns  |
-| `native-data-fetching`       | Any network request, API call, data fetching, caching, offline behavior, React Query/SWR, or Expo Router loaders |
-| `expo-tailwind-setup`        | Setting up or fixing Tailwind CSS v4, `react-native-css`, or NativeWind v5 in Expo                               |
-| `expo-ui`                    | Using `@expo/ui`, SwiftUI/Jetpack Compose hosts, native-feeling lists, menus, sheets, sliders, or pickers        |
-| `expo-module`                | Creating or editing Expo native modules/views, config plugins, native module APIs, Swift/Kotlin, or autolinking  |
-| `expo-dev-client`            | Building, installing, or distributing Expo development clients locally or via TestFlight                         |
-| `expo-deployment`            | EAS build/submit, production releases, TestFlight, app store rollout, versions/build numbers, or store metadata  |
-| `expo-cicd-workflows`        | EAS workflow YAML, CI/CD, build pipelines, deployment automation, or `.eas/workflows/`                           |
-| `eas-update-insights`        | EAS Update health, crash rates, installs/launches, payload size, OTA vs embedded users, or rollout gates         |
-| `expo-observe`               | EAS Observe setup, metrics queries, startup/navigation TTR/TTI, update download metrics, or performance triage   |
-| `expo-api-routes`            | Expo Router `+api.ts` routes, EAS Hosting server routes, webhooks, server secrets, proxies, or server validation |
-| `expo-examples`              | Integrating third-party libraries with canonical Expo examples or scaffolding from `npx create-expo --example`   |
-| `expo-brownfield`            | Embedding Expo/React Native into existing native iOS or Android apps, AAR/XCFramework, Kotlin, or Swift projects |
-| `upgrading-expo`             | Expo SDK upgrades, dependency fixes, new architecture, React Compiler, deprecated package migrations             |
-| `use-dom`                    | Expo DOM components, web-only libraries in native, webview-backed React web code, HTML/CSS, canvas, or embeds    |
-
-### App Store Connect And Store Ops
-
-| Skill                           | Invoke when                                                                                                                                      |
-| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `asc-cli-usage`                 | Running, designing, or debugging `asc` commands, flags, output formats, auth, pagination, or discovery                                           |
-| `asc-id-resolver`               | Resolving App Store Connect IDs for apps, builds, versions, groups, testers, or other ASC resources                                              |
-| `asc-app-create-ui`             | Creating a new App Store Connect app record via browser automation when no public API covers it                                                  |
-| `asc-release-flow`              | Determining release readiness and driving App Store review submission, first availability, IAP, privacy                                          |
-| `asc-submission-health`         | Validating submission readiness, submitting prepared versions, or monitoring/troubleshooting review                                              |
-| `asc-build-lifecycle`           | Waiting on build processing, finding latest builds, managing build retention, or cleaning old builds                                             |
-| `asc-xcode-build`               | Building, archiving, exporting, uploading IPA/PKG artifacts, or managing Xcode version/build numbers                                             |
-| `asc-signing-setup`             | Bundle IDs, capabilities, signing certificates, provisioning profiles, or encrypted signing sync                                                 |
-| `asc-testflight-orchestration`  | TestFlight distribution, beta groups, testers, and What to Test notes                                                                            |
-| `asc-crash-triage`              | TestFlight crashes, beta feedback, app hangs, performance diagnostics, or crash summaries                                                        |
-| `asc-metadata-sync`             | Syncing, validating, applying, or migrating canonical App Store metadata and localizations                                                       |
-| `asc-localize-metadata`         | Translating/localizing App Store descriptions, keywords, What's New, subtitles, or adding languages                                              |
-| `asc-whats-new-writer`          | Generating localized App Store release notes or promotional text from git log, bullets, or free text                                             |
-| `asc-subscription-localization` | Bulk-localizing subscription or in-app purchase display names across App Store locales                                                           |
-| `asc-screenshot-resize`         | Resizing and validating App Store screenshots with current screenshot-size requirements                                                          |
-| `asc-shots-pipeline`            | Automating iOS screenshots with xcodebuild/simctl, AXe, framing, and screenshot upload                                                           |
-| `asc-aso-audit`                 | Offline ASO audits over canonical metadata and keyword gap analysis after `asc metadata pull`                                                    |
-| `asc-ppp-pricing`               | Territory-specific pricing, PPP pricing, price imports, schedules, subscriptions, or in-app purchases                                            |
-| `asc-revenuecat-catalog-sync`   | Reconciling App Store subscriptions/IAPs with RevenueCat products, entitlements, offerings, and packages                                         |
-| `asc-apple-ads`                 | Apple Ads auth, org lookup, campaigns, ad groups, ads, keywords, reports, or safe live testing                                                   |
-| `asc-notarization`              | macOS archive/export/notarization for Developer ID distribution outside the App Store                                                            |
-| `asc-workflow`                  | Defining, validating, running, resuming, or auditing repo-local `asc workflow` automations                                                       |
-| `asc-wall-submit`               | Submitting or updating a Wall of Apps entry with `asc apps wall submit`                                                                          |
-| `effect-ts`                     | Nontrivial Effect work: typed failures, native/API boundaries, service/context dependencies, config, retries, resources, concurrency, or tracing |
-| `ts-pattern`                    | Exhaustive pattern matching for discriminated unions, navigation/state variants, native/API result variants, reducer actions, or finite statuses |
+## TypeScript Patterns
 
 Add `effect` when a mobile workflow needs typed failures or required context,
 such as backend API adapters, native resource boundaries, retrying/offline work,
 config, background work, or concurrency. Keep pure UI components, simple hooks,
 and local screen state simple.
 
-Use the local `ts-pattern` skill when mobile code branches over finite typed
-cases such as navigation variants, async screen states, reducer actions,
-native/API result variants, and sync/offline statuses. If the implementation
-imports `ts-pattern`, add the dependency to this workspace in the same change.
-Use `.exhaustive()` unless an `.otherwise(...)` fallback is intentionally valid
-for every remaining case. Keep simple booleans and nullish fallbacks as plain
+Use `ts-pattern` when mobile code branches over finite typed cases such as
+navigation variants, async screen states, reducer actions, native/API result
+variants, and sync/offline statuses. If the implementation imports
+`ts-pattern`, add the dependency to this workspace in the same change. Use
+`.exhaustive()` unless an `.otherwise(...)` fallback is intentionally valid for
+every remaining case. Keep simple booleans and nullish fallbacks as plain
 TypeScript.
-
-For cross-cutting TypeScript work, use the shared root skills in
-`.agents/skills/` after reading this file.
 
 ## Tools
 
 Use Expo and EAS tooling for mobile builds, updates, submissions, and device
-workflows. Use `asc` tooling only with the matching `asc-*` skill. Client apps
+workflows. Use `asc` tooling for App Store Connect workflows. Client apps
 consume generated backend APIs; provider setup, Convex functions, auth, email,
 billing, and schema changes belong in `packages/backend`.
 

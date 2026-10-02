@@ -33,6 +33,11 @@ flowchart LR
 
 ## Quality Gate
 
+Run `pnpm fix` for all checks, or `pnpm exec oxlint .` for linting only.
+Oxlint includes `@shadcn/lint` with `shadcn/no-restyle`: web component consumers
+may add layout classes, but appearance belongs in shared component variants.
+Shared component implementations are exempt; native/mobile styling is unchanged.
+
 ```mermaid
 flowchart LR
   Format["format<br/>oxfmt"]
