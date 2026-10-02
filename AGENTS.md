@@ -51,5 +51,6 @@ only once it has enough files:
 
 ## Quality Gate
 
-Run `pnpm fix` before handing off. Fix what your change caused, and mention
-anything unrelated that still fails.
+Run `pnpm fix` before handing off. Fix what your change caused by fixing the
+implementation, not by dodging rules or editing the gate config unless really
+needed, and mention anything unrelated that still fails.
