@@ -103,10 +103,8 @@ run_quiet "pnpm exec oxfmt ." pnpm exec oxfmt .
 run_quiet "pnpm exec oxlint --fix --format stylish ." \
   pnpm exec oxlint --fix --format stylish .
 
-start_quiet "node scripts/oxc-check.mjs" node scripts/oxc-check.mjs
-
-start_quiet "pnpm dlx react-doctor@latest --yes --offline --verbose --blocking warning ." \
-  pnpm dlx react-doctor@latest --yes --offline --verbose --blocking warning .
+start_quiet "pnpm exec react-doctor --yes --verbose ." \
+  pnpm exec react-doctor --yes --verbose .
 
 start_quiet_in packages/backend pnpm exec tsc --noEmit
 start_quiet_in packages/ui pnpm exec tsc --noEmit

@@ -1,15 +1,19 @@
 // oxlint-disable-next-line import/no-unassigned-import -- Reanimated logger must be configured before app modules evaluate.
 import "@/lib/reanimated-logger"
 import { mobileFonts } from "@/lib/fonts"
-import { NAV_THEME } from "@/lib/theme"
 import { ConvexProvider, ConvexReactClient } from "convex/react"
 import { useFonts } from "expo-font"
 import { Stack } from "expo-router"
-import { ThemeProvider } from "expo-router/react-navigation"
+import {
+  DarkTheme,
+  DefaultTheme,
+  ThemeProvider,
+} from "expo-router/react-navigation"
 import * as SplashScreen from "expo-splash-screen"
 import { StatusBar } from "expo-status-bar"
 import { PanelUIProvider, useThemeMode } from "panelui-native"
 import { useEffect, type ReactNode } from "react"
+import { useCSSVariable } from "uniwind"
 
 // oxlint-disable-next-line import/no-relative-parent-imports, import/no-unassigned-import -- Expo Router and Uniwind require the root global CSS side-effect import.
 import "../global.css"
@@ -65,10 +69,25 @@ function OptionalConvexProvider({ children }: { children: ReactNode }) {
 
 function ThemedApp() {
   const { mode } = useThemeMode()
+  const [background, card, text, border, primary, notification] =
+    useCSSVariable([
+      "--color-background",
+      "--color-card",
+      "--color-foreground",
+      "--color-border",
+      "--color-primary",
+      "--color-destructive",
+    ]).map(String)
+  const base = mode === "dark" ? DarkTheme : DefaultTheme
+  const theme = {
+    ...base,
+    colors: { background, card, text, border, primary, notification },
+  }
 
   return (
-    <ThemeProvider value={NAV_THEME[mode]}>
+    <ThemeProvider value={theme}>
       <Stack screenOptions={stackScreenOptions} />
+      {/* oxlint-disable-next-line shadcn/no-inline-styles -- StatusBar style is a light/dark enum, not CSS. */}
       <StatusBar style={mode === "dark" ? "light" : "dark"} />
     </ThemeProvider>
   )

@@ -1,9 +1,7 @@
-/* Generated from packages/ui/src/tokens/design-tokens.json. Do not edit by hand. */
-
 @import "tailwindcss";
 @import "uniwind";
 @import "panelui-native/theme.css";
-@import "../../packages/ui/src/styles/globals.css";
+@import "./tokens.css";
 
 @source "./node_modules/panelui-native/src";
 

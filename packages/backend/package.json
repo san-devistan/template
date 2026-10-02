@@ -19,8 +19,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "convex": "^1.44.0",
-    "effect": "^3.22.1",
+    "convex": "^1.46.0",
+    "effect": "4.0.0-rc.118",
     "ts-pattern": "^5.9.0"
   },
   "devDependencies": {

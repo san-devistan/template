@@ -6,3 +6,7 @@ declare module "uniwind" {
     themes: readonly ["light", "dark"]
   }
 }
+
+
+
+export {}

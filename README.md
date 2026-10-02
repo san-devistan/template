@@ -17,14 +17,9 @@ flowchart LR
 
 ## Design System Flow
 
-- `packages/ui/src/tokens/design-tokens.json` is the shared token source.
-- `packages/ui/src/components` contains web-only shadcn components.
-- Mobile imports components from `panelui-native`; it does not convert or mirror
-  web components.
-- `pnpm sync:design-system` regenerates shared CSS tokens, the PanelUI mobile CSS
-  entry, and navigation theme values. It does not generate mobile components.
-- Create app-specific mobile components only when PanelUI has no suitable
-  component.
+- `packages/ui/src/styles/globals.css` holds the shared shadcn tokens.
+- Web uses shadcn components from `packages/ui`; mobile uses PanelUI.
+- `pnpm sync:design-system` copies the tokens to `apps/mobile/tokens.css`.
 
 ## AI Setup
 
@@ -34,23 +29,28 @@ flowchart LR
 ## Quality Gate
 
 Run `pnpm fix` for all checks, or `pnpm exec oxlint .` for linting only.
-Oxlint includes `@shadcn/lint` with `shadcn/no-restyle`: web component consumers
-may add layout classes, but appearance belongs in shared component variants.
-Shared component implementations are exempt; native/mobile styling is unchanged.
+
+- Oxlint enforces correctness, type safety, React, and accessibility rules.
+- `@shadcn/lint` keeps web and mobile on the design system: theme colors, scale
+  values, known Tailwind classes, static classes, and no inline styles. Web
+  consumers of shared components may only add layout classes; appearance
+  belongs in component variants. Vendored shadcn sources in
+  `packages/ui/src/components` are exempt from style-only rules.
+- React Doctor (`doctor.config.json`) adds React-specific checks on top of
+  Oxlint without repeating its rules.
 
 ```mermaid
 flowchart LR
   Format["format<br/>oxfmt"]
-  Format --> Lint["lint<br/>oxlint"]
-  Lint --> Oxc["parse + imports<br/>oxcheck"]
-  Oxc --> Doctor["React Diagnostics<br/>with React Doctor"]
-  Doctor --> Types["TypeScript Checks"]
+  Format --> Lint["lint<br/>oxlint + shadcn"]
+  Lint --> Doctor["React Doctor"]
+  Lint --> Types["TypeScript"]
 ```
 
 ## Set Up
 
 - replace `name-of-project` in the codebase
-- run `pnpm update:deps` and `pnpm update:skills`
+- run `pnpm self-update` and `pnpm update:deps`
 - apply a web theme with
   `pnpm dlx shadcn@latest apply --preset [preset-id] --cwd apps/web --yes`
 - run `pnpm sync:design-system` to propagate shared tokens to web and mobile

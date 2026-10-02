@@ -1,11 +1,31 @@
 {
   "$schema": "https://react.doctor/schema/config.json",
+  "adoptExistingLintConfig": false,
+  "supplyChain": { "enabled": false },
+  "noScore": true,
+  "blocking": "warning",
   "ignore": {
     "files": ["**/.output/**"],
     "overrides": [
       {
-        "files": ["components/ui/**", "packages/ui/src/components/**"],
+        "files": ["components/ui/**", "src/components/**"],
         "rules": ["deslop/unused-file"]
+      },
+      {
+        "files": ["src/components/**"],
+        "rules": [
+          "react-doctor/effect-needs-cleanup",
+          "react-doctor/jsx-no-constructed-context-values",
+          "react-doctor/no-array-index-as-key",
+          "react-doctor/no-pass-data-to-parent",
+          "react-doctor/no-pass-live-state-to-parent",
+          "react-doctor/no-prop-callback-in-effect",
+          "react-doctor/no-redundant-roles",
+          "react-doctor/only-export-components",
+          "react-doctor/prefer-dynamic-import",
+          "react-doctor/prefer-tag-over-role",
+          "react-doctor/rerender-memo-before-early-return"
+        ]
       }
     ]
   }

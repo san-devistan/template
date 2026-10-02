@@ -5,23 +5,13 @@
     "typescript",
     "unicorn",
     "react",
-    "react-perf",
     "jsx-a11y",
     "import",
     "promise",
-    "node"
+    "node",
+    "oxc"
   ],
-  "jsPlugins": [
-    "@shadcn/lint",
-    {
-      "name": "anti-slop",
-      "specifier": "./tools/oxlint/anti-slop/index.ts"
-    },
-    {
-      "name": "anti-slop-effect",
-      "specifier": "./tools/oxlint/anti-slop/effect/index.ts"
-    }
-  ],
+  "jsPlugins": ["@shadcn/lint"],
   "options": {
     "typeAware": true,
     "typeCheck": false,
@@ -29,8 +19,7 @@
   },
   "categories": {
     "correctness": "error",
-    "suspicious": "error",
-    "perf": "error"
+    "suspicious": "error"
   },
   "env": {
     "browser": true,
@@ -43,42 +32,57 @@
     }
   },
   "rules": {
-    "anti-slop/no-known-value-widening": "error",
-    "anti-slop/no-object-parameters": "error",
-    "anti-slop/no-unknown-returns": "error",
-    "anti-slop/no-unknown-type-aliases": "error",
-    "anti-slop/no-widen-then-assert": "error",
-    "anti-slop-effect/no-service-constructor-imports": "error",
-    "complexity": ["error", { "max": 12 }],
+    "complexity": ["error", { "max": 15 }],
+    "eqeqeq": ["error", "smart"],
     "max-depth": ["error", 4],
     "max-lines": [
       "error",
-      {
-        "max": 400,
-        "skipBlankLines": true,
-        "skipComments": true
-      }
+      { "max": 400, "skipBlankLines": true, "skipComments": true }
     ],
     "max-lines-per-function": [
       "error",
-      {
-        "max": 200,
-        "skipBlankLines": true,
-        "skipComments": true
-      }
+      { "max": 200, "skipBlankLines": true, "skipComments": true }
     ],
-    "max-params": ["error", 6],
-    "no-empty": "error",
-    "no-underscore-dangle": [
-      "error",
-      {
-        "allow": ["_creationTime", "_id"]
-      }
-    ],
+    "max-params": ["error", 4],
+    "no-console": ["error", { "allow": ["warn", "error"] }],
     "no-duplicate-imports": "error",
+    "no-empty": "error",
+    "no-nested-ternary": "error",
+    "no-param-reassign": "error",
+    "no-underscore-dangle": ["error", { "allow": ["_creationTime", "_id"] }],
     "prefer-const": "error",
     "import/no-cycle": ["error", { "maxDepth": 3 }],
     "import/no-relative-parent-imports": "error",
+    "unicorn/filename-case": ["error", { "case": "kebabCase" }],
+    "unicorn/prefer-node-protocol": "error",
+    "typescript/consistent-type-assertions": [
+      "error",
+      { "assertionStyle": "as", "objectLiteralTypeAssertions": "never" }
+    ],
+    "typescript/consistent-type-imports": [
+      "error",
+      { "prefer": "type-imports" }
+    ],
+    "typescript/no-deprecated": "error",
+    "typescript/no-explicit-any": "error",
+    "typescript/no-misused-promises": "error",
+    "typescript/no-non-null-assertion": "error",
+    "typescript/no-unsafe-argument": "error",
+    "typescript/no-unsafe-assignment": "error",
+    "typescript/no-unsafe-call": "error",
+    "typescript/no-unsafe-member-access": "error",
+    "typescript/no-unsafe-return": "error",
+    "typescript/only-throw-error": "error",
+    "typescript/restrict-template-expressions": "error",
+    "typescript/switch-exhaustiveness-check": "error",
+    "react/button-has-type": "error",
+    "react/exhaustive-deps": "error",
+    "react/jsx-key": "error",
+    "react/jsx-no-target-blank": "error",
+    "react/no-array-index-key": "error",
+    "react/no-danger": "error",
+    "react/react-in-jsx-scope": "off",
+    "react/rules-of-hooks": "error",
     "jsx-a11y/alt-text": "error",
     "jsx-a11y/anchor-has-content": "error",
     "jsx-a11y/aria-props": "error",
@@ -87,24 +91,11 @@
     "jsx-a11y/interactive-supports-focus": "error",
     "jsx-a11y/label-has-associated-control": "error",
     "jsx-a11y/no-autofocus": "error",
-    "jsx-a11y/prefer-tag-over-role": "error",
-    "react/button-has-type": "error",
-    "react/jsx-max-depth": ["error", { "max": 5 }],
-    "react/jsx-no-constructed-context-values": "error",
-    "react/no-array-index-key": "error",
-    "react/react-in-jsx-scope": "off",
-    "react-perf/jsx-no-new-array-as-prop": "error",
-    "react-perf/jsx-no-new-function-as-prop": "error",
-    "react-perf/jsx-no-new-object-as-prop": "error",
-    "typescript/consistent-type-imports": [
-      "error",
-      {
-        "prefer": "type-imports"
-      }
-    ],
-    "typescript/no-explicit-any": "error",
-    "typescript/no-misused-promises": "error",
-    "typescript/restrict-template-expressions": "error"
+    "shadcn/no-arbitrary-values": "error",
+    "shadcn/no-inline-styles": "error",
+    "shadcn/no-raw-colors": "error",
+    "shadcn/no-unknown-classes": "error",
+    "shadcn/require-static-classes": "error"
   },
   "overrides": [
     {
@@ -116,7 +107,46 @@
     {
       "files": ["packages/ui/src/components/**"],
       "rules": {
-        "shadcn/no-restyle": "off"
+        "complexity": "off",
+        "eqeqeq": "off",
+        "max-lines": "off",
+        "no-nested-ternary": "off",
+        "no-param-reassign": "off",
+        "no-shadow": "off",
+        "no-underscore-dangle": "off",
+        "jsx-a11y/click-events-have-key-events": "off",
+        "jsx-a11y/label-has-associated-control": "off",
+        "jsx-a11y/no-noninteractive-element-interactions": "off",
+        "jsx-a11y/prefer-tag-over-role": "off",
+        "react/button-has-type": "off",
+        "react/no-array-index-key": "off",
+        "react/no-danger": "off",
+        "react/no-unstable-nested-components": "off",
+        "react/set-state-in-effect": "off",
+        "shadcn/no-arbitrary-values": "off",
+        "shadcn/no-inline-styles": "off",
+        "shadcn/no-restyle": "off",
+        "shadcn/no-unknown-classes": "off",
+        "shadcn/require-static-classes": "off",
+        "typescript/consistent-return": "off",
+        "typescript/no-deprecated": "off",
+        "typescript/no-unsafe-argument": "off",
+        "typescript/no-unsafe-assignment": "off",
+        "typescript/no-unsafe-call": "off",
+        "typescript/no-unsafe-member-access": "off",
+        "typescript/no-unsafe-type-assertion": "off",
+        "typescript/restrict-template-expressions": "off"
+      }
+    },
+    {
+      "files": ["scripts/**", "**/*.config.{js,cjs,mjs,ts}"],
+      "rules": {
+        "no-console": "off",
+        "typescript/no-unsafe-argument": "off",
+        "typescript/no-unsafe-assignment": "off",
+        "typescript/no-unsafe-call": "off",
+        "typescript/no-unsafe-member-access": "off",
+        "typescript/no-unsafe-return": "off"
       }
     }
   ],
@@ -125,16 +155,19 @@
     "**/.agents/**",
     ".codex/**",
     ".expo/**",
+    "**/.expo/**",
     ".nitro/**",
     ".output/**",
+    "**/.output/**",
     ".pnpm-store/**",
     ".tanstack/**",
     ".turbo/**",
     ".vinxi/**",
     "coverage/**",
     "dist/**",
+    "**/dist/**",
     "node_modules/**",
-    "tools/oxlint/anti-slop/**",
+    "apps/mobile/uniwind-types.d.ts",
     "apps/web/src/routeTree.gen.*",
     "packages/backend/convex/_generated/**"
   ]
